@@ -1,0 +1,15 @@
+services:
+  handover29c:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      H29C_BUILD_LABEL: compose-local
+      H29C_SERVE_FRONTEND: "true"
+      H29C_DATABASE_PATH: /app/var/handover29c.sqlite3
+    volumes:
+      - custody-data:/app/var
+    restart: unless-stopped
+
+volumes:
+  custody-data:

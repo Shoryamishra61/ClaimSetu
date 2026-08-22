@@ -1,0 +1,22 @@
+# Runtime dependencies for the Handover29C prototype API.
+#
+# Supported baseline: CPython 3.10+. The local suite runs on 3.10 and the shipped
+# container plus isolated dependency audit run on 3.12. Nothing in this codebase
+# uses a 3.11+ construct -- asserted by tests/test_python_baseline.py.
+#
+# Ranges rather than exact pins, upper-bounded at the next major. A hackathon needs
+# a resolvable install more than it needs a lockfile, and the upper bounds stop a
+# surprise major release from breaking the build on demo morning. The container
+# build and verification log are the reproducible resolved-environment evidence.
+
+fastapi>=0.115,<1.0
+pydantic>=2.9,<3.0
+
+# ASGI server. The [standard] extra pulls in websockets and httptools; the WebSocket
+# channel needs the former, and REST polling is the declared fallback if it is
+# absent (SRS section 6).
+uvicorn[standard]>=0.32,<1.0
+
+# Text-extractable prototype Form 29C record generation. The output is visibly
+# simulated and is never represented as a portal acknowledgement.
+reportlab>=4.2,<5.0

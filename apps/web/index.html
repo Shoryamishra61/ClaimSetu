@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--
+      An empty data favicon prevents a browser-generated /favicon.ico request
+      without shipping a logo, seal, or government wordmark. This prototype must
+      not be mistakable for an official service.
+    -->
+    <link rel="icon" href="data:," />
+    <meta
+      name="description"
+      content="Handover29C - independent hackathon prototype. Government integrations are simulated. Uses fictional data."
+    />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="color-scheme" content="light" />
+    <title>Handover29C - hackathon prototype (simulated)</title>
+  </head>
+  <body>
+    <!--
+      The disclosure is repeated here rather than left entirely to React. If the
+      bundle fails to load, a visitor still sees what this is before they see
+      anything else.
+    -->
+    <noscript>
+      <p>
+        Independent hackathon prototype &middot; Government integrations are
+        simulated &middot; Uses fictional data
+      </p>
+      <p>
+        This prototype needs JavaScript to run. It does not connect to any
+        government system and nothing it produces has legal effect.
+      </p>
+    </noscript>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

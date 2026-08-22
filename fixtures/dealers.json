@@ -1,0 +1,77 @@
+{
+  "_readme": [
+    "SIMULATED AUTHORISED-DEALER REGISTRY. Every record is invented.",
+    "",
+    "This stands in for the Form 29B authorisation state that Rule 55A makes a",
+    "precondition for acting as a dealer of registered vehicles. It is NOT a copy of,",
+    "feed from, or lookup against any government register.",
+    "",
+    "simulated_revalidation_status exists to make test T13 (dealer expires between",
+    "verification and submission) demonstrable without waiting on a clock. When present,",
+    "the registry reports `status` on the first check and `simulated_revalidation_status`",
+    "when SubmissionService revalidates at submit time. This is a declared property of a",
+    "declared simulation, not a hidden bypass -- the demo scenario card names it."
+  ],
+  "dealers": [
+    {
+      "id": "dlr-demo-001",
+      "authorisation_no": "DEMO-29B-001",
+      "business_name": "Asha Motors (fictional dealer)",
+      "status": "ACTIVE",
+      "valid_from": "2024-04-01",
+      "valid_until": "2027-03-31",
+      "simulated_revalidation_status": null,
+      "is_default_demo": true,
+      "demo_label_en": "Active authorisation — can continue",
+      "demo_label_hi": "सक्रिय प्राधिकरण — आगे बढ़ सकते हैं"
+    },
+    {
+      "id": "dlr-demo-002",
+      "authorisation_no": "DEMO-29B-002",
+      "business_name": "Verma Auto Traders (fictional dealer)",
+      "status": "EXPIRED",
+      "valid_from": "2023-04-01",
+      "valid_until": "2025-06-30",
+      "simulated_revalidation_status": null,
+      "is_default_demo": false,
+      "demo_label_en": "Expired authorisation — blocked",
+      "demo_label_hi": "समय-सीमा समाप्त प्राधिकरण — अवरुद्ध"
+    },
+    {
+      "id": "dlr-demo-003",
+      "authorisation_no": "DEMO-29B-003",
+      "business_name": "Nova Wheels (fictional dealer)",
+      "status": "SUSPENDED",
+      "valid_from": "2024-01-01",
+      "valid_until": "2027-01-31",
+      "simulated_revalidation_status": null,
+      "is_default_demo": false,
+      "demo_label_en": "Suspended authorisation — blocked",
+      "demo_label_hi": "निलंबित प्राधिकरण — अवरुद्ध"
+    },
+    {
+      "id": "dlr-demo-004",
+      "authorisation_no": "DEMO-29B-004",
+      "business_name": "Sai Vehicles (fictional dealer)",
+      "status": "ACTIVE",
+      "valid_from": "2025-04-01",
+      "valid_until": "2028-03-31",
+      "simulated_revalidation_status": null,
+      "is_default_demo": false,
+      "demo_label_en": "Second active authorisation — can continue",
+      "demo_label_hi": "दूसरा सक्रिय प्राधिकरण — आगे बढ़ सकते हैं"
+    },
+    {
+      "id": "dlr-demo-005",
+      "authorisation_no": "DEMO-29B-005",
+      "business_name": "Kaveri Motors (fictional dealer)",
+      "status": "ACTIVE",
+      "valid_from": "2024-04-01",
+      "valid_until": "2026-08-22",
+      "simulated_revalidation_status": "EXPIRED",
+      "is_default_demo": false,
+      "demo_label_en": "Active at check, expired at submission — revalidation blocks",
+      "demo_label_hi": "जाँच के समय सक्रिय, जमा करते समय समाप्त — पुनर्सत्यापन रोकता है"
+    }
+  ]
+}
