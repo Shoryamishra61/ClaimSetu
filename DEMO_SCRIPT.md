@@ -1,18 +1,18 @@
-# 120-second demo script
+# Identity Rescue two-minute demo
 
-Target runtime: 105-115 seconds. Use only the fictional demo controls.
+Target: 108–116 seconds. The entire first minute is citizen-facing.
 
 | Time | Visual | Narration |
 |---|---|---|
-| 0-8s | Open on the route-choice screen and point to the disclosure. | "Handover29C is an independent prototype for preparing a vehicle-custody record. Every record in this demo is fictional, and no government system is connected." |
-| 8-18s | Select Private buyer, show the out-of-scope stop, then return. | "The product begins with the legal route. A private sale is a different process, so the Form 29C journey stops instead of guessing." |
-| 18-35s | Select authorised dealer, use the demo vehicle, verify. | "For the supported route, the seller uses a fictional vehicle fixture. The lookup runs against local SQLite data; no real registration or identity information is requested." |
-| 35-50s | Enter an invalid GSTIN once, show the inline error, then use the demo dealer. | "Malformed dealer identifiers fail with a precise, recoverable error. The active fictional dealer then advances the server-owned state." |
-| 50-72s | Enter odometer 12345 and tick both confirmations. | "The handover requires a positive odometer reading and explicit confirmation from both fictional parties. These confirmations are prototype records, not electronic signatures." |
-| 72-86s | Confirm and show the Record screen. | "The database moves atomically to Custody Transferred and appends a hash-chained transition event. Refresh and WebSocket loss cannot invent a later state; REST polling restores the authoritative snapshot." |
-| 86-100s | Download and open both worksheet pages. | "The pre-fill worksheet mirrors the notified preparation fields and preserves our test values as extractable text. It also shows that portal declarations, both signatures, submission, and the acknowledgement are still outstanding." |
-| 100-112s | Show terminal with tests/audit summary and the boundary drawer. | "The build is backed by backend, component, browser, accessibility, latency, PDF, dependency, and container checks. The product closes where evidence closes: it prepares a transparent fictional record and claims nothing beyond that." |
+| 0:00–0:09 | Home H1, disclosure, three cases | “Public-service portals often say details do not match, but not which record actually blocks the task. Identity Rescue uses fictional data to answer that one question.” |
+| 0:09–0:22 | Open Ananya; show blocked status and exact records | “Ananya cannot fetch a Driving Licence. In one click we see the two original name forms and the causal, versioned demo rule—without entering any real ID.” |
+| 0:22–0:35 | Open evidence, source and uncertainty; compare routes | “The evidence drawer separates official source support from the exact prototype predicate. The planner compares only allowed corrections and prefers the lower-impact issuer route over changing a broadly reused upstream record.” |
+| 0:35–0:48 | Confirm simulation; show ready, before/after | “Simulation changes only this fictional case. The engine recomputes readiness, shows before and after, and says clearly that no official record was changed.” |
+| 0:48–0:59 | Show official handoff and caveat | “The journey ends with a linked official source and a warning to verify the current process before acting.” |
+| 0:59–1:13 | Open Arvind | “The key innovation is causal disambiguation. Arvind’s names look different, but changing the name does not fix the case. The service-history condition is the modeled blocker.” |
+| 1:13–1:26 | Open Meera/result | “For a life event, the minimum plan updates only the DL name needed for the selected goal. PAN and address differences remain visible instead of being changed for cosmetic consistency.” |
+| 1:26–1:39 | Hindi/mobile view | “The same focused flow works in simple Hindi, at 320 pixels, with keyboard navigation, visible focus, live status announcements, and no horizontal scroll.” |
+| 1:39–1:52 | Architecture/check output | “Codex helped turn the frozen specs into deterministic rules, planner tests, a React/FastAPI implementation, accessibility gates, and Docker verification. AI is not allowed to decide readiness or the plan.” |
+| 1:52–1:58 | Return to disclosure | “It is an independent prototype: fictional data, no government connection, and no claim beyond the evidence.” |
 
-Do not say: liability severed, legally binding, official filing completed,
-government verified, biometric verified, cryptographically signed, or Section 65B
-certified.
+Do not show internal vehicle-transfer screens, live government data, real identifiers, a PDF climax, or architecture before the first minute ends.

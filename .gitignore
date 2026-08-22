@@ -1,6 +1,7 @@
 # Python
 __pycache__/
 *.py[cod]
+*.egg-info/
 .pytest_cache/
 .ruff_cache/
 .venv/
@@ -10,6 +11,7 @@ node_modules/
 dist/
 playwright-report/
 test-results/
+output/video/frame-*.png
 
 # Runtime and intermediate evidence
 var/*.sqlite3

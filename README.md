@@ -1,30 +1,53 @@
-# Handover29C
+# Identity Rescue
 
-[Public release v1.0.2](https://github.com/Shoryamishra61/handover29c/releases/tag/v1.0.2)
-| [Demo video](https://github.com/Shoryamishra61/handover29c/releases/download/v1.0.2/handover29c-demo.webm)
-| [Verified PDF](https://github.com/Shoryamishra61/handover29c/releases/download/v1.0.2/handover29c-demo-form29c.pdf)
+Identity Rescue is an independent, browser-based hackathon prototype that helps a citizen understand which cross-service record inconsistency actually blocks a selected public-service task—and which visible differences should **not** be changed.
 
-Handover29C is an independent hackathon prototype for preparing a fictional
-vehicle-custody record for transfer to an authorised dealer. It implements the
-four-state workflow `DRAFT -> INITIATED -> DEALER_SELECTED ->
-CUSTODY_TRANSFERRED`, validates relational integrity in SQLite WAL mode, and
-generates a text-extractable Form 29C pre-fill worksheet.
+Start with the fictional Driving Licence case. Within one click, the app shows the exact records, causal rule, provenance, correction alternatives, deterministic minimum-impact plan, reversible simulation, and official next action.
 
-It is not a government portal. Every person, vehicle, dealer, and registry result
-is fictional. Nothing is submitted to VAHAN or any government system, and no
-output is represented as an official acknowledgement, e-signature, ownership
-transfer, or change in legal liability.
+> Independent hackathon prototype · Fictional data · No government connection
 
-## Why this shape
+## Why it is more than a mismatch checker
 
-The project deliberately removes the earlier GPS, Aadhaar, WebCrypto,
-phonetic-name matching, and private Section 65B certificate concepts. Its research
-question is narrower: can a low-latency, accessible prototype model the custody
-handover facts and state transitions without inventing a parallel legal process?
+- It begins with the citizen’s goal, not a universal identity score.
+- Every finding carries original facts, rule ID/version, evidence status, and source IDs.
+- A visible mismatch is not automatically causal: the EPFO case proves a name-only change does not resolve its service-history blocker.
+- The planner searches only allowlisted fictional actions with explicit costs; an LLM never selects readiness or the plan.
+- Simulation recomputes the whole case and states that no official record changed.
 
-## Run locally
+## Three working golden journeys
 
-Requirements: Python 3.10+ and Node.js 22.12+ (Node 24 is used by the container).
+1. **DigiLocker / Driving Licence:** a narrow issuer-record correction beats a broader upstream change.
+2. **EPFO pre-flight:** the visible name variation is non-blocking; the fictional service-history condition is causal.
+3. **Life-event reconciliation:** one targeted name correction resolves the selected goal while PAN and address differences remain visible and unchanged.
+
+All profiles are bundled synthetic fixtures. There are no fields for real Aadhaar, PAN, UAN, OTP, payment, biometrics, or identity documents, and no live government API is called.
+
+## Architecture
+
+```text
+fictional case
+  → evidence-preserving record model
+  → conservative normalization
+  → versioned deterministic rules
+  → causal finding + readiness
+  → minimum-cost action search
+  → reversible simulation
+  → source-backed official handoff
+```
+
+The optional OpenAI explanation layer is credential-gated and non-authoritative. The complete P0 flow currently uses static bilingual templates and works with AI disabled.
+
+## Run
+
+Docker is the shortest path:
+
+```powershell
+docker compose up --build
+```
+
+Open <http://127.0.0.1:8000>. The container runs as a non-root user and serves the SPA and API from one origin.
+
+Local development:
 
 ```powershell
 cd apps\web
@@ -32,85 +55,37 @@ npm ci
 npm run build
 
 cd ..\api
-python -m pip install -r requirements.txt
+python -m pip install -r requirements-dev.txt
 cd ..\..
 python scripts\run_local.py --port 8129
 ```
 
-Open `http://127.0.0.1:8129`. Use the visible demo buttons; do not enter real data.
-
-Container run:
-
-```powershell
-docker compose up --build
-```
-
-The container runs as a non-root user and persists SQLite data in a named volume.
-
 ## Verify
 
 ```powershell
-cd apps\api
-python -m pip install -r requirements-dev.txt
-python -m ruff check app tests
-python -m pytest -q
-
-cd ..\web
-npm ci
-npm audit --audit-level=high
-npm test
-npm run build
-npx playwright install chromium
-npm run e2e
+powershell -ExecutionPolicy Bypass -File scripts\verify.ps1
 ```
 
-Generate the stable PDF review artifact:
+The focused gate covers deterministic rules/planning, mutation rejection, source allowlisting, security headers, English/Hindi completeness, axe, keyboard/dialog focus, deep-link refresh, all three browser journeys, 320 CSS px, and 200% zoom.
 
-```powershell
-python scripts\generate_demo_form29c.py
-```
+## API
 
-## Definitive API
+- `GET /api/v1/identity/scenarios`
+- `POST /api/v1/identity/scenarios/{scenario_id}/analyze`
+- `POST /api/v1/identity/scenarios/{scenario_id}/simulate`
+- `GET /api/v1/identity/sources`
+- `GET /healthz`
 
-- `GET /api/v1/vehicle/verify`
-- `POST /api/v1/case/initiate`
-- `POST /api/v1/dealer/verify`
-- `PATCH /api/v1/cases/{case_id}/state`
-- `GET /api/v1/cases/{case_id}/custody`
-- `GET /api/v1/cases/{case_id}/transitions`
-- `GET /api/v1/cases/{case_id}/form29c.pdf`
-- `WS /api/v1/sync/{case_id}`
+The former vehicle-transfer implementation is retained only as quarantined historical research and is absent from the default OpenAPI/runtime.
 
-The repository retains a superseded ACK-only research controller solely for its
-regression evidence. It is disabled by default, absent from the shipped Docker
-OpenAPI surface and database, and enabled only by an explicit test-fixture flag.
-The active PDF is visibly marked as locally generated and unsubmitted.
+## Evidence and limits
 
-## Regulatory boundary
+- [Frozen product package](docs/identity-rescue/README.md)
+- [Migration map](docs/identity-rescue/MIGRATION_MAP.md)
+- [Acceptance ledger](COMPLETION_AUDIT.md)
+- [Current build status](BUILD_STATUS.md)
+- [Two-minute demo script](DEMO_SCRIPT.md)
+- [Submission copy](SUBMISSION.md)
+- In-product `/sources` and `/privacy` pages
 
-The worksheet field structure was checked against final notification G.S.R.
-901(E), dated 22 December 2022. Rule 55B requires electronic portal submission,
-both parties' signatures, and a portal-generated acknowledgement. This prototype
-does none of those things; its output is only a preparation aid. See the
-[government-hosted Gazette copy](https://transport.jharkhand.gov.in/pdf/GSR901%28E%29-22December-2022-Sale-purchase-of-registered-vehicles-through-authorised-dealers.pdf).
-
-## Evidence
-
-- [BUILD_STATUS.md](BUILD_STATUS.md) is the current gate ledger.
-- [COMPLETION_AUDIT.md](COMPLETION_AUDIT.md) maps the TDD matrix to executable evidence.
-- [CODEX_BUILD_LOG.md](CODEX_BUILD_LOG.md) records implementation and verification.
-- [DEMO_SCRIPT.md](DEMO_SCRIPT.md) is the <=120-second recording plan.
-- [SUBMISSION.md](SUBMISSION.md) contains the <250-word submission copy.
-- `output/pdf/`, `output/screenshots/`, and `output/video/` hold generated review
-  artifacts, including the 10.00-second local walkthrough.
-
-The source/evidence precedence in the final specification package remains the
-authority for legal and product claims.
-
-## Publication status
-
-The public `v1.0.2` release contains the PDF, video, responsive screenshots, and
-locally validated CI/release workflow bundle. GitHub would not activate the
-workflow files or accept GHCR publication because the available OAuth token lacks
-the separately required `workflow` and `write:packages` scopes. This limitation is
-reported rather than presenting local verification as hosted CI.
+Official processes can change. The linked authority source must be checked before acting; exact fixture predicates are labeled when they are prototype simulations.

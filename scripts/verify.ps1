@@ -3,11 +3,11 @@ $ProjectRoot = Split-Path -Parent $PSScriptRoot
 
 Push-Location (Join-Path $ProjectRoot "apps/api")
 try {
-    python -m ruff check app tests
+    python -m ruff check app tests_identity_rescue
     if ($LASTEXITCODE -ne 0) { throw "Ruff failed" }
     python -m pytest -q
     if ($LASTEXITCODE -ne 0) { throw "Backend tests failed" }
-    python -m compileall -q app tests
+    python -m compileall -q app tests_identity_rescue
     if ($LASTEXITCODE -ne 0) { throw "Python compile check failed" }
 }
 finally {
@@ -31,4 +31,4 @@ finally {
     Pop-Location
 }
 
-Write-Output "Handover29C verification passed"
+Write-Output "Identity Rescue verification passed"

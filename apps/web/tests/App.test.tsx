@@ -1,27 +1,212 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import App from "../src/App";
-import type { CustodyCase } from "../src/custodyApi";
+import type { ScenarioAnalysis, SourceReference } from "../src/identityApi";
 import { LangProvider } from "../src/i18n/LangProvider";
+import { UI, phrase } from "../src/i18n/strings";
 
-class FakeWebSocket {
-  onopen: (() => void) | null = null;
-  onmessage: ((event: MessageEvent<string>) => void) | null = null;
-  onerror: (() => void) | null = null;
-  onclose: (() => void) | null = null;
+const source: SourceReference = {
+  source_id: "SRC-DIGI-001",
+  title: "DigiLocker FAQs",
+  publisher: "DigiLocker / NeGD",
+  url: "https://www.digilocker.gov.in/web/about/faq",
+  proposition:
+    "DigiLocker says the Aadhaar name should match the DL source name.",
+  last_checked_at: "2026-08-22",
+};
 
-  close(): void {}
+function analysis(ready = false): ScenarioAnalysis {
+  return {
+    scenario_id: "digilocker-dl",
+    fixture_version: "1.0",
+    goal: "DIGILOCKER_FETCH_DL",
+    profile: {
+      profile_id: "DEMO-ANANYA-01",
+      display_name: "Ananya R. Krishnan",
+      fictional: true,
+      preferred_locale: "en-IN",
+      scenario_note: "profile.ananya.note",
+    },
+    readiness: ready ? "READY_SIMULATION" : "BLOCKED",
+    headline_key: ready ? "diagnosis.dl.ready" : "diagnosis.dl.blocked",
+    explanation_key: ready
+      ? "diagnosis.dl.ready_explanation"
+      : "diagnosis.dl.blocked_explanation",
+    next_best_action_key: ready
+      ? "diagnosis.next.official"
+      : "diagnosis.next.compare",
+    records: [
+      {
+        record_id: "REC-AADHAAR-ANANYA",
+        authority: "AADHAAR_DEMO",
+        label: "Aadhaar demo record",
+        fixture_version: "1.0",
+        fields: {
+          name: {
+            original: "ANANYA R KRISHNAN",
+            normalized: "ananya r krishnan",
+            script: "Latn",
+            locale: "en-IN",
+            derived_label: "Comparison form",
+          },
+          dob: {
+            original: "1998-02-14",
+            normalized: "1998 02 14",
+            script: null,
+            locale: null,
+            derived_label: null,
+          },
+        },
+      },
+      {
+        record_id: "REC-DL-ANANYA",
+        authority: "DL_SOURCE_DEMO",
+        label: "Driving Licence source demo record",
+        fixture_version: "1.0",
+        fields: {
+          name: {
+            original: ready
+              ? "ANANYA RAMESH KRISHNAN"
+              : "KRISHNAN ANANYA RAMESH",
+            normalized: null,
+            script: "Latn",
+            locale: "en-IN",
+            derived_label: null,
+          },
+          dob: {
+            original: "1998-02-14",
+            normalized: null,
+            script: null,
+            locale: null,
+            derived_label: null,
+          },
+          record_present: {
+            original: true,
+            normalized: null,
+            script: null,
+            locale: null,
+            derived_label: null,
+          },
+        },
+      },
+    ],
+    findings: [
+      {
+        finding_id: "FIND-DL-002",
+        rule_id: "DL-002",
+        rule_version: "1.0",
+        state: ready ? "MATCH_RULE_COMPATIBLE" : "MISMATCH_BLOCKING",
+        title_key: ready
+          ? "finding.dl.name.pass_title"
+          : "finding.dl.name.block_title",
+        explanation_key: ready
+          ? "finding.dl.name.pass"
+          : "finding.dl.name.block",
+        causal: !ready,
+        evidence_status: "OFFICIAL_SOURCE_INTERPRETED",
+        inputs: [
+          {
+            record_id: "REC-AADHAAR-ANANYA",
+            authority: "AADHAAR_DEMO",
+            field: "name",
+            label: "Aadhaar demo name",
+            original_value: "ANANYA R KRISHNAN",
+          },
+          {
+            record_id: "REC-DL-ANANYA",
+            authority: "DL_SOURCE_DEMO",
+            field: "name",
+            label: "Driving Licence source demo name",
+            original_value: ready
+              ? "ANANYA RAMESH KRISHNAN"
+              : "KRISHNAN ANANYA RAMESH",
+          },
+        ],
+        source_ids: ["SRC-DIGI-001"],
+        uncertainty_key: "finding.dl.name.uncertainty",
+      },
+    ],
+    dependency_trail_keys: [
+      "trail.dl.1",
+      "trail.dl.2",
+      "trail.dl.3",
+      "trail.dl.4",
+      "trail.dl.5",
+    ],
+    actions: [
+      {
+        action_id: "ACT-A1",
+        title_key: "action.a1.title",
+        target_record_id: "REC-DL-ANANYA",
+        target_field: "name",
+        from_value: "KRISHNAN ANANYA RAMESH",
+        to_value: "ANANYA RAMESH KRISHNAN",
+        effort_key: "effort.issuer",
+        effect_key: "action.a1.effect",
+        impact_key: "action.a1.impact",
+        reversible: true,
+        evidence_status: "PROTOTYPE_SIMULATION",
+        source_ids: ["SRC-DIGI-001"],
+        cost: 45,
+      },
+      {
+        action_id: "ACT-A2",
+        title_key: "action.a2.title",
+        target_record_id: "REC-AADHAAR-ANANYA",
+        target_field: "name",
+        from_value: "ANANYA R KRISHNAN",
+        to_value: "ANANYA RAMESH KRISHNAN",
+        effort_key: "effort.review",
+        effect_key: "action.a2.effect",
+        impact_key: "action.a2.impact",
+        reversible: true,
+        evidence_status: "NEEDS_AUTHORITY_VALIDATION",
+        source_ids: ["SRC-DIGI-001"],
+        cost: 100,
+      },
+    ],
+    recommended_plan: ready
+      ? null
+      : {
+          action_ids: ["ACT-A1"],
+          total_cost: 45,
+          reason_codes: ["RESOLVES_TARGET", "ONE_STEP"],
+          equivalent_plan_count: 1,
+        },
+    applied_action_ids: ready ? ["ACT-A1"] : [],
+    before_after: ready
+      ? [
+          {
+            action_id: "ACT-A1",
+            record_label: "Driving Licence source demo record",
+            field_label: "name",
+            before: "KRISHNAN ANANYA RAMESH",
+            after: "ANANYA RAMESH KRISHNAN",
+          },
+        ]
+      : [],
+    official_handoff: {
+      title_key: "handoff.dl.title",
+      step_keys: ["handoff.dl.step1", "handoff.dl.step2", "handoff.dl.step3"],
+      official_url: source.url,
+      official_label: "DigiLocker official FAQ",
+      source_id: source.source_id,
+      caveat_key: "handoff.processes_change",
+    },
+    source_ids: ["SRC-DIGI-001"],
+    deterministic: true,
+    government_systems_contacted: 0,
+  };
 }
 
-function jsonResponse(payload: unknown, status = 200): Response {
+function json(payload: unknown): Response {
   return new Response(JSON.stringify(payload), {
-    status,
+    status: 200,
     headers: { "Content-Type": "application/json" },
   });
 }
-
 function renderApp() {
   return render(
     <LangProvider>
@@ -30,144 +215,107 @@ function renderApp() {
   );
 }
 
-const baseCase: CustodyCase = {
-  simulation: true,
-  fictional: true,
-  case_id: "case-ui-test",
-  vehicle_no: "DL-1CA-1234",
-  chassis_suffix: "56789",
-  seller_id: "seller-01",
-  seller_name: "Demo Seller 01 (fictional)",
-  seller_address: "Demo address 01, Fictional City",
-  vehicle_make: "Aster 110 Demo Scooter",
-  chassis_no: "DEMOCHASSIS56789",
-  engine_or_motor_no: "DEMOENGINE00001",
-  rto_jurisdiction: "Registering Authority DL-01 (fictional)",
-  dealer_id: null,
-  dealer_name: null,
-  dealer_gstin: null,
-  trade_certificate_no: null,
-  dealer_business_address: null,
-  authorisation_certificate_no: null,
-  authorisation_issued_by: null,
-  authorisation_valid_until: null,
-  state: "INITIATED",
-  odometer_reading: null,
-  delivery_timestamp: null,
-  form_29c_storage_url: null,
-  is_government_acknowledgement: false,
-  created_at: "2026-08-22T10:00:00Z",
-  updated_at: "2026-08-22T10:00:00Z",
-};
-
 afterEach(() => {
   vi.unstubAllGlobals();
   vi.restoreAllMocks();
+  history.replaceState({}, "", "/");
+  sessionStorage.clear();
+  localStorage.clear();
 });
 
-describe("Handover29C journey", () => {
-  it("blocks the private-buyer route instead of reusing Form 29C", async () => {
-    const user = userEvent.setup();
-    renderApp();
-    await user.click(screen.getByRole("button", { name: /selling to a private buyer/i }));
-    expect(screen.getByRole("heading", { name: /different process/i })).toBeTruthy();
-    expect(screen.getByText(/must not be reused for a private sale/i)).toBeTruthy();
+describe("Identity Rescue Scenario A", () => {
+  it("has non-empty English and Hindi text for every registered UI key", () => {
+    for (const [key, value] of Object.entries(UI)) {
+      expect(value.en.trim(), `${key} English`).not.toBe("");
+      expect(value.hi.trim(), `${key} Hindi`).not.toBe("");
+      expect(phrase(key, "en")).not.toBe(key);
+      expect(phrase(key, "hi")).not.toBe(key);
+    }
   });
 
-  it("switches critical interface copy and the document language to Hindi", async () => {
+  it("opens goal-first with exactly three fictional citizen problems", () => {
+    renderApp();
+    expect(
+      screen.getByRole("heading", { level: 1, name: /when records disagree/i }),
+    ).toBeTruthy();
+    expect(screen.getAllByText("FICTIONAL CASE")).toHaveLength(3);
+    expect(
+      screen.getAllByRole("button", { name: /try this case/i }),
+    ).toHaveLength(3);
+    expect(screen.queryByText(/vehicle handover/i)).toBeNull();
+  });
+
+  it("switches the full shell and safety copy to Hindi", async () => {
     const user = userEvent.setup();
     renderApp();
     await user.click(screen.getByRole("button", { name: "हिन्दी" }));
-    expect(document.documentElement.lang).toBe("hi");
-    expect(screen.getByRole("heading", { name: "डीलर को वाहन सुपुर्दगी" })).toBeTruthy();
-    expect(screen.getByText(/सरकारी एकीकरण सिम्युलेटेड हैं/)).toBeTruthy();
+    expect(document.documentElement.lang).toBe("hi-IN");
+    expect(
+      screen.getByRole("heading", { level: 1, name: /जब रिकॉर्ड अलग हों/i }),
+    ).toBeTruthy();
+    expect(screen.getByText(/असली Aadhaar, PAN, UAN, OTP/i)).toBeTruthy();
   });
 
-  it("completes all four states and exposes only a prototype PDF", async () => {
-    vi.stubGlobal("WebSocket", FakeWebSocket);
-    let current: CustodyCase = baseCase;
-    const fetchMock = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
-      const url = String(input);
-      if (url.includes("/vehicle/verify?")) {
-        return jsonResponse({
-          data: {
-            simulation: true,
-            fictional: true,
-            vehicle_id: "vehicle-01",
-            vehicle_no: "DL-1CA-1234",
-            chassis_suffix: "56789",
-            seller_id: "seller-01",
-            owner_name: "Demo Seller 01 (fictional)",
-            model: "Aster 110 Demo Scooter",
-            hypothecation_active: false,
-          },
-        });
-      }
-      if (url.endsWith("/case/initiate")) return jsonResponse({ case: current }, 201);
-      if (url.endsWith("/dealer/verify")) {
-        return jsonResponse({
-          data: {
-            simulation: true,
-            fictional: true,
-            dealer_id: "dealer-01",
-            trade_certificate_no: "TC-DEL-9988",
-            gstin: "07AAAAA1111A1Z1",
-            business_name: "Suresh Auto (fictional)",
-            rto_jurisdiction_code: "DL-14",
-            status: "ACTIVE",
-            can_continue: true,
-          },
-        });
-      }
-      if (init?.method === "PATCH") {
-        const body = JSON.parse(String(init.body)) as { state: string };
-        current = body.state === "DEALER_SELECTED"
-          ? {
-              ...current,
-              state: "DEALER_SELECTED",
-              dealer_id: "dealer-01",
-              dealer_name: "Suresh Auto (fictional)",
-              dealer_gstin: "07AAAAA1111A1Z1",
-              trade_certificate_no: "TC-DEL-9988",
-              updated_at: "2026-08-22T10:01:00Z",
-            }
-          : {
-              ...current,
-              state: "CUSTODY_TRANSFERRED",
-              odometer_reading: 12345,
-              delivery_timestamp: "2026-08-22T10:02:00Z",
-              form_29c_storage_url: "/api/v1/cases/case-ui-test/form29c.pdf",
-              updated_at: "2026-08-22T10:02:00Z",
-            };
-        return jsonResponse({ case: current });
-      }
-      if (url.includes("/cases/case-ui-test/custody")) return jsonResponse({ case: current });
-      throw new Error(`Unexpected request: ${url}`);
-    });
-    vi.stubGlobal("fetch", fetchMock);
-
+  it("shows causal evidence, simulates the recommended route, and reaches official handoff", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (input: RequestInfo | URL) => {
+        const url = String(input);
+        if (url.endsWith("/sources")) return json([source]);
+        if (url.endsWith("/simulate")) return json(analysis(true));
+        if (url.endsWith("/analyze")) return json(analysis(false));
+        throw new Error(`unexpected ${url}`);
+      }),
+    );
     const user = userEvent.setup();
     renderApp();
-    await user.click(screen.getByRole("button", { name: /handing it to an authorised dealer/i }));
-    await user.click(screen.getByRole("button", { name: /use demo vehicle/i }));
-    expect(screen.getByLabelText(/registration plate/i)).toHaveProperty("value", "DL-1CA-1234");
-    await user.click(screen.getByRole("button", { name: /verify and continue/i }));
+    await user.click(
+      screen.getAllByRole("button", { name: /try this case/i })[0]!,
+    );
+    expect(
+      await screen.findByRole("heading", {
+        name: /blocked by one record mismatch/i,
+      }),
+    ).toBeTruthy();
+    expect(screen.getAllByText("ANANYA R KRISHNAN").length).toBeGreaterThan(0);
+    expect(
+      screen.getAllByText("KRISHNAN ANANYA RAMESH").length,
+    ).toBeGreaterThan(0);
+    await user.click(screen.getByText("Show the evidence"));
+    expect(screen.getByText(/DL-002 v1.0/)).toBeTruthy();
+    expect(
+      screen
+        .getByRole("link", { name: /DigiLocker FAQs/i })
+        .getAttribute("href"),
+    ).toBe(source.url);
 
-    expect(await screen.findByRole("heading", { name: /select the fictional dealer/i })).toBeTruthy();
-    await user.click(screen.getByRole("button", { name: /use demo dealer/i }));
-    await user.click(screen.getByRole("button", { name: /verify dealer/i }));
+    await user.click(screen.getByRole("button", { name: /compare ways/i }));
+    const recommended = screen
+      .getByText("Recommended in this simulation")
+      .closest("article")!;
+    await user.click(
+      within(recommended).getByRole("button", { name: /simulate this route/i }),
+    );
+    const dialog = screen.getByRole("dialog", {
+      name: /simulate this correction/i,
+    });
+    expect(
+      within(dialog).getByText(/No government record will be contacted/i),
+    ).toBeTruthy();
+    await user.click(
+      within(dialog).getByRole("button", { name: /simulate correction/i }),
+    );
 
-    expect(await screen.findByRole("heading", { name: /record the physical handover/i })).toBeTruthy();
-    await user.type(screen.getByLabelText(/odometer reading/i), "12345");
-    const confirmations = screen.getAllByRole("checkbox");
-    fireEvent.click(confirmations[0]!);
-    fireEvent.click(confirmations[1]!);
-    await user.click(screen.getByRole("button", { name: /confirm handover/i }));
-
-    expect(await screen.findByRole("heading", { name: /prototype custody record prepared/i })).toBeTruthy();
-    expect(screen.getByText(/not a portal acknowledgement/i)).toBeTruthy();
-    const link = screen.getByRole("link", { name: /download prototype form 29c pdf/i });
-    expect(link.getAttribute("href")).toBe("/api/v1/cases/case-ui-test/form29c.pdf");
-    await waitFor(() => expect(sessionStorage.getItem("h29c.custody.case.v1")).toBe("case-ui-test"));
+    expect(
+      (await screen.findAllByText("Ready in this simulation")).length,
+    ).toBeGreaterThan(0);
+    expect(screen.getByText("No official record was changed")).toBeTruthy();
+    expect(screen.getByText("KRISHNAN ANANYA RAMESH")).toBeTruthy();
+    expect(screen.getByText("ANANYA RAMESH KRISHNAN")).toBeTruthy();
+    expect(
+      screen
+        .getByRole("link", { name: /open official source/i })
+        .getAttribute("href"),
+    ).toBe(source.url);
   });
 });

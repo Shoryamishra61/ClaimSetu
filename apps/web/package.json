@@ -1,9 +1,9 @@
 {
-  "name": "handover29c-web",
+  "name": "identity-rescue-web",
   "private": true,
-  "version": "1.0.2",
+  "version": "2.0.0",
   "type": "module",
-  "description": "Handover29C prototype SPA. Independent hackathon prototype; government integrations are simulated.",
+  "description": "Identity Rescue deterministic public-service pre-flight prototype SPA.",
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit -p tsconfig.json && vite build",

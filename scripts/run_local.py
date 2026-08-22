@@ -18,12 +18,12 @@ sys.path.insert(0, str(API_ROOT))
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--port", type=int, default=8129)
-    parser.add_argument("--database", default=str(ROOT / "var" / "handover29c.sqlite3"))
+    parser.add_argument("--database", default=str(ROOT / "var" / "identity-rescue.sqlite3"))
     args = parser.parse_args()
 
-    os.environ["H29C_SERVE_FRONTEND"] = "true"
-    os.environ["H29C_BUILD_LABEL"] = "local-review"
-    os.environ["H29C_DATABASE_PATH"] = args.database
+    os.environ["IR_SERVE_FRONTEND"] = "true"
+    os.environ["IR_BUILD_LABEL"] = "local-review"
+    os.environ["IR_DATABASE_PATH"] = args.database
 
     from app.main import app  # noqa: PLC0415
 

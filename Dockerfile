@@ -8,20 +8,16 @@ RUN npm run build
 FROM python:3.12-slim AS runtime
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    H29C_SERVE_FRONTEND=true \
-    H29C_DATABASE_PATH=/app/var/handover29c.sqlite3 \
-    H29C_BUILD_LABEL=container
+    IR_SERVE_FRONTEND=true \
+    IR_BUILD_LABEL=container
 WORKDIR /app
 COPY apps/api/requirements.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir -r /tmp/requirements.txt \
-    && addgroup --system handover29c \
-    && adduser --system --ingroup handover29c --home /nonexistent handover29c \
-    && mkdir -p /app/var \
-    && chown handover29c:handover29c /app/var
+    && addgroup --system identityrescue \
+    && adduser --system --ingroup identityrescue --home /nonexistent identityrescue
 COPY apps/api/ /app/apps/api/
-COPY fixtures/ /app/fixtures/
 COPY --from=web-builder /build/apps/web/dist/ /app/apps/web/dist/
-USER handover29c
+USER identityrescue
 WORKDIR /app/apps/api
 EXPOSE 8000
 HEALTHCHECK --interval=30s --timeout=4s --start-period=10s --retries=3 \

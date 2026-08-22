@@ -30,22 +30,38 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.exceptions import HTTPException as StarletteHTTPException
+from starlette.responses import Response
+from starlette.types import Scope
 
 from .api.routes import router
 from .api.websocket import ws_router
 from .config import Settings, load_settings
 from .custody.routes import router as custody_router
 from .custody.schema import initialise_custody_schema
-from .db import Database
 from .db.repository import ConcurrentModification
 from .domain.policies import registry
 from .domain.states import IllegalTransition
 from .errors import AppError
+from .identity_rescue.routes import router as identity_router
 from .services.context import ServiceContext
-from .services.events import EventBus
 from .services.pairing_service import PairingService
 
-logger = logging.getLogger("handover29c")
+logger = logging.getLogger("identity_rescue")
+
+
+class SPAStaticFiles(StaticFiles):
+    """Serve the SPA shell for client-side routes while retaining static 404s."""
+
+    async def get_response(self, path: str, scope: Scope) -> Response:
+        try:
+            response = await super().get_response(path, scope)
+        except StarletteHTTPException as exc:
+            if exc.status_code == 404 and "." not in path.rsplit("/", 1)[-1]:
+                return await super().get_response("index.html", scope)
+            raise
+        if response.status_code == 404 and "." not in path.rsplit("/", 1)[-1]:
+            return await super().get_response("index.html", scope)
+        return response
 
 #: No inline script, no external origin, nothing embeddable. ``style-src`` allows
 #: inline styles because the Vite build inlines critical CSS; scripts do not get the
@@ -67,6 +83,7 @@ SECURITY_HEADERS = {
     "Content-Security-Policy": CONTENT_SECURITY_POLICY,
     "X-Content-Type-Options": "nosniff",
     "X-Frame-Options": "DENY",
+    "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
     "Referrer-Policy": "no-referrer",
     "Cross-Origin-Opener-Policy": "same-origin",
     "Permissions-Policy": (
@@ -102,31 +119,28 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         app.state.custody_events = ctx.events
         # This service belongs only to the quarantined research controller.
         app.state.pairing = PairingService(ctx)
+        initialise_custody_schema(app.state.custody_db)
+        logger.info(
+            "historical vehicle controller enabled: build=%s policy=%s",
+            settings.build_label,
+            registry.get(settings.policy_version).version,
+        )
     else:
-        app.state.custody_db = Database(settings.database_path)
-        app.state.custody_events = EventBus()
-    initialise_custody_schema(app.state.custody_db)
-    logger.info(
-        "handover29c started: build=%s policy=%s db=%s",
-        settings.build_label,
-        registry.get(settings.policy_version).version,
-        settings.database_path,
-    )
+        logger.info("identity rescue started: build=%s", settings.build_label)
     yield
 
 
 def create_app(settings: Settings | None = None) -> FastAPI:
     resolved = settings or load_settings()
     app = FastAPI(
-        title="Handover29C prototype API",
+        title="Identity Rescue prototype API",
         # Stated in the OpenAPI description too, so even a machine-readable view of
         # this API carries the disclosure.
         description=(
-            "Independent hackathon prototype. Simulated government integrations, "
-            "fictional data. Does not connect to any government system and produces "
-            "nothing with legal effect."
+            "Independent hackathon prototype. Uses fictional data, deterministic "
+            "demo rules and no government connection. No official record is read or changed."
         ),
-        version="1.0.2",
+        version="2.0.0-pivot",
         lifespan=lifespan,
     )
     app.state.settings = resolved
@@ -181,7 +195,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     @app.exception_handler(StarletteHTTPException)
     async def handle_http(_request: Request, exc: StarletteHTTPException) -> JSONResponse:
         if exc.status_code == 404:
-            return error_response("CASE_NOT_FOUND", detail={"reason": "NO_SUCH_ROUTE"})
+            return error_response("ROUTE_NOT_FOUND", detail={"reason": "NO_SUCH_ROUTE"})
         if exc.status_code == 405:
             return error_response("VALIDATION_ERROR", detail={"reason": "BAD_METHOD"})
         return error_response("INTERNAL_ERROR")
@@ -199,20 +213,23 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         visible from outside the process rather than only in a log line.
         """
         settings: Settings = request.app.state.settings
-        policy = registry.get(settings.policy_version)
         return {
             "status": "ok",
             "simulation": True,
+            "product": "Identity Rescue",
             "build_label": settings.build_label,
-            "policy_version": policy.version,
-            "policy_in_force": policy.in_force,
+            "fixture_version": "1.0",
+            "deterministic_decisions": True,
+            "ai_required": False,
             "live_government_integrations": 0,
         }
 
     if resolved.enable_historical_blueprint:
         app.include_router(router, prefix="/api/v1")
         app.include_router(ws_router)
-    app.include_router(custody_router, prefix="/api/v1")
+        app.include_router(custody_router, prefix="/api/v1")
+    else:
+        app.include_router(identity_router, prefix="/api/v1")
 
     if resolved.serve_frontend and resolved.frontend_dist.is_dir():
         # Mounted last so it cannot shadow /api or /ws. html=True serves index.html
@@ -220,7 +237,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         # -- a requirement, since refresh-safety is a gate.
         app.mount(
             "/",
-            StaticFiles(directory=resolved.frontend_dist, html=True),
+            SPAStaticFiles(directory=resolved.frontend_dist, html=True),
             name="spa",
         )
 

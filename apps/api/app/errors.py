@@ -239,6 +239,20 @@ ERROR_CATALOGUE: dict[str, ErrorSpec] = dict(
             "प्रोटोटाइप फ़ॉर्म 29C रिकॉर्ड अभी तैयार नहीं है।",
         ),
         _spec(
+            "SCENARIO_NOT_FOUND",
+            404,
+            False,
+            "That fictional demo case is not available. Return to the case list and choose one of the three supplied cases.",
+            "वह काल्पनिक डेमो केस उपलब्ध नहीं है। केस सूची पर लौटें और दिए गए तीन केस में से एक चुनें।",
+        ),
+        _spec(
+            "ROUTE_NOT_FOUND",
+            404,
+            False,
+            "That page or API route is not part of this prototype. Return to the three fictional demo cases.",
+            "वह पेज या API route इस प्रोटोटाइप का हिस्सा नहीं है। तीन काल्पनिक डेमो केस पर लौटें।",
+        ),
+        _spec(
             "RATE_LIMITED",
             429,
             True,

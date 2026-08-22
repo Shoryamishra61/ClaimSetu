@@ -2,29 +2,22 @@
 
 ## Title
 
-Handover29C - a transparent vehicle custody handover prototype
+Identity Rescue — See what to fix first
 
-## Summary (188 words)
+## Project summary (235 words)
 
-Handover29C explores a narrow GovTech question: can the transfer of physical
-custody of a vehicle to an authorised dealer be prepared as a clear, accessible,
-low-latency workflow without inventing a parallel legal process?
+Identity Rescue is an independent prototype for a common failure across Indian public services: the same citizen detail can be represented differently across records, while the final portal only says that details do not match.
 
-The prototype implements a transactional four-state journey - Draft, Initiated,
-Dealer Selected, and Custody Transferred - backed by SQLite in WAL mode. It checks
-fictional vehicle and dealer fixtures, validates GSTIN structure, rejects skipped
-state transitions and invalid odometer readings, records a hash-chained transition
-log, and generates a text-extractable Form 29C pre-fill worksheet.
+Instead of asking citizens to guess which database to edit, Identity Rescue starts with their goal. Using only bundled fictional records, it reconstructs the dependencies relevant to that task, identifies the causal blocker, shows the exact evidence and source behind the rule, compares correction paths, and lets the citizen simulate the minimum-impact change before taking any real action. It can also prove when a visible identity difference is not the reason a service is blocked.
 
-The interface is a focused English/Hindi service flow rather than a dashboard. It
-supports keyboard navigation, visible focus, 320px screens, 200% zoom, semantic
-status labels, refresh recovery, WebSocket updates, and REST polling fallback.
+Three working journeys cover a DigiLocker/Driving Licence name-reconciliation failure, an EPFO pre-flight whose causal blocker is service history rather than the visible name variation, and a life-event case where unrelated address data is deliberately left unchanged.
 
-The boundary is explicit: all people, vehicles, dealers, and registry responses are
-fictional. The app does not connect to VAHAN or another government system. Its
-worksheet leaves portal declarations, signatures, submission, and acknowledgement
-explicitly outstanding; it is not an ownership transfer or claim that legal
-liability has changed.
+The prototype uses deterministic, versioned rules for compatibility, readiness, planning, and simulation. The complete journey works with AI disabled; any future OpenAI explanation is explicitly non-authoritative and cannot change the decision. Government systems and sensitive data are fully mocked—no real Aadhaar, PAN, UAN, OTP, payment data, private API, or official write is used.
 
-The result is a reproducible implementation and test bed for an evidence-first
-transport workflow, with its limitations visible in the product itself.
+The interface is mobile-first, keyboard accessible, English/Hindi, and designed around Indian naming realities such as initials, token ordering, absent surnames, and multiple-token names. Codex was used throughout specification migration, implementation, testing, accessibility hardening, and Docker verification.
+
+## Links
+
+- Live app: pending permanent HTTPS deployment
+- Source: current local branch `identity-rescue-pivot`; public publication pending final gate
+- Demo video: pending final recording

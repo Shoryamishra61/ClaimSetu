@@ -2,7 +2,7 @@
 
 This file is retained only because it was supplied as research context. Its
 TitleTransfer direction and all associated legal, identity, location, signing,
-and performance claims were rejected by the definitive Handover29C specification.
+and performance claims were rejected by the frozen Identity Rescue specification.
 Nothing below is implemented, exposed, or approved for demo/submission use. See
 `README.md`, `BUILD_STATUS.md`, and `DEMO_SCRIPT.md` for the active product.
 

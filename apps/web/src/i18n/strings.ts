@@ -1,321 +1,656 @@
-/**
- * Interface chrome, in both languages.
- *
- * What is *not* here: the disclosure banner, the "what this is" text, the no-real-
- * data warning, the scope statement, what a confirmation means, the acknowledgement
- * caveat, the policy anchor, and every error message. All of those come from the API
- * (`app/copy.py`, `app/errors.py`) and are rendered verbatim, so there is exactly one
- * authoritative wording and `apps/api/tests/test_copy_lint.py` can assert it once and
- * cover every screen. A stale frontend bundle still shows the current disclosure.
- *
- * What is here: button labels, headings, field labels and step names -- copy that
- * describes the interface rather than making a claim about the world.
- *
- * Every entry has both languages. A missing Hindi string is a bug, not a fallback:
- * `t()` is typed so it cannot be called with a key that lacks one.
- */
-
-import type { Lang } from "../api/types";
-
-export interface Phrase {
+export type Lang = "en" | "hi";
+interface Phrase {
   en: string;
   hi: string;
 }
 
 export const UI = {
-  "app.name": { en: "Handover29C", hi: "Handover29C" },
+  "app.name": { en: "Identity Rescue", hi: "Identity Rescue" },
   "app.tagline": {
-    en: "Hand a registered vehicle to an authorised dealer, with both sides agreeing to the same details.",
-    hi: "पंजीकृत वाहन किसी अधिकृत डीलर को सौंपें, जहाँ दोनों पक्ष समान विवरण पर सहमत हों।",
+    en: "See what to fix first",
+    hi: "पहले क्या सुधारें, समझें",
   },
-
-  "a11y.skipToMain": { en: "Skip to main content", hi: "मुख्य सामग्री पर जाएँ" },
-  "a11y.stepProgress": { en: "Progress through the handover", hi: "हस्तांतरण की प्रगति" },
-  "a11y.statusUpdates": { en: "Status updates", hi: "स्थिति अद्यतन" },
-
+  "disclosure.global": {
+    en: "Independent hackathon prototype · Fictional data · No government connection",
+    hi: "स्वतंत्र हैकाथॉन प्रोटोटाइप · काल्पनिक डेटा · किसी सरकारी सिस्टम से जुड़ा नहीं",
+  },
+  "disclosure.sensitive": {
+    en: "This is fictional demo data. Do not enter real Aadhaar, PAN, UAN, OTP or payment details.",
+    hi: "यह काल्पनिक डेमो डेटा है। असली Aadhaar, PAN, UAN, OTP या भुगतान विवरण दर्ज न करें।",
+  },
+  "a11y.skip": { en: "Skip to main content", hi: "मुख्य सामग्री पर जाएँ" },
+  "nav.home": { en: "All demo cases", hi: "सभी डेमो केस" },
+  "nav.sources": { en: "Sources & limits", hi: "स्रोत और सीमाएँ" },
+  "nav.privacy": { en: "Privacy", hi: "गोपनीयता" },
   "nav.language": { en: "Language", hi: "भाषा" },
   "nav.english": { en: "English", hi: "English" },
-  "nav.hindi": { en: "हिंदी", hi: "हिंदी" },
-  "nav.details": { en: "Prototype details", hi: "प्रोटोटाइप विवरण" },
-  "nav.close": { en: "Close", hi: "बंद करें" },
-
-  "step.route": { en: "Route", hi: "मार्ग" },
-  "step.vehicle": { en: "Vehicle", hi: "वाहन" },
-  "step.dealer": { en: "Dealer", hi: "डीलर" },
-  "step.readiness": { en: "Readiness", hi: "तैयारी" },
-  "step.review": { en: "Shared review", hi: "साझा समीक्षा" },
-  "step.outcome": { en: "Outcome", hi: "परिणाम" },
-
-  "route.heading": { en: "What are you doing with the vehicle?", hi: "आप वाहन के साथ क्या कर रहे हैं?" },
-  "route.dealer.title": {
-    en: "Handing it to an authorised dealer",
-    hi: "अधिकृत डीलर को सौंप रहे हैं",
+  "nav.hindi": { en: "हिन्दी", hi: "हिन्दी" },
+  "home.eyebrow": {
+    en: "A pre-flight debugger for public services",
+    hi: "सार्वजनिक सेवाओं के लिए पहले से जाँच",
   },
-  "route.dealer.desc": {
-    en: "The dealer takes delivery of the vehicle and an intimation of delivery is recorded. This is the journey this prototype covers.",
-    hi: "डीलर वाहन की सुपुर्दगी लेता है और सुपुर्दगी की सूचना दर्ज होती है। यह प्रोटोटाइप यही प्रक्रिया कवर करता है।",
+  "home.title": {
+    en: "When records disagree, what should you fix first?",
+    hi: "जब रिकॉर्ड अलग हों, तो पहले क्या सुधारना चाहिए?",
   },
-  "route.private.title": { en: "Selling to a private buyer", hi: "निजी खरीदार को बेच रहे हैं" },
-  "route.private.desc": {
-    en: "An ownership transfer between two individuals. A different process, not covered here.",
-    hi: "दो व्यक्तियों के बीच स्वामित्व हस्तांतरण। यह एक अलग प्रक्रिया है, यहाँ शामिल नहीं है।",
+  "home.body": {
+    en: "Choose a fictional case. We’ll show the causal blocker, why it matters, and the minimum-impact correction sequence.",
+    hi: "एक काल्पनिक केस चुनें। हम बताएँगे कि असली रुकावट क्या है, वह क्यों मायने रखती है और कम असर वाला सुधार क्रम क्या हो सकता है।",
   },
-  "route.private.heading": { en: "Out of scope", hi: "कार्यक्षेत्र से बाहर" },
-  "route.private.next": {
-    en: "Choose the authorised-dealer route to continue, or close this and come back.",
-    hi: "आगे बढ़ने के लिए अधिकृत-डीलर मार्ग चुनें, या इसे बंद करके बाद में आएँ।",
+  "home.demoCue": {
+    en: "For the 60-second journey, start with the Driving Licence case.",
+    hi: "60 सेकंड की यात्रा के लिए Driving Licence केस से शुरू करें।",
   },
-  "route.start": { en: "Start this handover", hi: "यह हस्तांतरण शुरू करें" },
-  "route.chooseOther": { en: "Choose a different route", hi: "दूसरा मार्ग चुनें" },
-
-  "vehicle.heading": { en: "Which vehicle?", hi: "कौन सा वाहन?" },
-  "vehicle.intro": {
-    en: "Enter the details of one of the fictional demo vehicles below.",
-    hi: "नीचे दिए गए काल्पनिक डेमो वाहनों में से किसी एक का विवरण दर्ज करें।",
+  "scenario.fictional": { en: "FICTIONAL CASE", hi: "काल्पनिक केस" },
+  "scenario.try": { en: "Try this case", hi: "यह केस आज़माएँ" },
+  "scenario.coming": {
+    en: "Being completed in the next build slice",
+    hi: "अगले बिल्ड चरण में पूरा हो रहा है",
   },
-  "vehicle.registration": { en: "Registration number", hi: "पंजीकरण संख्या" },
-  "vehicle.chassis": { en: "Last 5 characters of the chassis number", hi: "चेसिस संख्या के अंतिम 5 अक्षर" },
-  "vehicle.lookup": { en: "Look up vehicle", hi: "वाहन खोजें" },
-  "vehicle.samples": { en: "Fictional demo vehicles", hi: "काल्पनिक डेमो वाहन" },
-  "vehicle.use": { en: "Use this one", hi: "इसे चुनें" },
-  "vehicle.found": { en: "Vehicle record found", hi: "वाहन रिकॉर्ड मिला" },
-  "vehicle.owner": { en: "Registered owner", hi: "पंजीकृत स्वामी" },
-  "vehicle.model": { en: "Make and model", hi: "निर्माता और मॉडल" },
-  "vehicle.change": { en: "Change vehicle", hi: "वाहन बदलें" },
-  "vehicle.continue": { en: "Continue to the dealer", hi: "डीलर चरण पर जाएँ" },
-
-  "dealer.heading": { en: "Which authorised dealer?", hi: "कौन सा अधिकृत डीलर?" },
-  "dealer.intro": {
-    en: "The dealer's authorisation is looked up in a simulated registry that stands in for the Form 29B authorisation state.",
-    hi: "डीलर का प्राधिकरण एक सिम्युलेटेड रजिस्ट्री में देखा जाता है, जो फॉर्म 29B प्राधिकरण स्थिति का स्थान लेती है।",
+  "scenario.dl.title": {
+    en: "I can't fetch my Driving Licence",
+    hi: "मैं अपना Driving Licence नहीं ला पा रहा/रही हूँ",
   },
-  "dealer.authorisation": { en: "Dealer authorisation number", hi: "डीलर प्राधिकरण संख्या" },
-  "dealer.verify": { en: "Check authorisation", hi: "प्राधिकरण जाँचें" },
-  "dealer.samples": { en: "Fictional demo dealers", hi: "काल्पनिक डेमो डीलर" },
-  "dealer.status": { en: "Authorisation status", hi: "प्राधिकरण स्थिति" },
-  "dealer.validity": { en: "Valid", hi: "वैधता" },
-  "dealer.blocked": {
-    en: "This handover cannot continue with this dealer.",
-    hi: "इस डीलर के साथ यह हस्तांतरण आगे नहीं बढ़ सकता।",
+  "scenario.dl.body": {
+    en: "Trace a name mismatch across a mock Aadhaar and Driving Licence record.",
+    hi: "काल्पनिक Aadhaar और Driving Licence रिकॉर्ड में नाम का अंतर समझें।",
   },
-  "dealer.chooseAnother": { en: "Try a different authorisation number", hi: "दूसरी प्राधिकरण संख्या आज़माएँ" },
-  "dealer.change": { en: "Change dealer", hi: "डीलर बदलें" },
-  "dealer.continue": { en: "Continue to readiness", hi: "तैयारी चरण पर जाएँ" },
-
-  "readiness.heading": { en: "Readiness checklist", hi: "तैयारी सूची" },
-  "readiness.intro": {
-    en: "Each row says where its answer came from: a simulated record, or something you are declaring yourself.",
-    hi: "प्रत्येक पंक्ति बताती है कि उसका उत्तर कहाँ से आया: सिम्युलेटेड रिकॉर्ड से, या आपकी स्वयं की घोषणा से।",
+  "scenario.epfo.title": {
+    en: "My PF/KYC issue isn't getting resolved",
+    hi: "मेरी PF/KYC समस्या हल नहीं हो रही",
   },
-  "readiness.yourDeclarations": { en: "Your declarations", hi: "आपकी घोषणाएँ" },
-  "readiness.dealerDeclarations": { en: "Dealer declarations", hi: "डीलर की घोषणाएँ" },
-  "readiness.dealerPending": {
-    en: "The dealer has not joined yet, so dealer declarations are not available on this device.",
-    hi: "डीलर अभी शामिल नहीं हुआ है, इसलिए डीलर की घोषणाएँ इस डिवाइस पर उपलब्ध नहीं हैं।",
+  "scenario.epfo.body": {
+    en: "Separate a visible identity difference from the real blocker.",
+    hi: "दिखने वाले पहचान अंतर को असली रुकावट से अलग करें।",
   },
-  "readiness.save": { en: "Save declarations", hi: "घोषणाएँ सहेजें" },
-  "readiness.saved": { en: "Declarations saved", hi: "घोषणाएँ सहेजी गईं" },
-  "readiness.outstanding": { en: "Still outstanding", hi: "अभी शेष" },
-  "readiness.allClear": { en: "Nothing outstanding at this stage", hi: "इस चरण में कुछ शेष नहीं" },
-  "readiness.continue": { en: "Continue to shared review", hi: "साझा समीक्षा पर जाएँ" },
-  "readiness.checkedLater": {
-    en: "Checked again when the record is sent",
-    hi: "रिकॉर्ड भेजते समय दोबारा जाँचा जाएगा",
+  "scenario.life.title": {
+    en: "My name or address changed",
+    hi: "मेरा नाम या पता बदल गया है",
   },
-
-  "provenance.simulated": { en: "Checked against a simulated record", hi: "सिम्युलेटेड रिकॉर्ड से जाँचा गया" },
-  "provenance.declared": { en: "You are declaring this", hi: "यह आपकी घोषणा है" },
-  "provenance.both": {
-    en: "Simulated record, plus your declaration",
-    hi: "सिम्युलेटेड रिकॉर्ड, और आपकी घोषणा",
+  "scenario.life.body": {
+    en: "See which fictional record to update first and what it could affect.",
+    hi: "समझें कि पहले कौन-सा काल्पनिक रिकॉर्ड बदलना है और उसका क्या असर हो सकता है।",
   },
-  "provenance.info": { en: "For information", hi: "जानकारी हेतु" },
-
-  "result.pass": { en: "Ready", hi: "तैयार" },
-  "result.pending": { en: "Not yet done", hi: "अभी नहीं हुआ" },
-  "result.fail": { en: "Blocked", hi: "अवरुद्ध" },
-  "result.info": { en: "Note", hi: "टिप्पणी" },
-
-  "pair.heading": { en: "Bring the dealer in", hi: "डीलर को शामिल करें" },
-  "pair.intro": {
-    en: "Show this code to the dealer on their own device. It works once and then expires.",
-    hi: "यह कोड डीलर को उनके डिवाइस पर दिखाएँ। यह एक बार काम करता है और फिर समाप्त हो जाता है।",
+  "case.demoData": { en: "DEMO / FICTIONAL DATA", hi: "डेमो / काल्पनिक डेटा" },
+  "case.profile": { en: "Fictional profile", hi: "काल्पनिक प्रोफ़ाइल" },
+  "case.goal": {
+    en: "Goal: fetch a Driving Licence in DigiLocker",
+    hi: "लक्ष्य: DigiLocker में Driving Licence प्राप्त करना",
   },
-  "pair.generate": { en: "Create a pairing code", hi: "पेयरिंग कोड बनाएँ" },
-  "pair.regenerate": { en: "Create a new code", hi: "नया कोड बनाएँ" },
-  "pair.code": { en: "Pairing code", hi: "पेयरिंग कोड" },
-  "pair.expiresIn": { en: "Expires in", hi: "समाप्ति में" },
-  "pair.expired": { en: "This code has expired.", hi: "यह कोड समाप्त हो गया है।" },
-  "pair.seconds": { en: "seconds", hi: "सेकंड" },
-  "pair.scan": { en: "Or scan this", hi: "या इसे स्कैन करें" },
-  "pair.qrAlt": {
-    en: "Square pattern encoding the dealer joining link for this handover",
-    hi: "इस हस्तांतरण के डीलर लिंक को दर्शाने वाला वर्गाकार पैटर्न",
+  "case.goal.dl": {
+    en: "Goal: fetch a Driving Licence in DigiLocker",
+    hi: "लक्ष्य: DigiLocker में Driving Licence प्राप्त करना",
   },
-  "pair.copyLink": { en: "Copy the dealer link", hi: "डीलर लिंक कॉपी करें" },
-  "pair.copied": { en: "Link copied", hi: "लिंक कॉपी हो गया" },
-  "pair.waiting": { en: "Waiting for the dealer to join", hi: "डीलर के शामिल होने की प्रतीक्षा" },
-  "pair.joined": { en: "The dealer has joined", hi: "डीलर शामिल हो गया है" },
-  "pair.continue": { en: "Continue to shared review", hi: "साझा समीक्षा पर जाएँ" },
-
-  "join.heading": { en: "Join a handover as the dealer", hi: "डीलर के रूप में हस्तांतरण में शामिल हों" },
-  "join.intro": {
-    en: "Enter the code the seller is showing you, or open the link they shared.",
-    hi: "विक्रेता द्वारा दिखाया गया कोड दर्ज करें, या उनके साझा किए लिंक को खोलें।",
+  "case.goal.epfo": {
+    en: "Goal: understand why this fictional PF/KYC task is blocked",
+    hi: "लक्ष्य: समझें कि यह काल्पनिक PF/KYC काम क्यों रुका है",
   },
-  "join.code": { en: "Pairing code", hi: "पेयरिंग कोड" },
-  "join.join": { en: "Join this handover", hi: "इस हस्तांतरण में शामिल हों" },
-  "join.joining": { en: "Joining", hi: "शामिल हो रहे हैं" },
-
-  "review.heading": { en: "Both sides review the same details", hi: "दोनों पक्ष समान विवरण की समीक्षा करें" },
-  "review.details": { en: "Handover details", hi: "हस्तांतरण विवरण" },
-  "review.declarations": { en: "Declarations recorded", hi: "दर्ज घोषणाएँ" },
-  "review.handoverTime": { en: "Handover time", hi: "हस्तांतरण समय" },
-  "review.confirm": { en: "These details are correct", hi: "ये विवरण सही हैं" },
-  "review.youConfirmed": { en: "You have confirmed these details", hi: "आपने इन विवरणों की पुष्टि की है" },
-  "review.withdraw": { en: "Withdraw my confirmation", hi: "मेरी पुष्टि वापस लें" },
-  "review.sellerConfirmed": { en: "Seller has confirmed", hi: "विक्रेता ने पुष्टि की" },
-  "review.dealerConfirmed": { en: "Dealer has confirmed", hi: "डीलर ने पुष्टि की" },
-  "review.sellerWaiting": { en: "Waiting for the seller", hi: "विक्रेता की प्रतीक्षा" },
-  "review.dealerWaiting": { en: "Waiting for the dealer", hi: "डीलर की प्रतीक्षा" },
-  "review.bothConfirmed": {
-    en: "Both sides have confirmed the same details.",
-    hi: "दोनों पक्षों ने समान विवरण की पुष्टि की है।",
+  "case.goal.life": {
+    en: "Goal: make the fictional DL path use the chosen current name",
+    hi: "लक्ष्य: काल्पनिक DL प्रक्रिया में चुना हुआ वर्तमान नाम मिलाना",
   },
-  "review.send": { en: "Send the delivery record", hi: "सुपुर्दगी रिकॉर्ड भेजें" },
-  "review.sendNote": {
-    en: "This sends the details to the simulated Form 29C adapter inside this prototype. Nothing leaves it.",
-    hi: "यह विवरण इस प्रोटोटाइप के अंदर सिम्युलेटेड फॉर्म 29C एडाप्टर को भेजता है। कुछ भी बाहर नहीं जाता।",
+  "case.progress": { en: "Case progress", hi: "केस की प्रगति" },
+  "progress.understand": { en: "Understand", hi: "समझें" },
+  "progress.compare": { en: "Compare", hi: "विकल्प देखें" },
+  "progress.simulate": { en: "Simulate", hi: "डेमो करें" },
+  "progress.next": { en: "Next action", hi: "अगला कदम" },
+  "status.result": {
+    en: "SIMULATED PREFLIGHT RESULT",
+    hi: "सिम्युलेटेड प्री-फ्लाइट परिणाम",
   },
-  "review.changed": {
-    en: "The details changed, so earlier confirmations were cleared. Review the updated details and confirm again.",
-    hi: "विवरण बदल गए, इसलिए पहले की पुष्टियाँ रद्द कर दी गईं। अद्यतन विवरण देखकर पुनः पुष्टि करें।",
+  "status.BLOCKED": { en: "Blocked", hi: "रुका हुआ" },
+  "status.READY_SIMULATION": {
+    en: "Ready in this simulation",
+    hi: "इस डेमो में तैयार",
   },
-  "review.editDetails": { en: "Change the details", hi: "विवरण बदलें" },
-  "review.roleSeller": { en: "You are the seller on this device", hi: "इस डिवाइस पर आप विक्रेता हैं" },
-  "review.roleDealer": { en: "You are the dealer on this device", hi: "इस डिवाइस पर आप डीलर हैं" },
-  "review.roleObserver": {
-    en: "This device is watching this handover and cannot act on it.",
-    hi: "यह डिवाइस इस हस्तांतरण को देख रहा है और इस पर कार्रवाई नहीं कर सकता।",
+  "status.NEEDS_REVIEW": { en: "Needs review", hi: "जाँच ज़रूरी" },
+  "status.NOT_IDENTITY_ISSUE": {
+    en: "Not an identity-data issue",
+    hi: "पहचान डेटा की समस्या नहीं",
   },
-
-  "submitting.heading": { en: "Sending the delivery record", hi: "सुपुर्दगी रिकॉर्ड भेजा जा रहा है" },
-  "submitting.body": {
-    en: "Waiting for the simulated adapter to answer. Do not close this window.",
-    hi: "सिम्युलेटेड एडाप्टर के उत्तर की प्रतीक्षा। इस विंडो को बंद न करें।",
+  "diagnosis.dl.blocked": {
+    en: "Blocked by one record mismatch",
+    hi: "एक रिकॉर्ड अंतर के कारण प्रक्रिया रुकी है",
   },
-  "submitting.notYet": {
-    en: "Sent is not the same as acknowledged. This screen stays until an acknowledgement is recorded.",
-    hi: "भेजा जाना पावती मिलने के समान नहीं है। पावती दर्ज होने तक यह स्क्रीन बनी रहेगी।",
+  "diagnosis.dl.blocked_explanation": {
+    en: "The Aadhaar-linked name and the mock Driving Licence source name do not reconcile for this retrieval rule.",
+    hi: "इस retrieval नियम में Aadhaar से जुड़ा नाम और काल्पनिक Driving Licence स्रोत का नाम मेल नहीं खाते।",
   },
-
-  "outcome.ack.heading": { en: "Delivery acknowledged", hi: "सुपुर्दगी की पावती मिली" },
-  "outcome.ack.body": {
-    en: "The simulated adapter recorded this handover and returned an acknowledgement number.",
-    hi: "सिम्युलेटेड एडाप्टर ने इस हस्तांतरण को दर्ज किया और एक पावती संख्या दी।",
+  "diagnosis.dl.ready": {
+    en: "The blocking record now reconciles",
+    hi: "रुकावट वाला रिकॉर्ड अब मेल खाता है",
   },
-  "outcome.ack.number": { en: "Acknowledgement number", hi: "पावती संख्या" },
-  "outcome.rejected.heading": { en: "Not accepted", hi: "स्वीकार नहीं किया गया" },
-  "outcome.rejected.body": {
-    en: "The simulated adapter declined this record. Nothing was acknowledged.",
-    hi: "सिम्युलेटेड एडाप्टर ने इस रिकॉर्ड को अस्वीकार किया। किसी भी बात की पावती नहीं मिली।",
+  "diagnosis.dl.ready_explanation": {
+    en: "The modeled retrieval rules now pass. No government record was contacted or changed.",
+    hi: "डेमो के retrieval नियम अब पास होते हैं। किसी सरकारी रिकॉर्ड से संपर्क या बदलाव नहीं हुआ।",
   },
-  "outcome.rejected.next": { en: "Go back and review the details", hi: "वापस जाकर विवरण देखें" },
-  "outcome.temporary.heading": { en: "Could not be sent", hi: "भेजा नहीं जा सका" },
-  "outcome.temporary.body": {
-    en: "The simulated adapter was temporarily unavailable. Nothing was acknowledged, and your confirmations are still valid.",
-    hi: "सिम्युलेटेड एडाप्टर अस्थायी रूप से अनुपलब्ध था। किसी बात की पावती नहीं मिली, और आपकी पुष्टियाँ अभी भी मान्य हैं।",
+  "diagnosis.epfo.blocked": {
+    en: "The visible name difference is not the blocker",
+    hi: "दिखने वाला नाम अंतर असली रुकावट नहीं है",
   },
-  "outcome.temporary.retry": { en: "Try sending again", hi: "पुनः भेजने का प्रयास करें" },
-  "outcome.unknown.heading": { en: "Outcome not known", hi: "परिणाम ज्ञात नहीं" },
-  "outcome.unknown.body": {
-    en: "The record was sent but no answer came back, so this prototype does not know whether it was recorded. It will not guess.",
-    hi: "रिकॉर्ड भेजा गया था लेकिन कोई उत्तर नहीं मिला, इसलिए यह प्रोटोटाइप नहीं जानता कि वह दर्ज हुआ या नहीं। यह अनुमान नहीं लगाएगा।",
+  "diagnosis.epfo.blocked_explanation": {
+    en: "Changing the name would not fix this fictional claim. The service-history date is the causal blocker in this simulation.",
+    hi: "नाम बदलने से यह काल्पनिक claim ठीक नहीं होगा। इस डेमो में service-history की तारीख असली रुकावट है।",
   },
-  "outcome.unknown.reconcile": { en: "Check the status again", hi: "स्थिति दोबारा जाँचें" },
-  "outcome.unknown.warning": {
-    en: "Do not start a second handover for this vehicle while the outcome is unknown.",
-    hi: "जब तक परिणाम अज्ञात है, इस वाहन के लिए दूसरा हस्तांतरण शुरू न करें।",
+  "diagnosis.epfo.ready": {
+    en: "The service-history condition now passes",
+    hi: "service-history की शर्त अब पूरी होती है",
   },
-  "outcome.cancelled.heading": { en: "Handover cancelled", hi: "हस्तांतरण रद्द" },
-  "outcome.cancelled.body": {
-    en: "This handover was cancelled and nothing was sent.",
-    hi: "यह हस्तांतरण रद्द कर दिया गया और कुछ भी नहीं भेजा गया।",
+  "diagnosis.epfo.ready_explanation": {
+    en: "The fictional exit date now passes the modeled pre-flight. The visible name variation remains compatible here.",
+    hi: "काल्पनिक exit date अब डेमो pre-flight पास करती है। दिखने वाला नाम अंतर यहाँ अनुकूल है।",
   },
-  "outcome.attempts": { en: "Attempts", hi: "प्रयास" },
-  "outcome.reason": { en: "Reason given", hi: "दिया गया कारण" },
-
-  "common.retry": { en: "Try again", hi: "पुनः प्रयास करें" },
-  "common.cancelHandover": { en: "Cancel this handover", hi: "यह हस्तांतरण रद्द करें" },
-  "common.cancelConfirm": {
-    en: "Cancel this handover? It cannot be resumed.",
-    hi: "यह हस्तांतरण रद्द करें? इसे फिर शुरू नहीं किया जा सकता।",
+  "diagnosis.life.blocked": {
+    en: "One targeted name correction is enough",
+    hi: "एक लक्षित नाम सुधार पर्याप्त है",
+  },
+  "diagnosis.life.blocked_explanation": {
+    en: "The chosen current name and the fictional DL source name differ. The address difference does not block this selected goal.",
+    hi: "चुना हुआ वर्तमान नाम और काल्पनिक DL स्रोत का नाम अलग है। पता अंतर इस लक्ष्य को नहीं रोकता।",
+  },
+  "diagnosis.life.ready": {
+    en: "The minimum correction sequence is complete",
+    hi: "न्यूनतम सुधार क्रम पूरा हुआ",
+  },
+  "diagnosis.life.ready_explanation": {
+    en: "The selected DL name dependency now passes. Earlier PAN and address values remain visible but were not changed unnecessarily.",
+    hi: "चुनी गई DL नाम निर्भरता अब पास है। पुराने PAN और पते के मान दिखते हैं, लेकिन उन्हें बिना ज़रूरत नहीं बदला गया।",
+  },
+  "diagnosis.next.compare": {
+    en: "Compare the available correction routes.",
+    hi: "उपलब्ध सुधार विकल्पों की तुलना करें।",
+  },
+  "diagnosis.next.official": {
+    en: "Review the official next action.",
+    hi: "आधिकारिक अगला कदम देखें।",
+  },
+  "diagnosis.compare": {
+    en: "Compare ways to fix this",
+    hi: "सुधार के विकल्प देखें",
+  },
+  "diagnosis.evidence": { en: "Show the evidence", hi: "वजह और रिकॉर्ड देखें" },
+  "diagnosis.records": {
+    en: "Records used for this result",
+    hi: "इस परिणाम में उपयोग किए गए रिकॉर्ड",
+  },
+  "diagnosis.trail": {
+    en: "Why this task is blocked",
+    hi: "यह काम क्यों रुका है",
+  },
+  "record.fictional": { en: "FICTIONAL RECORD", hi: "काल्पनिक रिकॉर्ड" },
+  "field.name": { en: "Name as stored", hi: "रिकॉर्ड में नाम" },
+  "field.dob": { en: "Date of birth", hi: "जन्म तिथि" },
+  "field.record_present": { en: "Record available", hi: "रिकॉर्ड उपलब्ध" },
+  "field.address": { en: "Address as stored", hi: "रिकॉर्ड में पता" },
+  "field.aadhaar_linked": { en: "Aadhaar linked", hi: "Aadhaar जुड़ा है" },
+  "field.pan_linked": { en: "PAN linked", hi: "PAN जुड़ा है" },
+  "field.date_of_exit": { en: "Date of exit", hi: "नौकरी छोड़ने की तारीख" },
+  "field.last_contribution_month": {
+    en: "Last contribution month",
+    hi: "अंतिम contribution महीना",
+  },
+  "field.claim_attempt_date": {
+    en: "Claim attempt date",
+    hi: "claim कोशिश की तारीख",
+  },
+  "field.kyc_status": { en: "KYC status", hi: "KYC स्थिति" },
+  "finding.MATCH_EXACT": { en: "Exact match", hi: "पूरी तरह मेल" },
+  "finding.MATCH_RULE_COMPATIBLE": {
+    en: "Compatible for this rule",
+    hi: "इस नियम में अनुकूल",
+  },
+  "finding.MISMATCH_BLOCKING": {
+    en: "Blocks this task",
+    hi: "इसी वजह से काम रुक रहा है",
+  },
+  "finding.NON_IDENTITY_BLOCKER": {
+    en: "Not an identity issue",
+    hi: "पहचान की समस्या नहीं",
+  },
+  "finding.VARIANT_NON_BLOCKING": {
+    en: "Different, but not the blocker",
+    hi: "जानकारी अलग है, लेकिन काम नहीं रोक रही",
+  },
+  "finding.MISMATCH_REVIEW": {
+    en: "Needs official review",
+    hi: "आधिकारिक जाँच ज़रूरी",
+  },
+  "finding.dl.record_present.title": {
+    en: "Issuer record is available",
+    hi: "स्रोत रिकॉर्ड उपलब्ध है",
+  },
+  "finding.dl.record_present.pass": {
+    en: "The fictional DL record exists in the modeled issuer source.",
+    hi: "काल्पनिक DL रिकॉर्ड डेमो स्रोत में मौजूद है।",
+  },
+  "finding.dl.name.block_title": {
+    en: "The name representations do not reconcile",
+    hi: "नाम के रूप आपस में मेल नहीं खाते",
+  },
+  "finding.dl.name.block": {
+    en: "The same tokens appear in a representation and order this mock retrieval rule does not accept.",
+    hi: "नाम के शब्द ऐसे रूप और क्रम में हैं, जिसे यह डेमो retrieval नियम स्वीकार नहीं करता।",
+  },
+  "finding.dl.name.pass_title": {
+    en: "The name representations reconcile",
+    hi: "नाम के रूप अब मेल खाते हैं",
+  },
+  "finding.dl.name.pass": {
+    en: "The controlled initial relation and token order now pass the configured rule.",
+    hi: "नियंत्रित initial संबंध और शब्द क्रम अब डेमो नियम पास करते हैं।",
+  },
+  "finding.dl.name.uncertainty": {
+    en: "The real issuer may apply additional checks that this prototype does not model.",
+    hi: "वास्तविक स्रोत अतिरिक्त जाँच कर सकता है, जिन्हें यह प्रोटोटाइप मॉडल नहीं करता।",
+  },
+  "finding.dl.dob.title": {
+    en: "Dates of birth match",
+    hi: "जन्म तिथियाँ मेल खाती हैं",
+  },
+  "finding.dl.dob.pass": {
+    en: "Both fictional records contain the same date.",
+    hi: "दोनों काल्पनिक रिकॉर्ड में एक ही तिथि है।",
+  },
+  "finding.dl.dob.block": {
+    en: "The dates differ in this demo.",
+    hi: "इस डेमो में तिथियाँ अलग हैं।",
+  },
+  "finding.dl.dob.uncertainty": {
+    en: "Date equality is a prototype rule for this case.",
+    hi: "तिथि का पूरा मेल इस केस का डेमो नियम है।",
+  },
+  "finding.epfo.name.title": {
+    en: "The names look different",
+    hi: "नाम अलग दिखते हैं",
+  },
+  "finding.epfo.name.nonblocking": {
+    en: "The explicit N → NARAYAN relation makes these fictional name forms compatible for this scenario. It is not the cause of the failure.",
+    hi: "इस काल्पनिक प्रोफ़ाइल में स्पष्ट N → NARAYAN संबंध के कारण नाम अनुकूल हैं। यह विफलता की वजह नहीं है।",
+  },
+  "finding.epfo.name.review": {
+    en: "The available relation is not enough to decide this name difference.",
+    hi: "उपलब्ध संबंध से इस नाम अंतर का निर्णय नहीं हो सकता।",
+  },
+  "finding.epfo.name.uncertainty": {
+    en: "This controlled relation applies only to this fictional profile.",
+    hi: "यह नियंत्रित संबंध केवल इस काल्पनिक प्रोफ़ाइल पर लागू है।",
+  },
+  "finding.epfo.dob.title": {
+    en: "Dates of birth match",
+    hi: "जन्म तिथियाँ मेल खाती हैं",
+  },
+  "finding.epfo.dob.pass": {
+    en: "The modeled records use the same date of birth.",
+    hi: "डेमो रिकॉर्ड में एक ही जन्म तिथि है।",
+  },
+  "finding.epfo.history.block_title": {
+    en: "The service-history date blocks this task",
+    hi: "service-history की तारीख यह काम रोकती है",
+  },
+  "finding.epfo.history.block": {
+    en: "The fictional date of exit is after the claim-attempt date, so this demo rule fails before identity matching matters.",
+    hi: "काल्पनिक exit date claim कोशिश की तारीख के बाद है, इसलिए पहचान मिलान से पहले ही यह डेमो नियम विफल होता है।",
+  },
+  "finding.epfo.history.pass_title": {
+    en: "The service-history condition passes",
+    hi: "service-history की शर्त पूरी है",
+  },
+  "finding.epfo.history.pass": {
+    en: "The fictional date sequence now passes the configured demo rule.",
+    hi: "काल्पनिक तारीख क्रम अब डेमो नियम पास करता है।",
+  },
+  "finding.epfo.history.uncertainty": {
+    en: "This exact date predicate is a prototype simulation, not EPFO's production claim logic.",
+    hi: "यह सटीक तारीख नियम प्रोटोटाइप simulation है, EPFO का वास्तविक claim logic नहीं।",
+  },
+  "finding.life.target.block_title": {
+    en: "The DL source still uses the earlier name",
+    hi: "DL स्रोत में अभी पुराना नाम है",
+  },
+  "finding.life.target.block": {
+    en: "The selected retrieval goal depends on the chosen current name and the fictional DL source name reconciling.",
+    hi: "चुने हुए retrieval लक्ष्य में वर्तमान नाम और काल्पनिक DL स्रोत का नाम मिलना ज़रूरी है।",
+  },
+  "finding.life.target.pass_title": {
+    en: "The selected name dependency passes",
+    hi: "चुनी हुई नाम निर्भरता पूरी है",
+  },
+  "finding.life.target.pass": {
+    en: "The fictional DL source now uses the citizen's chosen current name.",
+    hi: "काल्पनिक DL स्रोत अब नागरिक का चुना हुआ वर्तमान नाम उपयोग करता है।",
+  },
+  "finding.life.target.uncertainty": {
+    en: "The actual authority may require additional evidence or checks not modeled here.",
+    hi: "वास्तविक authority अतिरिक्त प्रमाण या जाँच माँग सकती है, जिन्हें यहाँ मॉडल नहीं किया गया।",
+  },
+  "finding.life.pan.title": {
+    en: "The PAN demo still uses the earlier name",
+    hi: "PAN डेमो में अभी पुराना नाम है",
+  },
+  "finding.life.pan.nonblocking": {
+    en: "That difference is outside this selected DL retrieval goal, so the minimum plan does not change it.",
+    hi: "यह अंतर चुने गए DL retrieval लक्ष्य से बाहर है, इसलिए न्यूनतम plan इसे नहीं बदलता।",
+  },
+  "finding.life.address.title": {
+    en: "The DL address also differs",
+    hi: "DL का पता भी अलग है",
+  },
+  "finding.life.address.nonblocking": {
+    en: "This selected goal depends on the name, not address, so the planner leaves it unchanged.",
+    hi: "यह लक्ष्य नाम पर निर्भर है, पते पर नहीं, इसलिए planner इसे नहीं बदलता।",
+  },
+  "evidence.title": {
+    en: "Why we reached this result",
+    hi: "हम इस परिणाम तक क्यों पहुँचे",
+  },
+  "evidence.rule": { en: "Rule", hi: "नियम" },
+  "evidence.inputs": { en: "Evidence used", hi: "उपयोग किए गए रिकॉर्ड" },
+  "evidence.source": { en: "Source basis", hi: "स्रोत आधार" },
+  "evidence.limit": { en: "Prototype limitation", hi: "प्रोटोटाइप सीमा" },
+  "evidence.ruleId": { en: "Deterministic rule", hi: "निर्धारित नियम" },
+  "options.title": {
+    en: "Compare correction routes",
+    hi: "सुधार के विकल्पों की तुलना करें",
+  },
+  "options.body": {
+    en: "The planner recommends the lowest-cost route within this fictional rule set. It is not an official instruction.",
+    hi: "प्लानर इस काल्पनिक नियम समूह में कम असर वाला रास्ता सुझाता है। यह आधिकारिक निर्देश नहीं है।",
+  },
+  "options.recommended": {
+    en: "Recommended in this simulation",
+    hi: "इस डेमो में सुझाया गया",
+  },
+  "options.alternative": { en: "Broader alternative", hi: "व्यापक विकल्प" },
+  "options.change": { en: "What changes", hi: "क्या बदलेगा" },
+  "options.effect": { en: "What it does", hi: "इससे क्या होगा" },
+  "options.impact": {
+    en: "What else may be affected",
+    hi: "और कहाँ असर हो सकता है",
+  },
+  "options.effort": { en: "Route", hi: "प्रक्रिया" },
+  "options.cost": { en: "Configured demo cost", hi: "डेमो में तय लागत" },
+  "options.simulate": {
+    en: "Simulate this route",
+    hi: "इस विकल्प को डेमो में आज़माएँ",
+  },
+  "action.a1.title": {
+    en: "Align the fictional DL source name",
+    hi: "काल्पनिक DL स्रोत का नाम मिलाएँ",
+  },
+  "action.a1.effect": {
+    en: "Resolves the modeled DigiLocker/DL name reconciliation blocker.",
+    hi: "डेमो DigiLocker/DL नाम रुकावट को हल करता है।",
+  },
+  "action.a1.impact": {
+    en: "Introduces no new conflict in the records modeled here.",
+    hi: "यहाँ मॉडल किए गए रिकॉर्ड में कोई नई रुकावट नहीं बनती।",
+  },
+  "action.a2.title": {
+    en: "Expand the fictional Aadhaar name",
+    hi: "काल्पनिक Aadhaar नाम को पूरा लिखें",
+  },
+  "action.a2.effect": {
+    en: "Changes a broadly reused upstream record but does not fix the token order by itself.",
+    hi: "व्यापक रूप से उपयोग होने वाला ऊपर का रिकॉर्ड बदलता है, लेकिन अकेले शब्द क्रम की समस्या हल नहीं करता।",
+  },
+  "action.a2.impact": {
+    en: "Needs official review and may affect more downstream services.",
+    hi: "आधिकारिक जाँच चाहिए और अन्य सेवाओं पर अधिक असर हो सकता है।",
+  },
+  "action.b_name.title": {
+    en: "Align the fictional PAN display name",
+    hi: "काल्पनिक PAN नाम को मिलाएँ",
+  },
+  "action.b_name.effect": {
+    en: "Removes the visible name variation but does not fix the service-history blocker.",
+    hi: "दिखने वाला नाम अंतर हटता है, लेकिन service-history की रुकावट ठीक नहीं होती।",
+  },
+  "action.b_name.impact": {
+    en: "Adds effort without making this selected task ready.",
+    hi: "मेहनत बढ़ती है, लेकिन चुना हुआ काम तैयार नहीं होता।",
+  },
+  "action.b1.title": {
+    en: "Correct the fictional service-history date",
+    hi: "काल्पनिक service-history तारीख सुधारें",
+  },
+  "action.b1.effect": {
+    en: "Resolves the causal date sequence in this simulation.",
+    hi: "इस डेमो में असली तारीख क्रम की रुकावट हल होती है।",
+  },
+  "action.b1.impact": {
+    en: "Leaves the compatible name representations unchanged.",
+    hi: "अनुकूल नाम रिकॉर्ड बिना बदलाव रहते हैं।",
+  },
+  "action.c1.title": {
+    en: "Use the chosen current name in the fictional DL source",
+    hi: "काल्पनिक DL स्रोत में चुना हुआ वर्तमान नाम रखें",
+  },
+  "action.c1.effect": {
+    en: "Resolves the selected DL name dependency with one change.",
+    hi: "एक बदलाव से चुनी हुई DL नाम निर्भरता हल होती है।",
+  },
+  "action.c1.impact": {
+    en: "Leaves the unrelated address and PAN record untouched.",
+    hi: "असंबंधित पता और PAN रिकॉर्ड बिना बदलाव रहते हैं।",
+  },
+  "action.c2.title": {
+    en: "Also change the fictional PAN name",
+    hi: "काल्पनिक PAN नाम भी बदलें",
+  },
+  "action.c2.effect": {
+    en: "Improves broader consistency but is not required for the selected DL goal.",
+    hi: "व्यापक समानता बढ़ती है, लेकिन चुने हुए DL लक्ष्य के लिए ज़रूरी नहीं।",
+  },
+  "action.c2.impact": {
+    en: "Adds an unnecessary second authority route for this goal.",
+    hi: "इस लक्ष्य के लिए बिना ज़रूरत दूसरी authority प्रक्रिया जुड़ती है।",
+  },
+  "action.c3.title": {
+    en: "Also change the fictional DL address",
+    hi: "काल्पनिक DL पता भी बदलें",
+  },
+  "action.c3.effect": {
+    en: "Changes address data that this selected name-only goal does not use.",
+    hi: "ऐसा पता बदलता है जिसे चुना हुआ केवल-नाम लक्ष्य उपयोग नहीं करता।",
+  },
+  "action.c3.impact": {
+    en: "Broadens the change without improving target readiness.",
+    hi: "लक्ष्य की तैयारी सुधारे बिना बदलाव बढ़ता है।",
+  },
+  "effort.issuer": {
+    en: "Issuer / official record correction",
+    hi: "स्रोत / आधिकारिक रिकॉर्ड सुधार",
+  },
+  "effort.review": {
+    en: "Aadhaar update / review",
+    hi: "Aadhaar अपडेट / जाँच",
+  },
+  "effort.employer": {
+    en: "Employer / EPFO service-history action",
+    hi: "Employer / EPFO service-history प्रक्रिया",
+  },
+  "dialog.title": {
+    en: "Simulate this correction?",
+    hi: "इस सुधार को डेमो में आज़माएँ?",
+  },
+  "dialog.body": {
+    en: "This changes only the fictional case in your browser. No government record will be contacted or updated.",
+    hi: "यह केवल आपके ब्राउज़र के काल्पनिक केस को बदलता है। किसी सरकारी रिकॉर्ड से संपर्क या बदलाव नहीं होगा।",
+  },
+  "dialog.confirm": { en: "Simulate correction", hi: "सुधार का डेमो करें" },
+  "dialog.cancel": { en: "Cancel", hi: "रद्द करें" },
+  "result.title": {
+    en: "The simulated blocker is resolved",
+    hi: "डेमो की रुकावट हल हो गई",
+  },
+  "result.changed": {
+    en: "What changed in this demo",
+    hi: "इस डेमो में क्या बदला",
+  },
+  "result.before": { en: "Before", hi: "पहले" },
+  "result.after": { en: "After", hi: "बाद में" },
+  "result.undo": {
+    en: "Undo last simulation",
+    hi: "पिछला डेमो बदलाव वापस लें",
+  },
+  "result.noRealChange": {
+    en: "No official record was changed",
+    hi: "किसी आधिकारिक रिकॉर्ड में बदलाव नहीं हुआ",
+  },
+  "handoff.dl.title": { en: "What you would do next", hi: "अब आगे क्या करें" },
+  "handoff.dl.step1": {
+    en: "Open the official service for the record that needs review or correction.",
+    hi: "जिस रिकॉर्ड की जाँच या सुधार चाहिए, उसकी आधिकारिक सेवा खोलें।",
+  },
+  "handoff.dl.step2": {
+    en: "Confirm the current correction route and requirements on that official service.",
+    hi: "वर्तमान सुधार प्रक्रिया और आवश्यकताएँ आधिकारिक सेवा पर जाँचें।",
+  },
+  "handoff.dl.step3": {
+    en: "After the official record changes, retry the DigiLocker retrieval.",
+    hi: "आधिकारिक रिकॉर्ड बदलने के बाद DigiLocker retrieval फिर आज़माएँ।",
+  },
+  "handoff.processes_change": {
+    en: "Processes can change. Check the linked official service before acting.",
+    hi: "प्रक्रियाएँ बदल सकती हैं। कदम उठाने से पहले लिंक की गई आधिकारिक सेवा जाँचें।",
+  },
+  "handoff.open": { en: "Open official source", hi: "आधिकारिक स्रोत खोलें" },
+  "handoff.epfo.title": {
+    en: "What you would do next",
+    hi: "अब आगे क्या करें",
+  },
+  "handoff.epfo.step1": {
+    en: "Review the service-history and date-of-exit guidance on the official EPFO source.",
+    hi: "आधिकारिक EPFO स्रोत पर service-history और exit date मार्गदर्शन देखें।",
+  },
+  "handoff.epfo.step2": {
+    en: "Use the current employer/member route specified by EPFO for the actual record.",
+    hi: "वास्तविक रिकॉर्ड के लिए EPFO की वर्तमान employer/member प्रक्रिया उपयोग करें।",
+  },
+  "handoff.epfo.step3": {
+    en: "Retry the relevant official task only after the official history is corrected.",
+    hi: "आधिकारिक history सुधरने के बाद ही संबंधित काम फिर आज़माएँ।",
+  },
+  "handoff.life.title": {
+    en: "What you would do next",
+    hi: "अब आगे क्या करें",
+  },
+  "handoff.life.step1": {
+    en: "Open the official service for the fictional DL source represented in this plan.",
+    hi: "इस plan में दिखाए गए काल्पनिक DL स्रोत की आधिकारिक सेवा खोलें।",
+  },
+  "handoff.life.step2": {
+    en: "Confirm the authority's current name-change evidence and process requirements.",
+    hi: "authority की वर्तमान नाम-सुधार प्रमाण और प्रक्रिया आवश्यकताएँ जाँचें।",
+  },
+  "handoff.life.step3": {
+    en: "Retry DigiLocker retrieval after the official issuer record is actually updated.",
+    hi: "आधिकारिक issuer रिकॉर्ड सच में बदलने के बाद DigiLocker retrieval फिर आज़माएँ।",
+  },
+  "trail.dl.1": {
+    en: "You want to fetch your Driving Licence.",
+    hi: "आप अपना Driving Licence प्राप्त करना चाहते हैं।",
+  },
+  "trail.dl.2": {
+    en: "DigiLocker asks the issuer source for the record.",
+    hi: "DigiLocker स्रोत से रिकॉर्ड माँगता है।",
+  },
+  "trail.dl.3": {
+    en: "This retrieval uses the Aadhaar-linked name.",
+    hi: "इस retrieval में Aadhaar से जुड़ा नाम उपयोग होता है।",
+  },
+  "trail.dl.4": {
+    en: "The fictional issuer record represents the name differently.",
+    hi: "काल्पनिक स्रोत रिकॉर्ड नाम को अलग रूप में दिखाता है।",
+  },
+  "trail.dl.5": {
+    en: "In this demo rule, that difference blocks retrieval.",
+    hi: "इस डेमो नियम में यह अंतर retrieval रोकता है।",
+  },
+  "trail.epfo.1": {
+    en: "You want to understand a blocked PF/KYC task.",
+    hi: "आप रुके हुए PF/KYC काम की वजह समझना चाहते हैं।",
+  },
+  "trail.epfo.2": {
+    en: "The name forms differ but have an explicit fictional initial relation.",
+    hi: "नाम अलग दिखते हैं, लेकिन काल्पनिक initial संबंध स्पष्ट है।",
+  },
+  "trail.epfo.3": {
+    en: "The claim-attempt date comes before the fictional exit date.",
+    hi: "claim कोशिश की तारीख काल्पनिक exit date से पहले है।",
+  },
+  "trail.epfo.4": {
+    en: "The service-history condition—not the name—is the causal blocker.",
+    hi: "service-history की शर्त—नाम नहीं—असली रुकावट है।",
+  },
+  "trail.life.1": {
+    en: "The citizen has chosen MEERA NAIR as the current name.",
+    hi: "नागरिक ने MEERA NAIR को वर्तमान नाम चुना है।",
+  },
+  "trail.life.2": {
+    en: "The selected goal is the fictional DL retrieval path.",
+    hi: "चुना हुआ लक्ष्य काल्पनिक DL retrieval प्रक्रिया है।",
+  },
+  "trail.life.3": {
+    en: "Only the DL name blocks that selected goal.",
+    hi: "केवल DL नाम चुना हुआ लक्ष्य रोकता है।",
+  },
+  "trail.life.4": {
+    en: "PAN name and DL address remain outside the minimum plan.",
+    hi: "PAN नाम और DL पता न्यूनतम plan से बाहर रहते हैं।",
+  },
+  "records.other": {
+    en: "See other affected fictional records",
+    hi: "अन्य प्रभावित काल्पनिक रिकॉर्ड देखें",
+  },
+  "result.remaining": {
+    en: "Still different, but not blocking this selected goal",
+    hi: "अभी अलग है, लेकिन चुना हुआ लक्ष्य नहीं रोकता",
+  },
+  "sources.title": {
+    en: "Sources and prototype limits",
+    hi: "स्रोत और प्रोटोटाइप सीमाएँ",
+  },
+  "sources.body": {
+    en: "Official sources support the public dependency or process. Exact predicates and simulations are labeled when they are prototype choices.",
+    hi: "आधिकारिक स्रोत सार्वजनिक निर्भरता या प्रक्रिया का आधार देते हैं। सटीक डेमो नियम और simulation को प्रोटोटाइप विकल्प बताया गया है।",
+  },
+  "sources.checked": { en: "Last checked", hi: "अंतिम जाँच" },
+  "sources.proposition": {
+    en: "What this source supports",
+    hi: "यह स्रोत किस बात का आधार है",
+  },
+  "sources.external": {
+    en: "Open official source (new tab)",
+    hi: "आधिकारिक स्रोत खोलें (नई टैब)",
+  },
+  "privacy.title": {
+    en: "Privacy by not collecting",
+    hi: "डेटा न लेकर गोपनीयता",
+  },
+  "privacy.body": {
+    en: "Identity Rescue uses only bundled fictional profiles. It has no field for real Aadhaar, PAN, UAN, OTP, payment, biometric or identity documents.",
+    hi: "Identity Rescue केवल पहले से बने काल्पनिक प्रोफ़ाइल उपयोग करता है। इसमें असली Aadhaar, PAN, UAN, OTP, भुगतान, biometric या पहचान दस्तावेज़ दर्ज करने की जगह नहीं है।",
+  },
+  "privacy.ai": {
+    en: "The deterministic journey does not require AI. Any future AI explanation receives only a bounded fictional evidence packet.",
+    hi: "निर्धारित यात्रा के लिए AI ज़रूरी नहीं है। भविष्य की AI व्याख्या को केवल सीमित काल्पनिक evidence packet मिलेगा।",
   },
   "common.back": { en: "Back", hi: "पीछे" },
-  "common.loading": { en: "Loading", hi: "लोड हो रहा है" },
-  "common.working": { en: "Working", hi: "कार्य चल रहा है" },
-  "common.startOver": { en: "Start a new handover", hi: "नया हस्तांतरण शुरू करें" },
-  "common.dismiss": { en: "Dismiss", hi: "हटाएँ" },
-  "common.simulated": { en: "Simulated", hi: "सिम्युलेटेड" },
-  "common.fictional": { en: "Fictional data", hi: "काल्पनिक डेटा" },
-  "common.required": { en: "required", hi: "आवश्यक" },
+  "common.reset": { en: "Reset demo", hi: "डेमो रीसेट करें" },
+  "common.loading": {
+    en: "Checking the fictional records…",
+    hi: "काल्पनिक रिकॉर्ड जाँचे जा रहे हैं…",
+  },
+  "common.error": {
+    en: "This demo case could not load. No government system was contacted. Please reset and try again.",
+    hi: "यह डेमो केस लोड नहीं हुआ। किसी सरकारी सिस्टम से संपर्क नहीं हुआ। रीसेट करके फिर आज़माएँ।",
+  },
   "common.yes": { en: "Yes", hi: "हाँ" },
   "common.no": { en: "No", hi: "नहीं" },
-
-  "error.heading": { en: "That did not work", hi: "यह नहीं हो सका" },
-  "error.notFound.heading": { en: "Handover not found", hi: "हस्तांतरण नहीं मिला" },
-  "error.noSession": {
-    en: "This device does not hold a party token for this handover, so it can watch but not act.",
-    hi: "इस डिवाइस के पास इस हस्तांतरण का पक्षकार टोकन नहीं है, इसलिए यह देख सकता है पर कार्रवाई नहीं कर सकता।",
-  },
-
-  "drawer.heading": { en: "Prototype details", hi: "प्रोटोटाइप विवरण" },
-  "drawer.intro": {
-    en: "Everything a reviewer needs in order to check what this prototype is doing. None of it is needed to use the app.",
-    hi: "समीक्षक को यह जाँचने के लिए आवश्यक सब कुछ कि यह प्रोटोटाइप क्या कर रहा है। ऐप उपयोग करने के लिए इसकी आवश्यकता नहीं है।",
-  },
-  "drawer.build": { en: "Build", hi: "बिल्ड" },
-  "drawer.policyVersion": { en: "Rule set applied", hi: "लागू नियम-समूह" },
-  "drawer.inForce": { en: "In force", hi: "प्रभावी" },
-  "drawer.notInForce": { en: "Not in force", hi: "प्रभावी नहीं" },
-  "drawer.caseId": { en: "Handover reference", hi: "हस्तांतरण संदर्भ" },
-  "drawer.state": { en: "Recorded state", hi: "दर्ज स्थिति" },
-  "drawer.payloadDigest": { en: "Detail digest", hi: "विवरण डाइजेस्ट" },
-  "drawer.digestNote": {
-    en: "A digest of the reviewed details. It detects a change between review and confirmation. It is not a signature and it does not identify anyone.",
-    hi: "समीक्षित विवरणों का डाइजेस्ट। यह समीक्षा और पुष्टि के बीच बदलाव पकड़ता है। यह हस्ताक्षर नहीं है और किसी की पहचान नहीं करता।",
-  },
-  "drawer.updates": { en: "Live updates", hi: "लाइव अद्यतन" },
-  "drawer.updates.socket": { en: "Push channel open", hi: "पुश चैनल खुला" },
-  "drawer.updates.polling": { en: "Periodic refresh", hi: "समय-समय पर ताज़ा" },
-  "drawer.updates.connecting": { en: "Connecting", hi: "जुड़ रहा है" },
-  "drawer.snapshots": { en: "Snapshots applied", hi: "लागू स्नैपशॉट" },
-  "drawer.trail": { en: "Recorded events", hi: "दर्ज घटनाएँ" },
-  "drawer.trailNote": {
-    en: "Each event carries a digest of the one before it, so an edit made directly to the stored log would show up here. That is tamper evidence for a demo, not an independent audit.",
-    hi: "प्रत्येक घटना अपने पूर्ववर्ती का डाइजेस्ट रखती है, इसलिए संग्रहीत लॉग में सीधा किया गया बदलाव यहाँ दिखेगा। यह डेमो के लिए छेड़छाड़ का संकेत है, स्वतंत्र ऑडिट नहीं।",
-  },
-  "drawer.chainIntact": { en: "Event chain intact", hi: "घटना श्रृंखला अक्षुण्ण" },
-  "drawer.chainBroken": { en: "Event chain does not verify", hi: "घटना श्रृंखला सत्यापित नहीं" },
-  "drawer.about": { en: "What this is", hi: "यह क्या है" },
-  "drawer.anchor": { en: "What it models", hi: "यह किसका मॉडल है" },
-  "drawer.rules": { en: "Rule set rows", hi: "नियम-समूह पंक्तियाँ" },
-  "drawer.source": { en: "Reference", hi: "संदर्भ" },
-  "drawer.resetDemo": { en: "Clear all demo data", hi: "सभी डेमो डेटा साफ़ करें" },
-  "drawer.resetNote": {
-    en: "Deletes every handover in this instance. The fictional vehicles and dealers are files, so they survive.",
-    hi: "इस इंस्टेंस के प्रत्येक हस्तांतरण को हटाता है। काल्पनिक वाहन और डीलर फ़ाइलें हैं, इसलिए वे बने रहते हैं।",
-  },
 } as const satisfies Record<string, Phrase>;
 
 export type UiKey = keyof typeof UI;
-
-export function phrase(key: UiKey, lang: Lang): string {
-  return UI[key][lang];
-}
-
-/** Pick the right half of any bilingual payload the API sent. */
-export function pick(value: { en: string; hi: string } | null | undefined, lang: Lang): string {
-  if (!value) return "";
-  return value[lang];
+export function phrase(key: string, lang: Lang): string {
+  return (UI as Record<string, Phrase>)[key]?.[lang] ?? key;
 }

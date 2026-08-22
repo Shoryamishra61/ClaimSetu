@@ -3,16 +3,19 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "handover29c-api"
-version = "1.0.2"
-description = "Handover29C prototype API. Independent hackathon prototype; all government integrations simulated."
+name = "identity-rescue-api"
+version = "2.0.0"
+description = "Identity Rescue deterministic public-service pre-flight prototype API."
 requires-python = ">=3.10"
+
+[tool.setuptools.packages.find]
+include = ["app*"]
 
 [tool.pytest.ini_options]
 # rootdir-relative, so `python -m pytest` from apps/api works without PYTHONPATH
 # gymnastics on Windows.
 pythonpath = ["."]
-testpaths = ["tests"]
+testpaths = ["tests_identity_rescue"]
 # -q because the suite is read as a gate report, and a wall of dots hides the one
 # line that matters.
 addopts = "-q --strict-markers"

@@ -1,6 +1,6 @@
 # Third-party notices
 
-Handover29C contains no copied government branding or proprietary source code.
+Identity Rescue contains no copied government branding or proprietary source code.
 The direct libraries below remain under their respective upstream licences; this
 notice does not replace those licence texts in installed distributions.
 

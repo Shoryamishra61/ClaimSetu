@@ -102,7 +102,8 @@ class Settings:
         # Raises PolicyNotSelectable for an unknown or not-in-force version. This
         # runs at import time of the app, so a misconfigured deployment fails to
         # start rather than silently evaluating the wrong rules.
-        registry.get(self.policy_version)
+        if self.enable_historical_blueprint:
+            registry.get(self.policy_version)
         if self.pair_token_bytes < 16:
             raise ValueError(
                 "pair_token_bytes must be at least 16 (128 bits) per SRS section 8"
@@ -116,15 +117,15 @@ class Settings:
 
 
 def load_settings() -> Settings:
-    default_db = str(REPO_ROOT / "var" / "handover29c.sqlite3")
+    default_db = str(REPO_ROOT / "var" / "identity-rescue.sqlite3")
     return Settings(
-        database_path=_env_str("H29C_DATABASE_PATH", default_db),
+        database_path=_env_str("IR_DATABASE_PATH", default_db),
         policy_version=_env_str("H29C_POLICY_VERSION", registry.CURRENT_POLICY_VERSION),
         pair_token_ttl_seconds=_env_int("H29C_PAIR_TOKEN_TTL_SECONDS", 300),
         pair_token_bytes=_env_int("H29C_PAIR_TOKEN_BYTES", 32),
-        cors_origins=_env_list("H29C_CORS_ORIGINS", ()),
-        build_label=_env_str("H29C_BUILD_LABEL", "dev"),
+        cors_origins=_env_list("IR_CORS_ORIGINS", ()),
+        build_label=_env_str("IR_BUILD_LABEL", "dev"),
         poll_interval_seconds=float(_env_int("H29C_POLL_INTERVAL_MS", 2000)) / 1000.0,
-        serve_frontend=_env_bool("H29C_SERVE_FRONTEND", False),
+        serve_frontend=_env_bool("IR_SERVE_FRONTEND", False),
         simulated_adapter_latency_ms=_env_int("H29C_SIM_LATENCY_MS", 600),
     )
