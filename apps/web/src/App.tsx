@@ -3,9 +3,27 @@ import {
   useMemo,
   useRef,
   useState,
+  type FormEvent,
   type KeyboardEvent,
   type ReactNode,
 } from "react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  BookOpenText,
+  CarProfile,
+  Check,
+  CheckCircle,
+  DeviceMobile,
+  Flag,
+  IdentificationCard,
+  Info,
+  MapTrifold,
+  Question,
+  ShieldCheck,
+  SlidersHorizontal,
+  WarningCircle,
+} from "@phosphor-icons/react";
 
 import {
   analyzeScenario,
@@ -20,11 +38,17 @@ import {
 import { useLang } from "./i18n/LangProvider";
 
 const CASE_KEY = "identity-rescue.case.v1";
+const INTAKE_KEY = "identity-rescue.intake.v1";
 const BASE_PATH =
   import.meta.env.BASE_URL === "/"
     ? ""
     : import.meta.env.BASE_URL.replace(/\/$/, "");
 type Stage = "diagnosis" | "options" | "result";
+interface IntakeContext {
+  scenarioId: string;
+  failure: string;
+  description: string;
+}
 type Route =
   | { kind: "home" }
   | { kind: "case"; scenarioId: string }
@@ -51,6 +75,27 @@ const scenarioCards = [
     enabled: true,
   },
 ] as const;
+
+const scenarioIntake = {
+  "digilocker-dl": {
+    profile: "Ananya R. Krishnan — DEMO-ANANYA-01",
+    description: "DigiLocker could not fetch the Driving Licence after the details check.",
+    records: ["intake.record.aadhaar", "intake.record.dl"],
+    route: ["intake.route.identity", "intake.route.transport", "intake.route.digilocker"],
+  },
+  "epfo-preflight": {
+    profile: "Arvind N. Rao — DEMO-ARVIND-02",
+    description: "The fictional PF/KYC pre-flight still fails after checking the displayed name.",
+    records: ["intake.record.aadhaar", "intake.record.epfo", "intake.record.pan"],
+    route: ["intake.route.identity", "intake.route.epfo", "intake.route.pfGoal"],
+  },
+  "life-event": {
+    profile: "Meera Nair — DEMO-MEERA-03",
+    description: "The fictional records show different names after a life event.",
+    records: ["intake.record.aadhaar", "intake.record.dl", "intake.record.pan"],
+    route: ["intake.route.chosenName", "intake.route.transport", "intake.route.reconcile"],
+  },
+} as const;
 
 function routeFromPath(pathname: string): Route {
   const appPath =
@@ -92,9 +137,29 @@ function saveSession(scenarioId: string, applied: string[]): void {
   }
 }
 
+function readIntake(scenarioId: string): IntakeContext | null {
+  try {
+    const parsed = JSON.parse(sessionStorage.getItem(INTAKE_KEY) ?? "null") as
+      | IntakeContext
+      | null;
+    return parsed?.scenarioId === scenarioId ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+
+function saveIntake(intake: IntakeContext): void {
+  try {
+    sessionStorage.setItem(INTAKE_KEY, JSON.stringify(intake));
+  } catch {
+    /* intake context is optional and remains browser-only */
+  }
+}
+
 function clearSession(): void {
   try {
     sessionStorage.removeItem(CASE_KEY);
+    sessionStorage.removeItem(INTAKE_KEY);
   } catch {
     /* already clear enough */
   }
@@ -123,7 +188,7 @@ function Shell({
         {t("a11y.skip")}
       </a>
       <div className="trust-strip" role="note">
-        <span aria-hidden="true">i</span>
+        <Info aria-hidden="true" weight="bold" />
         {t("disclosure.global")}
       </div>
       <header className="site-header">
@@ -148,7 +213,8 @@ function Shell({
               type="button"
               onClick={() => navigate("/sources")}
             >
-              {t("nav.sources")}
+              <BookOpenText aria-hidden="true" />
+              {t("nav.sourcesShort")}
             </button>
             <div className="language-switch" aria-label={t("nav.language")}>
               <button
@@ -190,56 +256,163 @@ function Shell({
 
 function Home({ onStart }: { onStart: (id: string) => void }) {
   const { t } = useLang();
+  const [scenarioId, setScenarioId] = useState<keyof typeof scenarioIntake>(
+    "digilocker-dl",
+  );
+  const [failure, setFailure] = useState("details-mismatch");
+  const [description, setDescription] = useState<string>(
+    scenarioIntake["digilocker-dl"].description,
+  );
+  const [error, setError] = useState("");
+  const selected = scenarioIntake[scenarioId];
+  const selectedCard = scenarioCards.find((card) => card.id === scenarioId)!;
+  const updateScenario = (value: string) => {
+    const nextId = value as keyof typeof scenarioIntake;
+    setScenarioId(nextId);
+    setDescription(scenarioIntake[nextId].description);
+    setError("");
+  };
+  const submit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const trimmed = description.trim();
+    if (trimmed.length < 10) {
+      setError(t("intake.error.short"));
+      return;
+    }
+    if (/\b\d{6,}\b/.test(trimmed)) {
+      setError(t("intake.error.sensitive"));
+      return;
+    }
+    saveIntake({ scenarioId, failure, description: trimmed });
+    onStart(scenarioId);
+  };
   return (
-    <main id="main" className="page home-page" tabIndex={-1}>
-      <section className="hero">
-        <p className="eyebrow">{t("home.eyebrow")}</p>
+    <main id="main" className="intake-page" tabIndex={-1}>
+      <section className="intake-hero">
         <h1>{t("home.title")}</h1>
         <p className="hero-copy">{t("home.body")}</p>
-        <p className="privacy-line">
-          <span aria-hidden="true">✓</span>
-          {t("disclosure.sensitive")}
-        </p>
       </section>
-      <section aria-label="Fictional demo cases" className="scenario-grid">
-        {scenarioCards.map((card, index) => (
-          <article
-            className={`scenario-card ${index === 0 ? "featured" : ""}`}
-            key={card.id}
-          >
-            <div className="card-top">
-              <span className="case-number" aria-hidden="true">
-                0{index + 1}
-              </span>
-              <span className="demo-badge">{t("scenario.fictional")}</span>
-            </div>
-            <h2>{t(card.title)}</h2>
-            <p>{t(card.body)}</p>
-            <button
-              className={card.enabled ? "primary" : "secondary"}
-              type="button"
-              disabled={!card.enabled}
-              onClick={() => onStart(card.id)}
+      <Progress current={0} />
+      <div className="intake-layout">
+        <form className="intake-form" onSubmit={submit} noValidate>
+          <div className="field-group">
+            <label htmlFor="service-goal">{t("intake.goal")}</label>
+            <select
+              id="service-goal"
+              value={scenarioId}
+              onChange={(event) => updateScenario(event.target.value)}
             >
-              {card.enabled ? t("scenario.try") : t("scenario.coming")}
+              {scenarioCards.map((card) => (
+                <option key={card.id} value={card.id}>
+                  {t(card.title)}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="field-group">
+            <label htmlFor="failure-message">{t("intake.failure")}</label>
+            <select
+              id="failure-message"
+              value={failure}
+              onChange={(event) => setFailure(event.target.value)}
+            >
+              <option value="details-mismatch">{t("intake.failure.mismatch")}</option>
+              <option value="record-not-found">{t("intake.failure.notFound")}</option>
+              <option value="other">{t("intake.failure.other")}</option>
+            </select>
+          </div>
+          <div className="field-group">
+            <label htmlFor="problem-description">{t("intake.describe")}</label>
+            <textarea
+              id="problem-description"
+              maxLength={280}
+              value={description}
+              onChange={(event) => {
+                setDescription(event.target.value);
+                setError("");
+              }}
+              aria-describedby="description-help description-count"
+              aria-invalid={Boolean(error)}
+            />
+            <div className="field-help-row">
+              <span id="description-help">{t("intake.describeHelp")}</span>
+              <span id="description-count">{description.length}/280</span>
+            </div>
+            {error && <p className="field-error" role="alert">{error}</p>}
+          </div>
+          <div className="field-group">
+            <label htmlFor="fictional-profile">{t("intake.profile")}</label>
+            <select
+              id="fictional-profile"
+              value={scenarioId}
+              onChange={(event) => updateScenario(event.target.value)}
+            >
+              {Object.entries(scenarioIntake).map(([id, config]) => (
+                <option key={id} value={id}>{config.profile}</option>
+              ))}
+            </select>
+          </div>
+          <details className="intake-records">
+            <summary>{t("intake.records")}</summary>
+            <ul>
+              {selected.records.map((key) => (
+                <li key={key}>
+                  <IdentificationCard aria-hidden="true" />
+                  <span>{t(key)}</span>
+                  <strong>{t("intake.included")}</strong>
+                </li>
+              ))}
+            </ul>
+          </details>
+          <div className="intake-submit-row">
+            <button className="primary intake-submit" type="submit">
+              <ShieldCheck aria-hidden="true" weight="bold" />
+              {t("intake.submit")}
+              <ArrowRight aria-hidden="true" weight="bold" />
             </button>
-          </article>
-        ))}
-      </section>
-      <p className="demo-cue">{t("home.demoCue")}</p>
+            <span>{t("intake.next")}</span>
+          </div>
+        </form>
+        <aside className="route-preview" aria-labelledby="route-preview-title">
+          <h2 id="route-preview-title">{t("intake.routeTitle")}</h2>
+          <ol className="route-nodes">
+            {selected.route.map((key, index) => {
+              const Icon = index === 0 ? IdentificationCard : index === 1 ? CarProfile : DeviceMobile;
+              return (
+                <li className={index === 1 ? "possible-blocker" : ""} key={key}>
+                  <span className="route-number">{index + 1}</span>
+                  <Icon aria-hidden="true" weight="duotone" />
+                  <strong>{t(key)}</strong>
+                  <small>{index === 1 ? t("intake.possible") : index === 2 ? t("intake.goalNode") : t("intake.included")}</small>
+                  {index < selected.route.length - 1 && <ArrowRight className="route-arrow" aria-hidden="true" />}
+                </li>
+              );
+            })}
+          </ol>
+          <div className="result-preview-list">
+            <h3>{t("intake.resultTitle")}</h3>
+            <p><WarningCircle aria-hidden="true" /> <span><strong>{t("intake.result.blocker")}</strong>{t("intake.result.blockerBody")}</span></p>
+            <p><Question aria-hidden="true" /> <span><strong>{t("intake.result.why")}</strong>{t("intake.result.whyBody")}</span></p>
+            <p><SlidersHorizontal aria-hidden="true" /> <span><strong>{t("intake.result.routes")}</strong>{t("intake.result.routesBody")}</span></p>
+            <p><Flag aria-hidden="true" /> <span><strong>{t("intake.result.destination")}</strong>{t("intake.result.destinationBody")}</span></p>
+          </div>
+          <p className="selected-goal"><MapTrifold aria-hidden="true" /> {t(selectedCard.title)}</p>
+        </aside>
+      </div>
+      <p className="intake-safety"><WarningCircle aria-hidden="true" weight="bold" /> {t("disclosure.sensitiveExtended")}</p>
     </main>
   );
 }
 
-function Progress({ stage }: { stage: Stage }) {
+function Progress({ stage, current }: { stage?: Stage; current?: number }) {
   const { t } = useLang();
   const labels = [
-    "progress.understand",
+    "progress.start",
+    "progress.diagnose",
     "progress.compare",
-    "progress.simulate",
     "progress.next",
   ];
-  const active = stage === "diagnosis" ? 0 : stage === "options" ? 1 : 3;
+  const active = current ?? (stage === "diagnosis" ? 1 : stage === "options" ? 2 : 3);
   return (
     <nav className="case-progress" aria-label={t("case.progress")}>
       <ol>
@@ -250,8 +423,8 @@ function Progress({ stage }: { stage: Stage }) {
             }
             key={key}
           >
-            <span aria-hidden="true">{index < active ? "✓" : index + 1}</span>
-            {t(key)}
+            <span aria-hidden="true">{index < active ? <Check weight="bold" /> : index + 1}</span>
+            <span><strong>{t(key)}</strong><small>{t(`${key}.help`)}</small></span>
           </li>
         ))}
       </ol>
@@ -269,7 +442,9 @@ function Status({ analysis }: { analysis: ScenarioAnalysis }) {
     >
       <p className="eyebrow">{t("status.result")}</p>
       <div className="status-label">
-        <span aria-hidden="true">{ready ? "✓" : "!"}</span>
+        <span aria-hidden="true">
+          {ready ? <CheckCircle weight="fill" /> : <WarningCircle weight="fill" />}
+        </span>
         {t(`status.${analysis.readiness}`)}
       </div>
       <h2 id="result-heading">{t(analysis.headline_key)}</h2>
@@ -318,7 +493,7 @@ function FindingCard({
     <article className={`finding ${finding.causal ? "causal" : "supporting"}`}>
       <div className="finding-heading">
         <span className="finding-icon" aria-hidden="true">
-          {finding.causal ? "!" : "✓"}
+          {finding.causal ? <WarningCircle weight="fill" /> : <CheckCircle weight="fill" />}
         </span>
         <div>
           <p className="finding-state">{t(`finding.${finding.state}`)}</p>
@@ -465,7 +640,7 @@ function Options({
   return (
     <section className="flow-section">
       <button className="back-button" type="button" onClick={onBack}>
-        ← {t("common.back")}
+        <ArrowLeft aria-hidden="true" /> {t("common.back")}
       </button>
       <h2>{t("options.title")}</h2>
       <p className="section-intro">{t("options.body")}</p>
@@ -539,7 +714,7 @@ function Result({
     <section className="flow-section">
       <h2>{t("result.title")}</h2>
       <div className="no-real-change">
-        <span aria-hidden="true">✓</span>
+        <CheckCircle aria-hidden="true" weight="fill" />
         <strong>{t("result.noRealChange")}</strong>
       </div>
       {analysis.before_after.length > 0 && (
@@ -606,6 +781,7 @@ function CasePage({
   onReset: () => void;
 }) {
   const { t } = useLang();
+  const intake = useMemo(() => readIntake(scenarioId), [scenarioId]);
   const [analysis, setAnalysis] = useState<ScenarioAnalysis | null>(null);
   const [sources, setSources] = useState<SourceReference[]>([]);
   const [stage, setStage] = useState<Stage>("diagnosis");
@@ -729,7 +905,7 @@ function CasePage({
   return (
     <main id="main" className="page case-page" tabIndex={-1}>
       <button className="back-button" type="button" onClick={onReset}>
-        ← {t("nav.home")}
+        <ArrowLeft aria-hidden="true" /> {t("nav.home")}
       </button>
       <header className="case-header">
         <div>
@@ -744,9 +920,19 @@ function CasePage({
         </div>
       </header>
       <p className="privacy-line">
-        <span aria-hidden="true">i</span>
+        <Info aria-hidden="true" weight="bold" />
         {t("disclosure.sensitive")}
       </p>
+      {intake && (
+        <section className="intake-context" aria-labelledby="intake-context-title">
+          <div>
+            <p className="eyebrow">{t("intake.contextLabel")}</p>
+            <h2 id="intake-context-title">{t("intake.contextTitle")}</h2>
+          </div>
+          <p>{intake.description}</p>
+          <small>{t("intake.contextLimit")}</small>
+        </section>
+      )}
       <Progress stage={stage} />
       <div
         ref={liveRegion}

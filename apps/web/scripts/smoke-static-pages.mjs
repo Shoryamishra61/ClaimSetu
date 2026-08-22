@@ -41,12 +41,9 @@ const server = createServer(async (request, response) => {
   }
 });
 
-function startCase(page, heading) {
-  return page
-    .getByRole("article")
-    .filter({ has: page.getByRole("heading", { name: heading }) })
-    .getByRole("button", { name: /try this case/i })
-    .click();
+async function startCase(page, scenarioId) {
+  await page.getByLabel(/service goal/i).selectOption(scenarioId);
+  await page.getByRole("button", { name: /run pre-flight diagnosis/i }).click();
 }
 
 async function simulate(page, heading) {
@@ -72,7 +69,7 @@ try {
   });
   await page.goto(remoteBaseUrl ? `${remoteBaseUrl}/` : `http://127.0.0.1:${port}${prefix}/`);
 
-  await startCase(page, /can't fetch my driving licence/i);
+  await startCase(page, "digilocker-dl");
   await page.getByText("Blocked", { exact: true }).last().waitFor();
   await page.reload();
   await page.getByText("Blocked", { exact: true }).last().waitFor();
@@ -81,7 +78,7 @@ try {
   await page.getByText(/ready in this simulation/i).last().waitFor();
 
   await page.getByRole("button", { name: /identity rescue: all demo cases/i }).click();
-  await startCase(page, /pf\/kyc issue/i);
+  await startCase(page, "epfo-preflight");
   await page.getByRole("button", { name: /compare ways to fix this/i }).click();
   await simulate(page, /align the fictional pan display name/i);
   await page.getByText(/not an identity-data issue/i).last().waitFor();
@@ -90,7 +87,7 @@ try {
   await page.getByText(/ready in this simulation/i).last().waitFor();
 
   await page.getByRole("button", { name: /identity rescue: all demo cases/i }).click();
-  await startCase(page, /name or address changed/i);
+  await startCase(page, "life-event");
   await page.getByRole("button", { name: /compare ways to fix this/i }).click();
   await simulate(page, /use the chosen current name in the fictional dl source/i);
   await page.getByRole("heading", { name: /still different, but not blocking/i }).waitFor();

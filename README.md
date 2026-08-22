@@ -4,7 +4,7 @@
 
 Identity Rescue is an independent, browser-based hackathon prototype that helps a citizen understand which cross-service record inconsistency actually blocks a selected public-service task—and which visible differences should **not** be changed.
 
-Start with the fictional Driving Licence case. Within one click, the app shows the exact records, causal rule, provenance, correction alternatives, deterministic minimum-impact plan, reversible simulation, and official next action.
+Choose a service goal and fictional demo profile, describe what happened in your own words, and run a privacy-safe pre-flight diagnosis. The app then shows the exact records, causal rule, provenance, correction alternatives, deterministic minimum-impact plan, reversible simulation, and official next action.
 
 > Independent hackathon prototype · Fictional data · No government connection
 
@@ -23,6 +23,8 @@ Start with the fictional Driving Licence case. Within one click, the app shows t
 3. **Life-event reconciliation:** one targeted name correction resolves the selected goal while PAN and address differences remain visible and unchanged.
 
 All profiles are bundled synthetic fixtures. There are no fields for real Aadhaar, PAN, UAN, OTP, payment, biometrics, or identity documents, and no live government API is called.
+
+The editable intake note stays in browser session storage and is never sent to the diagnostic engine. ID- or OTP-like number sequences are rejected before the journey can start.
 
 ## Architecture
 

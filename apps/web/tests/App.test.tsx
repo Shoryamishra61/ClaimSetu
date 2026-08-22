@@ -256,16 +256,41 @@ describe("Identity Rescue Scenario A", () => {
     }
   });
 
-  it("opens goal-first with exactly three fictional citizen problems", () => {
+  it("opens with a clear, editable goal-first intake", () => {
     renderApp();
     expect(
-      screen.getByRole("heading", { level: 1, name: /when records disagree/i }),
+      screen.getByRole("heading", { level: 1, name: /find what is blocking/i }),
     ).toBeTruthy();
-    expect(screen.getAllByText("FICTIONAL CASE")).toHaveLength(3);
-    expect(
-      screen.getAllByRole("button", { name: /try this case/i }),
-    ).toHaveLength(3);
+    expect(screen.getByRole("combobox", { name: /service goal/i })).toBeTruthy();
+    expect(screen.getByRole("combobox", { name: /failure message/i })).toBeTruthy();
+    expect(screen.getByRole("textbox", { name: /describe what happened/i })).toBeTruthy();
+    expect(screen.getByRole("button", { name: /run pre-flight diagnosis/i })).toBeTruthy();
+    expect(screen.getByRole("heading", { name: /your service route/i })).toBeTruthy();
     expect(screen.queryByText(/vehicle handover/i)).toBeNull();
+  });
+
+  it("rejects ID-like numbers and preserves safe browser-only problem context", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (input: RequestInfo | URL) => {
+        const url = String(input);
+        if (url.endsWith("/sources")) return json([source]);
+        if (url.endsWith("/analyze")) return json(analysis(false));
+        throw new Error(`unexpected ${url}`);
+      }),
+    );
+    const user = userEvent.setup();
+    renderApp();
+    const description = screen.getByRole("textbox", { name: /describe what happened/i });
+    await user.clear(description);
+    await user.type(description, "My identifier is 123456789012 and the task failed");
+    await user.click(screen.getByRole("button", { name: /run pre-flight diagnosis/i }));
+    expect(screen.getByRole("alert").textContent).toMatch(/remove id/i);
+    await user.clear(description);
+    await user.type(description, "The fictional retrieval stopped after the details check.");
+    await user.click(screen.getByRole("button", { name: /run pre-flight diagnosis/i }));
+    expect(await screen.findByText(/fictional retrieval stopped/i)).toBeTruthy();
+    expect(screen.getByText(/cannot change the deterministic diagnosis/i)).toBeTruthy();
   });
 
   it("switches the full shell and safety copy to Hindi", async () => {
@@ -274,9 +299,9 @@ describe("Identity Rescue Scenario A", () => {
     await user.click(screen.getByRole("button", { name: "हिन्दी" }));
     expect(document.documentElement.lang).toBe("hi-IN");
     expect(
-      screen.getByRole("heading", { level: 1, name: /जब रिकॉर्ड अलग हों/i }),
+      screen.getByRole("heading", { level: 1, name: /जानें कि आपकी सरकारी सेवा/i }),
     ).toBeTruthy();
-    expect(screen.getByText(/असली Aadhaar, PAN, UAN, OTP/i)).toBeTruthy();
+    expect(screen.getByText(/Aadhaar, PAN, UAN, OTP, भुगतान/i)).toBeTruthy();
   });
 
   it("shows causal evidence, simulates the recommended route, and reaches official handoff", async () => {
@@ -292,9 +317,7 @@ describe("Identity Rescue Scenario A", () => {
     );
     const user = userEvent.setup();
     renderApp();
-    await user.click(
-      screen.getAllByRole("button", { name: /try this case/i })[0]!,
-    );
+    await user.click(screen.getByRole("button", { name: /run pre-flight diagnosis/i }));
     expect(
       await screen.findByRole("heading", {
         name: /blocked by one record mismatch/i,
@@ -367,9 +390,7 @@ describe("Identity Rescue Scenario A", () => {
     );
     const user = userEvent.setup();
     renderApp();
-    await user.click(
-      screen.getAllByRole("button", { name: /try this case/i })[0]!,
-    );
+    await user.click(screen.getByRole("button", { name: /run pre-flight diagnosis/i }));
     expect(
       await screen.findByRole("heading", {
         name: /blocked by one record mismatch/i,

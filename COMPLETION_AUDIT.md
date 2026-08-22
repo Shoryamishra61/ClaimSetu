@@ -1,12 +1,12 @@
 # Identity Rescue completion audit
 
-Audit date: 2026-08-22
+Audit date: 2026-08-23
 
 The frozen package under `docs/identity-rescue/` has precedence. This ledger distinguishes executable evidence from pending human or hosted checks.
 
 | P0 item | Implementation evidence | Verification | Status |
 |---|---|---|---|
-| Goal-first shell | Three citizen problem cards, one-click entry, persistent disclosure | component + browser | PASS |
+| Goal-first shell | Guided goal/failure/profile intake, editable browser-only context, route preview, persistent disclosure | 6 component tests + production build | PASS; visual browser rerun pending |
 | Scenario A | DL name reconciliation, two routes, ACT-A1 minimum plan | unit + desktop/mobile E2E | PASS |
 | Scenario B | compatible name variant plus causal service-history finding | anti-error unit + E2E | PASS |
 | Scenario C | ACT-C1 only; PAN/address retained as non-blocking | planner unit + E2E | PASS |
@@ -20,7 +20,7 @@ The frozen package under `docs/identity-rescue/` has precedence. This ledger dis
 | AI fallback | complete static-template path; health declares `ai_required=false` | all golden E2E | PASS |
 | Optional AI generation | credential-gated, schema-grounded endpoint | not implemented without credential authorization | PENDING OPTIONAL |
 | Container | non-root, same-origin SPA/API, deep-link fallback | Docker smoke | PASS |
-| Public deployment | permanent HTTPS, logged-out/incognito | GitHub Pages 200 + live Chromium completion of all three journeys; zero external requests | PASS |
+| Public deployment | permanent HTTPS, logged-out access | GitHub Pages 200 + redesigned asset/copy verification over HTTP | PASS; redesigned browser journey rerun pending |
 | Submission assets | 235-word summary and tracked 118-second narrated H.264/AAC video | duration, dimensions, audio/video tracks, ten extracted frames | PASS |
 
 ## Key invariants proved

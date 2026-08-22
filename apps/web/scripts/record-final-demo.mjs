@@ -34,11 +34,9 @@ async function waitForServer() {
   throw new Error("Local review server did not become healthy");
 }
 
-async function startCase(page, heading) {
-  const card = page
-    .getByRole("article")
-    .filter({ has: page.getByRole("heading", { name: heading }) });
-  await card.getByRole("button", { name: /try this case/i }).click();
+async function startCase(page, scenarioId) {
+  await page.getByLabel(/service goal/i).selectOption(scenarioId);
+  await page.getByRole("button", { name: /run pre-flight diagnosis/i }).click();
   await page.locator(".status-label").waitFor();
 }
 
@@ -67,7 +65,7 @@ try {
 
   await page.goto(baseUrl);
   await holdUntil(9_000);
-  await startCase(page, /can't fetch my driving licence/i);
+  await startCase(page, "digilocker-dl");
   await holdUntil(22_000);
   await page.getByText(/show the evidence/i).click();
   await page.getByRole("heading", { name: /source basis/i }).first().scrollIntoViewIfNeeded();
@@ -80,7 +78,7 @@ try {
 
   await holdUntil(59_000);
   await page.getByRole("button", { name: /identity rescue: all demo cases/i }).click();
-  await startCase(page, /pf\/kyc issue/i);
+  await startCase(page, "epfo-preflight");
   await holdUntil(65_000);
   await page.getByRole("button", { name: /compare ways to fix this/i }).click();
   await simulate(page, /align the fictional pan display name/i);
@@ -90,7 +88,7 @@ try {
 
   await holdUntil(73_000);
   await page.getByRole("button", { name: /identity rescue: all demo cases/i }).click();
-  await startCase(page, /name or address changed/i);
+  await startCase(page, "life-event");
   await page.getByRole("button", { name: /compare ways to fix this/i }).click();
   await simulate(page, /use the chosen current name in the fictional dl source/i);
   await page.getByRole("heading", { name: /still different, but not blocking/i }).scrollIntoViewIfNeeded();

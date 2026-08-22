@@ -36,11 +36,9 @@ async function waitForServer() {
 
 const pause = (page, milliseconds = 900) => page.waitForTimeout(milliseconds);
 
-async function startCase(page, heading) {
-  const card = page
-    .getByRole("article")
-    .filter({ has: page.getByRole("heading", { name: heading }) });
-  await card.getByRole("button", { name: /try this case/i }).click();
+async function startCase(page, scenarioId) {
+  await page.getByLabel(/service goal/i).selectOption(scenarioId);
+  await page.getByRole("button", { name: /run pre-flight diagnosis/i }).click();
   await pause(page, 1100);
 }
 
@@ -66,7 +64,7 @@ try {
   await page.goto(baseUrl);
   await pause(page, 1800);
 
-  await startCase(page, /can't fetch my driving licence/i);
+  await startCase(page, "digilocker-dl");
   await page.getByText(/show the evidence/i).click();
   await pause(page, 1300);
   await page.getByRole("button", { name: /compare ways to fix this/i }).click();
@@ -76,7 +74,7 @@ try {
   await pause(page, 1500);
 
   await page.getByRole("button", { name: /identity rescue: all demo cases/i }).click();
-  await startCase(page, /pf\/kyc issue/i);
+  await startCase(page, "epfo-preflight");
   await page.getByRole("heading", { name: /service-history date blocks this task/i }).scrollIntoViewIfNeeded();
   await pause(page, 1300);
   await page.getByRole("button", { name: /compare ways to fix this/i }).click();
@@ -85,7 +83,7 @@ try {
   await simulate(page, /correct the fictional service-history date/i);
 
   await page.getByRole("button", { name: /identity rescue: all demo cases/i }).click();
-  await startCase(page, /name or address changed/i);
+  await startCase(page, "life-event");
   await page.getByRole("button", { name: /compare ways to fix this/i }).click();
   await simulate(page, /use the chosen current name in the fictional dl source/i);
   await page.getByRole("heading", { name: /still different, but not blocking/i }).scrollIntoViewIfNeeded();

@@ -1,11 +1,9 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
 
-async function startCase(page: Page, heading: RegExp) {
-  const card = page
-    .getByRole("article")
-    .filter({ has: page.getByRole("heading", { name: heading }) });
-  await card.getByRole("button", { name: /try this case/i }).click();
+async function startCase(page: Page, scenarioId: string) {
+  await page.getByLabel(/service goal/i).selectOption(scenarioId);
+  await page.getByRole("button", { name: /run pre-flight diagnosis/i }).click();
 }
 
 async function chooseRoute(page: Page, heading: RegExp) {
@@ -36,9 +34,9 @@ test("prototype disclosure, keyboard skip link, and serious accessibility gate",
     page.getByText(/independent hackathon prototype/i).first(),
   ).toBeVisible();
   await expect(page.getByText(/do not enter real aadhaar/i)).toBeVisible();
-  await expect(
-    page.getByRole("button", { name: /try this case/i }),
-  ).toHaveCount(3);
+  await expect(page.getByLabel(/service goal/i)).toBeVisible();
+  await expect(page.getByLabel(/describe what happened/i)).toBeEditable();
+  await expect(page.getByRole("button", { name: /run pre-flight diagnosis/i })).toBeVisible();
   await expect(
     page.locator('meta[http-equiv="Content-Security-Policy"]'),
   ).toHaveAttribute("content", /object-src 'none'/);
@@ -90,7 +88,7 @@ test("every public route has one H1, disclosure, locale metadata, and no serious
 test("Scenario A recommends the narrow correction and reaches a reversible ready state", async ({
   page,
 }) => {
-  await startCase(page, /can't fetch my driving licence/i);
+  await startCase(page, "digilocker-dl");
   await expect(page.locator(".route-announcement")).toContainText(
     /can't fetch my driving licence/i,
   );
@@ -138,7 +136,7 @@ test("Scenario A recommends the narrow correction and reaches a reversible ready
 test("Scenario B proves the visible name difference is not causal", async ({
   page,
 }) => {
-  await startCase(page, /pf\/kyc issue/i);
+  await startCase(page, "epfo-preflight");
   await expect(page.locator(".status-label")).toContainText(
     /not an identity-data issue/i,
   );
@@ -172,7 +170,7 @@ test("Scenario B proves the visible name difference is not causal", async ({
 test("Scenario C resolves only the selected goal and preserves non-blocking differences", async ({
   page,
 }) => {
-  await startCase(page, /name or address changed/i);
+  await startCase(page, "life-event");
   await expect(
     page.getByRole("heading", {
       name: /one targeted name correction is enough/i,
@@ -198,7 +196,7 @@ test("Scenario C resolves only the selected goal and preserves non-blocking diff
 test("reset clears mutations and browser back-forward restores only deterministic state", async ({
   page,
 }) => {
-  await startCase(page, /can't fetch my driving licence/i);
+  await startCase(page, "digilocker-dl");
   await page.getByRole("button", { name: /compare ways to fix this/i }).click();
   await chooseRoute(page, /align the fictional dl source name/i);
   await expect(page.locator(".status-label")).toContainText(
@@ -207,7 +205,7 @@ test("reset clears mutations and browser back-forward restores only deterministi
 
   await page.goBack();
   await expect(
-    page.getByRole("heading", { name: /when records disagree/i }),
+    page.getByRole("heading", { name: /find what is blocking/i }),
   ).toBeVisible();
   await page.goForward();
   await expect(page.locator(".status-label")).toContainText(
@@ -216,19 +214,18 @@ test("reset clears mutations and browser back-forward restores only deterministi
 
   await page.getByRole("button", { name: /reset demo/i }).first().click();
   await expect(
-    page.getByRole("heading", { name: /when records disagree/i }),
+    page.getByRole("heading", { name: /find what is blocking/i }),
   ).toBeVisible();
-  await startCase(page, /can't fetch my driving licence/i);
+  await startCase(page, "digilocker-dl");
   await expect(page.getByText("Blocked", { exact: true })).toBeVisible();
 });
 
 test("Hindi journey contains no leaked translation keys", async ({ page }) => {
   await page.getByRole("button", { name: "हिन्दी" }).click();
   await expect(
-    page.getByRole("heading", { name: /जब रिकॉर्ड अलग हों/i }),
+    page.getByRole("heading", { name: /जानें कि आपकी सरकारी सेवा/i }),
   ).toBeVisible();
-  const firstCard = page.getByRole("article").first();
-  await firstCard.getByRole("button", { name: /यह केस आज़माएँ/i }).click();
+  await page.getByRole("button", { name: /प्री-फ्लाइट जाँच चलाएँ/i }).click();
   await expect(page.getByText("रुका हुआ", { exact: true })).toBeVisible();
   await page
     .getByRole("button", { name: /सुधार के विकल्प देखें/i })
@@ -259,9 +256,9 @@ test("320px mobile and 200 percent zoom retain the critical flow without overflo
   await page.setViewportSize({ width: 320, height: 800 });
   await page.reload();
   await expect(
-    page.getByRole("heading", { name: /when records disagree/i }),
+    page.getByRole("heading", { name: /find what is blocking/i }),
   ).toBeVisible();
-  await startCase(page, /can't fetch my driving licence/i);
+  await startCase(page, "digilocker-dl");
   await expect(page.getByText("Blocked", { exact: true })).toBeVisible();
   expect(
     await page.evaluate(
@@ -329,7 +326,7 @@ test("slow-network entry stays usable and reduced-motion removes transitions", a
     await route.continue();
   });
   const started = Date.now();
-  await startCase(page, /can't fetch my driving licence/i);
+  await startCase(page, "digilocker-dl");
   await expect(page.getByText("Blocked", { exact: true })).toBeVisible();
   expect(Date.now() - started).toBeLessThan(20_000);
   await expect(page.getByRole("button", { name: /compare ways/i })).toBeEnabled();
