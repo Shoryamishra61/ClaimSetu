@@ -22,11 +22,11 @@
     },
     {
       "source_id": "SRC-EPFO-001",
-      "title": "FAQ on UAN and KYC",
+      "title": "EPFO Frequently Asked Questions",
       "publisher": "Employees' Provident Fund Organisation",
-      "url": "https://www.epfindia.gov.in/site_docs/PDFs/Circulars/Y2020-2021/FAQUANKYC.pdf",
-      "proposition": "EPFO guidance describes name alignment for KYC and date-of-exit workflows. The exact service-history predicate in this demo remains a prototype simulation.",
-      "last_checked_at": "2026-08-22"
+      "url": "https://www.epfindia.gov.in/site_en/FAQ.php",
+      "proposition": "EPFO guidance describes date-of-exit prerequisites and the Member Portal Mark Exit workflow. The exact service-history predicate in this demo remains a prototype simulation.",
+      "last_checked_at": "2026-08-23"
     }
   ],
   "analyses": {
@@ -1478,11 +1478,11 @@
       "fixture_version": "1.0",
       "goal": "EPFO_KYC_PREFLIGHT",
       "profile": {
-        "profile_id": "DEMO-ARVIND-01",
-        "display_name": "Arvind N. Iyer",
+        "profile_id": "DEMO-RAVI-01",
+        "display_name": "Ravi Kumar",
         "fictional": true,
         "preferred_locale": "en-IN",
-        "scenario_note": "profile.arvind.note"
+        "scenario_note": "profile.ravi.note"
       },
       "readiness": "NOT_IDENTITY_ISSUE",
       "headline_key": "diagnosis.epfo.blocked",
@@ -1490,21 +1490,21 @@
       "next_best_action_key": "diagnosis.next.compare",
       "records": [
         {
-          "record_id": "REC-AADHAAR-ARVIND",
+          "record_id": "REC-AADHAAR-RAVI",
           "authority": "AADHAAR_DEMO",
           "label": "Aadhaar demo record",
           "fixture_version": "1.0",
           "fields": {
             "name": {
-              "original": "ARVIND N IYER",
-              "normalized": "arvind n iyer",
+              "original": "RAVI KUMAR",
+              "normalized": "ravi kumar",
               "script": "Latn",
               "locale": "en-IN",
               "derived_label": "Comparison form"
             },
             "dob": {
-              "original": "1989-07-11",
-              "normalized": "1989 07 11",
+              "original": "1998-04-18",
+              "normalized": "1998 04 18",
               "script": null,
               "locale": null,
               "derived_label": "Comparison form"
@@ -1512,21 +1512,21 @@
           }
         },
         {
-          "record_id": "REC-PAN-ARVIND",
+          "record_id": "REC-PAN-RAVI",
           "authority": "PAN_DEMO",
           "label": "PAN demo record",
           "fixture_version": "1.0",
           "fields": {
             "name": {
-              "original": "ARVIND NARAYAN IYER",
-              "normalized": "arvind narayan iyer",
+              "original": "RAVI K",
+              "normalized": "ravi k",
               "script": "Latn",
               "locale": "en-IN",
               "derived_label": "Comparison form"
             },
             "dob": {
-              "original": "1989-07-11",
-              "normalized": "1989 07 11",
+              "original": "1998-04-18",
+              "normalized": "1998 04 18",
               "script": null,
               "locale": null,
               "derived_label": "Comparison form"
@@ -1534,21 +1534,21 @@
           }
         },
         {
-          "record_id": "REC-EPFO-ARVIND",
+          "record_id": "REC-EPFO-RAVI",
           "authority": "EPFO_DEMO",
           "label": "EPFO member demo record",
           "fixture_version": "1.0",
           "fields": {
             "name": {
-              "original": "ARVIND N IYER",
-              "normalized": "arvind n iyer",
+              "original": "RAVI K",
+              "normalized": "ravi k",
               "script": "Latn",
               "locale": "en-IN",
               "derived_label": "Comparison form"
             },
             "dob": {
-              "original": "1989-07-11",
-              "normalized": "1989 07 11",
+              "original": "1998-04-18",
+              "normalized": "1998 04 18",
               "script": null,
               "locale": null,
               "derived_label": "Comparison form"
@@ -1568,8 +1568,8 @@
               "derived_label": null
             },
             "date_of_exit": {
-              "original": "2026-08-31",
-              "normalized": "2026 08 31",
+              "original": "NOT_RECORDED",
+              "normalized": "not_recorded",
               "script": null,
               "locale": null,
               "derived_label": "Comparison form"
@@ -1603,25 +1603,25 @@
           "evidence_status": "OFFICIAL_SOURCE_INTERPRETED",
           "inputs": [
             {
-              "record_id": "REC-AADHAAR-ARVIND",
+              "record_id": "REC-AADHAAR-RAVI",
               "authority": "AADHAAR_DEMO",
               "field": "name",
               "label": "Aadhaar demo name",
-              "original_value": "ARVIND N IYER"
+              "original_value": "RAVI KUMAR"
             },
             {
-              "record_id": "REC-PAN-ARVIND",
+              "record_id": "REC-PAN-RAVI",
               "authority": "PAN_DEMO",
               "field": "name",
               "label": "PAN demo name",
-              "original_value": "ARVIND NARAYAN IYER"
+              "original_value": "RAVI K"
             },
             {
-              "record_id": "REC-EPFO-ARVIND",
+              "record_id": "REC-EPFO-RAVI",
               "authority": "EPFO_DEMO",
               "field": "name",
               "label": "EPFO demo name",
-              "original_value": "ARVIND N IYER"
+              "original_value": "RAVI K"
             }
           ],
           "source_ids": [
@@ -1640,21 +1640,21 @@
           "evidence_status": "PROTOTYPE_SIMULATION",
           "inputs": [
             {
-              "record_id": "REC-EPFO-ARVIND",
+              "record_id": "REC-EPFO-RAVI",
               "authority": "EPFO_DEMO",
               "field": "date_of_exit",
               "label": "Fictional date of exit",
-              "original_value": "2026-08-31"
+              "original_value": "NOT_RECORDED"
             },
             {
-              "record_id": "REC-EPFO-ARVIND",
+              "record_id": "REC-EPFO-RAVI",
               "authority": "EPFO_DEMO",
               "field": "last_contribution_month",
               "label": "Fictional last contribution month",
               "original_value": "2026-07"
             },
             {
-              "record_id": "REC-EPFO-ARVIND",
+              "record_id": "REC-EPFO-RAVI",
               "authority": "EPFO_DEMO",
               "field": "claim_attempt_date",
               "label": "Fictional claim attempt date",
@@ -1677,25 +1677,25 @@
           "evidence_status": "OFFICIAL_SOURCE_INTERPRETED",
           "inputs": [
             {
-              "record_id": "REC-AADHAAR-ARVIND",
+              "record_id": "REC-AADHAAR-RAVI",
               "authority": "AADHAAR_DEMO",
               "field": "dob",
               "label": "Aadhaar demo record date of birth",
-              "original_value": "1989-07-11"
+              "original_value": "1998-04-18"
             },
             {
-              "record_id": "REC-PAN-ARVIND",
+              "record_id": "REC-PAN-RAVI",
               "authority": "PAN_DEMO",
               "field": "dob",
               "label": "PAN demo record date of birth",
-              "original_value": "1989-07-11"
+              "original_value": "1998-04-18"
             },
             {
-              "record_id": "REC-EPFO-ARVIND",
+              "record_id": "REC-EPFO-RAVI",
               "authority": "EPFO_DEMO",
               "field": "dob",
               "label": "EPFO member demo record date of birth",
-              "original_value": "1989-07-11"
+              "original_value": "1998-04-18"
             }
           ],
           "source_ids": [
@@ -1714,10 +1714,10 @@
         {
           "action_id": "ACT-B-NAME",
           "title_key": "action.b_name.title",
-          "target_record_id": "REC-PAN-ARVIND",
+          "target_record_id": "REC-PAN-RAVI",
           "target_field": "name",
-          "from_value": "ARVIND NARAYAN IYER",
-          "to_value": "ARVIND N IYER",
+          "from_value": "RAVI K",
+          "to_value": "RAVI KUMAR",
           "effort_key": "effort.review",
           "effect_key": "action.b_name.effect",
           "impact_key": "action.b_name.impact",
@@ -1726,8 +1726,8 @@
             "EPFO_KYC_PREFLIGHT"
           ],
           "affected_record_ids": [
-            "REC-PAN-ARVIND",
-            "REC-EPFO-ARVIND"
+            "REC-PAN-RAVI",
+            "REC-EPFO-RAVI"
           ],
           "risk_key": "action.b_name.impact",
           "uncertainty_key": "finding.epfo.name.uncertainty",
@@ -1741,9 +1741,9 @@
         {
           "action_id": "ACT-B1",
           "title_key": "action.b1.title",
-          "target_record_id": "REC-EPFO-ARVIND",
+          "target_record_id": "REC-EPFO-RAVI",
           "target_field": "date_of_exit",
-          "from_value": "2026-08-31",
+          "from_value": "NOT_RECORDED",
           "to_value": "2026-07-31",
           "effort_key": "effort.employer",
           "effect_key": "action.b1.effect",
@@ -1753,7 +1753,7 @@
             "EPFO_KYC_PREFLIGHT"
           ],
           "affected_record_ids": [
-            "REC-EPFO-ARVIND"
+            "REC-EPFO-RAVI"
           ],
           "risk_key": "action.b1.impact",
           "uncertainty_key": "finding.epfo.history.uncertainty",
@@ -1788,8 +1788,8 @@
           "handoff.epfo.step2",
           "handoff.epfo.step3"
         ],
-        "official_url": "https://www.epfindia.gov.in/site_docs/PDFs/Circulars/Y2020-2021/FAQUANKYC.pdf",
-        "official_label": "EPFO official UAN and KYC FAQ",
+        "official_url": "https://www.epfindia.gov.in/site_en/FAQ.php",
+        "official_label": "EPFO official frequently asked questions",
         "source_id": "SRC-EPFO-001",
         "caveat_key": "handoff.processes_change"
       },
@@ -1804,11 +1804,11 @@
       "fixture_version": "1.0",
       "goal": "EPFO_KYC_PREFLIGHT",
       "profile": {
-        "profile_id": "DEMO-ARVIND-01",
-        "display_name": "Arvind N. Iyer",
+        "profile_id": "DEMO-RAVI-01",
+        "display_name": "Ravi Kumar",
         "fictional": true,
         "preferred_locale": "en-IN",
-        "scenario_note": "profile.arvind.note"
+        "scenario_note": "profile.ravi.note"
       },
       "readiness": "NOT_IDENTITY_ISSUE",
       "headline_key": "diagnosis.epfo.blocked",
@@ -1816,21 +1816,21 @@
       "next_best_action_key": "diagnosis.next.compare",
       "records": [
         {
-          "record_id": "REC-AADHAAR-ARVIND",
+          "record_id": "REC-AADHAAR-RAVI",
           "authority": "AADHAAR_DEMO",
           "label": "Aadhaar demo record",
           "fixture_version": "1.0",
           "fields": {
             "name": {
-              "original": "ARVIND N IYER",
-              "normalized": "arvind n iyer",
+              "original": "RAVI KUMAR",
+              "normalized": "ravi kumar",
               "script": "Latn",
               "locale": "en-IN",
               "derived_label": "Comparison form"
             },
             "dob": {
-              "original": "1989-07-11",
-              "normalized": "1989 07 11",
+              "original": "1998-04-18",
+              "normalized": "1998 04 18",
               "script": null,
               "locale": null,
               "derived_label": "Comparison form"
@@ -1838,21 +1838,21 @@
           }
         },
         {
-          "record_id": "REC-PAN-ARVIND",
+          "record_id": "REC-PAN-RAVI",
           "authority": "PAN_DEMO",
           "label": "PAN demo record",
           "fixture_version": "1.0",
           "fields": {
             "name": {
-              "original": "ARVIND N IYER",
-              "normalized": "arvind n iyer",
+              "original": "RAVI KUMAR",
+              "normalized": "ravi kumar",
               "script": "Latn",
               "locale": "en-IN",
               "derived_label": "Comparison form"
             },
             "dob": {
-              "original": "1989-07-11",
-              "normalized": "1989 07 11",
+              "original": "1998-04-18",
+              "normalized": "1998 04 18",
               "script": null,
               "locale": null,
               "derived_label": "Comparison form"
@@ -1860,21 +1860,21 @@
           }
         },
         {
-          "record_id": "REC-EPFO-ARVIND",
+          "record_id": "REC-EPFO-RAVI",
           "authority": "EPFO_DEMO",
           "label": "EPFO member demo record",
           "fixture_version": "1.0",
           "fields": {
             "name": {
-              "original": "ARVIND N IYER",
-              "normalized": "arvind n iyer",
+              "original": "RAVI K",
+              "normalized": "ravi k",
               "script": "Latn",
               "locale": "en-IN",
               "derived_label": "Comparison form"
             },
             "dob": {
-              "original": "1989-07-11",
-              "normalized": "1989 07 11",
+              "original": "1998-04-18",
+              "normalized": "1998 04 18",
               "script": null,
               "locale": null,
               "derived_label": "Comparison form"
@@ -1894,8 +1894,8 @@
               "derived_label": null
             },
             "date_of_exit": {
-              "original": "2026-08-31",
-              "normalized": "2026 08 31",
+              "original": "NOT_RECORDED",
+              "normalized": "not_recorded",
               "script": null,
               "locale": null,
               "derived_label": "Comparison form"
@@ -1929,25 +1929,25 @@
           "evidence_status": "OFFICIAL_SOURCE_INTERPRETED",
           "inputs": [
             {
-              "record_id": "REC-AADHAAR-ARVIND",
+              "record_id": "REC-AADHAAR-RAVI",
               "authority": "AADHAAR_DEMO",
               "field": "name",
               "label": "Aadhaar demo name",
-              "original_value": "ARVIND N IYER"
+              "original_value": "RAVI KUMAR"
             },
             {
-              "record_id": "REC-PAN-ARVIND",
+              "record_id": "REC-PAN-RAVI",
               "authority": "PAN_DEMO",
               "field": "name",
               "label": "PAN demo name",
-              "original_value": "ARVIND N IYER"
+              "original_value": "RAVI KUMAR"
             },
             {
-              "record_id": "REC-EPFO-ARVIND",
+              "record_id": "REC-EPFO-RAVI",
               "authority": "EPFO_DEMO",
               "field": "name",
               "label": "EPFO demo name",
-              "original_value": "ARVIND N IYER"
+              "original_value": "RAVI K"
             }
           ],
           "source_ids": [
@@ -1966,21 +1966,21 @@
           "evidence_status": "PROTOTYPE_SIMULATION",
           "inputs": [
             {
-              "record_id": "REC-EPFO-ARVIND",
+              "record_id": "REC-EPFO-RAVI",
               "authority": "EPFO_DEMO",
               "field": "date_of_exit",
               "label": "Fictional date of exit",
-              "original_value": "2026-08-31"
+              "original_value": "NOT_RECORDED"
             },
             {
-              "record_id": "REC-EPFO-ARVIND",
+              "record_id": "REC-EPFO-RAVI",
               "authority": "EPFO_DEMO",
               "field": "last_contribution_month",
               "label": "Fictional last contribution month",
               "original_value": "2026-07"
             },
             {
-              "record_id": "REC-EPFO-ARVIND",
+              "record_id": "REC-EPFO-RAVI",
               "authority": "EPFO_DEMO",
               "field": "claim_attempt_date",
               "label": "Fictional claim attempt date",
@@ -2003,25 +2003,25 @@
           "evidence_status": "OFFICIAL_SOURCE_INTERPRETED",
           "inputs": [
             {
-              "record_id": "REC-AADHAAR-ARVIND",
+              "record_id": "REC-AADHAAR-RAVI",
               "authority": "AADHAAR_DEMO",
               "field": "dob",
               "label": "Aadhaar demo record date of birth",
-              "original_value": "1989-07-11"
+              "original_value": "1998-04-18"
             },
             {
-              "record_id": "REC-PAN-ARVIND",
+              "record_id": "REC-PAN-RAVI",
               "authority": "PAN_DEMO",
               "field": "dob",
               "label": "PAN demo record date of birth",
-              "original_value": "1989-07-11"
+              "original_value": "1998-04-18"
             },
             {
-              "record_id": "REC-EPFO-ARVIND",
+              "record_id": "REC-EPFO-RAVI",
               "authority": "EPFO_DEMO",
               "field": "dob",
               "label": "EPFO member demo record date of birth",
-              "original_value": "1989-07-11"
+              "original_value": "1998-04-18"
             }
           ],
           "source_ids": [
@@ -2040,10 +2040,10 @@
         {
           "action_id": "ACT-B-NAME",
           "title_key": "action.b_name.title",
-          "target_record_id": "REC-PAN-ARVIND",
+          "target_record_id": "REC-PAN-RAVI",
           "target_field": "name",
-          "from_value": "ARVIND NARAYAN IYER",
-          "to_value": "ARVIND N IYER",
+          "from_value": "RAVI K",
+          "to_value": "RAVI KUMAR",
           "effort_key": "effort.review",
           "effect_key": "action.b_name.effect",
           "impact_key": "action.b_name.impact",
@@ -2052,8 +2052,8 @@
             "EPFO_KYC_PREFLIGHT"
           ],
           "affected_record_ids": [
-            "REC-PAN-ARVIND",
-            "REC-EPFO-ARVIND"
+            "REC-PAN-RAVI",
+            "REC-EPFO-RAVI"
           ],
           "risk_key": "action.b_name.impact",
           "uncertainty_key": "finding.epfo.name.uncertainty",
@@ -2067,9 +2067,9 @@
         {
           "action_id": "ACT-B1",
           "title_key": "action.b1.title",
-          "target_record_id": "REC-EPFO-ARVIND",
+          "target_record_id": "REC-EPFO-RAVI",
           "target_field": "date_of_exit",
-          "from_value": "2026-08-31",
+          "from_value": "NOT_RECORDED",
           "to_value": "2026-07-31",
           "effort_key": "effort.employer",
           "effect_key": "action.b1.effect",
@@ -2079,7 +2079,7 @@
             "EPFO_KYC_PREFLIGHT"
           ],
           "affected_record_ids": [
-            "REC-EPFO-ARVIND"
+            "REC-EPFO-RAVI"
           ],
           "risk_key": "action.b1.impact",
           "uncertainty_key": "finding.epfo.history.uncertainty",
@@ -2112,8 +2112,8 @@
           "action_id": "ACT-B-NAME",
           "record_label": "PAN demo record",
           "field_label": "name",
-          "before": "ARVIND NARAYAN IYER",
-          "after": "ARVIND N IYER"
+          "before": "RAVI K",
+          "after": "RAVI KUMAR"
         }
       ],
       "simulation_events": [
@@ -2134,8 +2134,8 @@
           "handoff.epfo.step2",
           "handoff.epfo.step3"
         ],
-        "official_url": "https://www.epfindia.gov.in/site_docs/PDFs/Circulars/Y2020-2021/FAQUANKYC.pdf",
-        "official_label": "EPFO official UAN and KYC FAQ",
+        "official_url": "https://www.epfindia.gov.in/site_en/FAQ.php",
+        "official_label": "EPFO official frequently asked questions",
         "source_id": "SRC-EPFO-001",
         "caveat_key": "handoff.processes_change"
       },
@@ -2150,11 +2150,11 @@
       "fixture_version": "1.0",
       "goal": "EPFO_KYC_PREFLIGHT",
       "profile": {
-        "profile_id": "DEMO-ARVIND-01",
-        "display_name": "Arvind N. Iyer",
+        "profile_id": "DEMO-RAVI-01",
+        "display_name": "Ravi Kumar",
         "fictional": true,
         "preferred_locale": "en-IN",
-        "scenario_note": "profile.arvind.note"
+        "scenario_note": "profile.ravi.note"
       },
       "readiness": "READY_SIMULATION",
       "headline_key": "diagnosis.epfo.ready",
@@ -2162,21 +2162,21 @@
       "next_best_action_key": "diagnosis.next.official",
       "records": [
         {
-          "record_id": "REC-AADHAAR-ARVIND",
+          "record_id": "REC-AADHAAR-RAVI",
           "authority": "AADHAAR_DEMO",
           "label": "Aadhaar demo record",
           "fixture_version": "1.0",
           "fields": {
             "name": {
-              "original": "ARVIND N IYER",
-              "normalized": "arvind n iyer",
+              "original": "RAVI KUMAR",
+              "normalized": "ravi kumar",
               "script": "Latn",
               "locale": "en-IN",
               "derived_label": "Comparison form"
             },
             "dob": {
-              "original": "1989-07-11",
-              "normalized": "1989 07 11",
+              "original": "1998-04-18",
+              "normalized": "1998 04 18",
               "script": null,
               "locale": null,
               "derived_label": "Comparison form"
@@ -2184,21 +2184,21 @@
           }
         },
         {
-          "record_id": "REC-PAN-ARVIND",
+          "record_id": "REC-PAN-RAVI",
           "authority": "PAN_DEMO",
           "label": "PAN demo record",
           "fixture_version": "1.0",
           "fields": {
             "name": {
-              "original": "ARVIND NARAYAN IYER",
-              "normalized": "arvind narayan iyer",
+              "original": "RAVI K",
+              "normalized": "ravi k",
               "script": "Latn",
               "locale": "en-IN",
               "derived_label": "Comparison form"
             },
             "dob": {
-              "original": "1989-07-11",
-              "normalized": "1989 07 11",
+              "original": "1998-04-18",
+              "normalized": "1998 04 18",
               "script": null,
               "locale": null,
               "derived_label": "Comparison form"
@@ -2206,21 +2206,21 @@
           }
         },
         {
-          "record_id": "REC-EPFO-ARVIND",
+          "record_id": "REC-EPFO-RAVI",
           "authority": "EPFO_DEMO",
           "label": "EPFO member demo record",
           "fixture_version": "1.0",
           "fields": {
             "name": {
-              "original": "ARVIND N IYER",
-              "normalized": "arvind n iyer",
+              "original": "RAVI K",
+              "normalized": "ravi k",
               "script": "Latn",
               "locale": "en-IN",
               "derived_label": "Comparison form"
             },
             "dob": {
-              "original": "1989-07-11",
-              "normalized": "1989 07 11",
+              "original": "1998-04-18",
+              "normalized": "1998 04 18",
               "script": null,
               "locale": null,
               "derived_label": "Comparison form"
@@ -2275,25 +2275,25 @@
           "evidence_status": "OFFICIAL_SOURCE_INTERPRETED",
           "inputs": [
             {
-              "record_id": "REC-AADHAAR-ARVIND",
+              "record_id": "REC-AADHAAR-RAVI",
               "authority": "AADHAAR_DEMO",
               "field": "name",
               "label": "Aadhaar demo name",
-              "original_value": "ARVIND N IYER"
+              "original_value": "RAVI KUMAR"
             },
             {
-              "record_id": "REC-PAN-ARVIND",
+              "record_id": "REC-PAN-RAVI",
               "authority": "PAN_DEMO",
               "field": "name",
               "label": "PAN demo name",
-              "original_value": "ARVIND NARAYAN IYER"
+              "original_value": "RAVI K"
             },
             {
-              "record_id": "REC-EPFO-ARVIND",
+              "record_id": "REC-EPFO-RAVI",
               "authority": "EPFO_DEMO",
               "field": "name",
               "label": "EPFO demo name",
-              "original_value": "ARVIND N IYER"
+              "original_value": "RAVI K"
             }
           ],
           "source_ids": [
@@ -2312,21 +2312,21 @@
           "evidence_status": "PROTOTYPE_SIMULATION",
           "inputs": [
             {
-              "record_id": "REC-EPFO-ARVIND",
+              "record_id": "REC-EPFO-RAVI",
               "authority": "EPFO_DEMO",
               "field": "date_of_exit",
               "label": "Fictional date of exit",
               "original_value": "2026-07-31"
             },
             {
-              "record_id": "REC-EPFO-ARVIND",
+              "record_id": "REC-EPFO-RAVI",
               "authority": "EPFO_DEMO",
               "field": "last_contribution_month",
               "label": "Fictional last contribution month",
               "original_value": "2026-07"
             },
             {
-              "record_id": "REC-EPFO-ARVIND",
+              "record_id": "REC-EPFO-RAVI",
               "authority": "EPFO_DEMO",
               "field": "claim_attempt_date",
               "label": "Fictional claim attempt date",
@@ -2349,25 +2349,25 @@
           "evidence_status": "OFFICIAL_SOURCE_INTERPRETED",
           "inputs": [
             {
-              "record_id": "REC-AADHAAR-ARVIND",
+              "record_id": "REC-AADHAAR-RAVI",
               "authority": "AADHAAR_DEMO",
               "field": "dob",
               "label": "Aadhaar demo record date of birth",
-              "original_value": "1989-07-11"
+              "original_value": "1998-04-18"
             },
             {
-              "record_id": "REC-PAN-ARVIND",
+              "record_id": "REC-PAN-RAVI",
               "authority": "PAN_DEMO",
               "field": "dob",
               "label": "PAN demo record date of birth",
-              "original_value": "1989-07-11"
+              "original_value": "1998-04-18"
             },
             {
-              "record_id": "REC-EPFO-ARVIND",
+              "record_id": "REC-EPFO-RAVI",
               "authority": "EPFO_DEMO",
               "field": "dob",
               "label": "EPFO member demo record date of birth",
-              "original_value": "1989-07-11"
+              "original_value": "1998-04-18"
             }
           ],
           "source_ids": [
@@ -2386,10 +2386,10 @@
         {
           "action_id": "ACT-B-NAME",
           "title_key": "action.b_name.title",
-          "target_record_id": "REC-PAN-ARVIND",
+          "target_record_id": "REC-PAN-RAVI",
           "target_field": "name",
-          "from_value": "ARVIND NARAYAN IYER",
-          "to_value": "ARVIND N IYER",
+          "from_value": "RAVI K",
+          "to_value": "RAVI KUMAR",
           "effort_key": "effort.review",
           "effect_key": "action.b_name.effect",
           "impact_key": "action.b_name.impact",
@@ -2398,8 +2398,8 @@
             "EPFO_KYC_PREFLIGHT"
           ],
           "affected_record_ids": [
-            "REC-PAN-ARVIND",
-            "REC-EPFO-ARVIND"
+            "REC-PAN-RAVI",
+            "REC-EPFO-RAVI"
           ],
           "risk_key": "action.b_name.impact",
           "uncertainty_key": "finding.epfo.name.uncertainty",
@@ -2413,9 +2413,9 @@
         {
           "action_id": "ACT-B1",
           "title_key": "action.b1.title",
-          "target_record_id": "REC-EPFO-ARVIND",
+          "target_record_id": "REC-EPFO-RAVI",
           "target_field": "date_of_exit",
-          "from_value": "2026-08-31",
+          "from_value": "NOT_RECORDED",
           "to_value": "2026-07-31",
           "effort_key": "effort.employer",
           "effect_key": "action.b1.effect",
@@ -2425,7 +2425,7 @@
             "EPFO_KYC_PREFLIGHT"
           ],
           "affected_record_ids": [
-            "REC-EPFO-ARVIND"
+            "REC-EPFO-RAVI"
           ],
           "risk_key": "action.b1.impact",
           "uncertainty_key": "finding.epfo.history.uncertainty",
@@ -2446,7 +2446,7 @@
           "action_id": "ACT-B1",
           "record_label": "EPFO member demo record",
           "field_label": "date_of_exit",
-          "before": "2026-08-31",
+          "before": "NOT_RECORDED",
           "after": "2026-07-31"
         }
       ],
@@ -2468,8 +2468,8 @@
           "handoff.epfo.step2",
           "handoff.epfo.step3"
         ],
-        "official_url": "https://www.epfindia.gov.in/site_docs/PDFs/Circulars/Y2020-2021/FAQUANKYC.pdf",
-        "official_label": "EPFO official UAN and KYC FAQ",
+        "official_url": "https://www.epfindia.gov.in/site_en/FAQ.php",
+        "official_label": "EPFO official frequently asked questions",
         "source_id": "SRC-EPFO-001",
         "caveat_key": "handoff.processes_change"
       },
@@ -2484,11 +2484,11 @@
       "fixture_version": "1.0",
       "goal": "EPFO_KYC_PREFLIGHT",
       "profile": {
-        "profile_id": "DEMO-ARVIND-01",
-        "display_name": "Arvind N. Iyer",
+        "profile_id": "DEMO-RAVI-01",
+        "display_name": "Ravi Kumar",
         "fictional": true,
         "preferred_locale": "en-IN",
-        "scenario_note": "profile.arvind.note"
+        "scenario_note": "profile.ravi.note"
       },
       "readiness": "READY_SIMULATION",
       "headline_key": "diagnosis.epfo.ready",
@@ -2496,21 +2496,21 @@
       "next_best_action_key": "diagnosis.next.official",
       "records": [
         {
-          "record_id": "REC-AADHAAR-ARVIND",
+          "record_id": "REC-AADHAAR-RAVI",
           "authority": "AADHAAR_DEMO",
           "label": "Aadhaar demo record",
           "fixture_version": "1.0",
           "fields": {
             "name": {
-              "original": "ARVIND N IYER",
-              "normalized": "arvind n iyer",
+              "original": "RAVI KUMAR",
+              "normalized": "ravi kumar",
               "script": "Latn",
               "locale": "en-IN",
               "derived_label": "Comparison form"
             },
             "dob": {
-              "original": "1989-07-11",
-              "normalized": "1989 07 11",
+              "original": "1998-04-18",
+              "normalized": "1998 04 18",
               "script": null,
               "locale": null,
               "derived_label": "Comparison form"
@@ -2518,21 +2518,21 @@
           }
         },
         {
-          "record_id": "REC-PAN-ARVIND",
+          "record_id": "REC-PAN-RAVI",
           "authority": "PAN_DEMO",
           "label": "PAN demo record",
           "fixture_version": "1.0",
           "fields": {
             "name": {
-              "original": "ARVIND N IYER",
-              "normalized": "arvind n iyer",
+              "original": "RAVI KUMAR",
+              "normalized": "ravi kumar",
               "script": "Latn",
               "locale": "en-IN",
               "derived_label": "Comparison form"
             },
             "dob": {
-              "original": "1989-07-11",
-              "normalized": "1989 07 11",
+              "original": "1998-04-18",
+              "normalized": "1998 04 18",
               "script": null,
               "locale": null,
               "derived_label": "Comparison form"
@@ -2540,21 +2540,21 @@
           }
         },
         {
-          "record_id": "REC-EPFO-ARVIND",
+          "record_id": "REC-EPFO-RAVI",
           "authority": "EPFO_DEMO",
           "label": "EPFO member demo record",
           "fixture_version": "1.0",
           "fields": {
             "name": {
-              "original": "ARVIND N IYER",
-              "normalized": "arvind n iyer",
+              "original": "RAVI K",
+              "normalized": "ravi k",
               "script": "Latn",
               "locale": "en-IN",
               "derived_label": "Comparison form"
             },
             "dob": {
-              "original": "1989-07-11",
-              "normalized": "1989 07 11",
+              "original": "1998-04-18",
+              "normalized": "1998 04 18",
               "script": null,
               "locale": null,
               "derived_label": "Comparison form"
@@ -2609,25 +2609,25 @@
           "evidence_status": "OFFICIAL_SOURCE_INTERPRETED",
           "inputs": [
             {
-              "record_id": "REC-AADHAAR-ARVIND",
+              "record_id": "REC-AADHAAR-RAVI",
               "authority": "AADHAAR_DEMO",
               "field": "name",
               "label": "Aadhaar demo name",
-              "original_value": "ARVIND N IYER"
+              "original_value": "RAVI KUMAR"
             },
             {
-              "record_id": "REC-PAN-ARVIND",
+              "record_id": "REC-PAN-RAVI",
               "authority": "PAN_DEMO",
               "field": "name",
               "label": "PAN demo name",
-              "original_value": "ARVIND N IYER"
+              "original_value": "RAVI KUMAR"
             },
             {
-              "record_id": "REC-EPFO-ARVIND",
+              "record_id": "REC-EPFO-RAVI",
               "authority": "EPFO_DEMO",
               "field": "name",
               "label": "EPFO demo name",
-              "original_value": "ARVIND N IYER"
+              "original_value": "RAVI K"
             }
           ],
           "source_ids": [
@@ -2646,21 +2646,21 @@
           "evidence_status": "PROTOTYPE_SIMULATION",
           "inputs": [
             {
-              "record_id": "REC-EPFO-ARVIND",
+              "record_id": "REC-EPFO-RAVI",
               "authority": "EPFO_DEMO",
               "field": "date_of_exit",
               "label": "Fictional date of exit",
               "original_value": "2026-07-31"
             },
             {
-              "record_id": "REC-EPFO-ARVIND",
+              "record_id": "REC-EPFO-RAVI",
               "authority": "EPFO_DEMO",
               "field": "last_contribution_month",
               "label": "Fictional last contribution month",
               "original_value": "2026-07"
             },
             {
-              "record_id": "REC-EPFO-ARVIND",
+              "record_id": "REC-EPFO-RAVI",
               "authority": "EPFO_DEMO",
               "field": "claim_attempt_date",
               "label": "Fictional claim attempt date",
@@ -2683,25 +2683,25 @@
           "evidence_status": "OFFICIAL_SOURCE_INTERPRETED",
           "inputs": [
             {
-              "record_id": "REC-AADHAAR-ARVIND",
+              "record_id": "REC-AADHAAR-RAVI",
               "authority": "AADHAAR_DEMO",
               "field": "dob",
               "label": "Aadhaar demo record date of birth",
-              "original_value": "1989-07-11"
+              "original_value": "1998-04-18"
             },
             {
-              "record_id": "REC-PAN-ARVIND",
+              "record_id": "REC-PAN-RAVI",
               "authority": "PAN_DEMO",
               "field": "dob",
               "label": "PAN demo record date of birth",
-              "original_value": "1989-07-11"
+              "original_value": "1998-04-18"
             },
             {
-              "record_id": "REC-EPFO-ARVIND",
+              "record_id": "REC-EPFO-RAVI",
               "authority": "EPFO_DEMO",
               "field": "dob",
               "label": "EPFO member demo record date of birth",
-              "original_value": "1989-07-11"
+              "original_value": "1998-04-18"
             }
           ],
           "source_ids": [
@@ -2720,10 +2720,10 @@
         {
           "action_id": "ACT-B-NAME",
           "title_key": "action.b_name.title",
-          "target_record_id": "REC-PAN-ARVIND",
+          "target_record_id": "REC-PAN-RAVI",
           "target_field": "name",
-          "from_value": "ARVIND NARAYAN IYER",
-          "to_value": "ARVIND N IYER",
+          "from_value": "RAVI K",
+          "to_value": "RAVI KUMAR",
           "effort_key": "effort.review",
           "effect_key": "action.b_name.effect",
           "impact_key": "action.b_name.impact",
@@ -2732,8 +2732,8 @@
             "EPFO_KYC_PREFLIGHT"
           ],
           "affected_record_ids": [
-            "REC-PAN-ARVIND",
-            "REC-EPFO-ARVIND"
+            "REC-PAN-RAVI",
+            "REC-EPFO-RAVI"
           ],
           "risk_key": "action.b_name.impact",
           "uncertainty_key": "finding.epfo.name.uncertainty",
@@ -2747,9 +2747,9 @@
         {
           "action_id": "ACT-B1",
           "title_key": "action.b1.title",
-          "target_record_id": "REC-EPFO-ARVIND",
+          "target_record_id": "REC-EPFO-RAVI",
           "target_field": "date_of_exit",
-          "from_value": "2026-08-31",
+          "from_value": "NOT_RECORDED",
           "to_value": "2026-07-31",
           "effort_key": "effort.employer",
           "effect_key": "action.b1.effect",
@@ -2759,7 +2759,7 @@
             "EPFO_KYC_PREFLIGHT"
           ],
           "affected_record_ids": [
-            "REC-EPFO-ARVIND"
+            "REC-EPFO-RAVI"
           ],
           "risk_key": "action.b1.impact",
           "uncertainty_key": "finding.epfo.history.uncertainty",
@@ -2781,14 +2781,14 @@
           "action_id": "ACT-B-NAME",
           "record_label": "PAN demo record",
           "field_label": "name",
-          "before": "ARVIND NARAYAN IYER",
-          "after": "ARVIND N IYER"
+          "before": "RAVI K",
+          "after": "RAVI KUMAR"
         },
         {
           "action_id": "ACT-B1",
           "record_label": "EPFO member demo record",
           "field_label": "date_of_exit",
-          "before": "2026-08-31",
+          "before": "NOT_RECORDED",
           "after": "2026-07-31"
         }
       ],
@@ -2819,8 +2819,8 @@
           "handoff.epfo.step2",
           "handoff.epfo.step3"
         ],
-        "official_url": "https://www.epfindia.gov.in/site_docs/PDFs/Circulars/Y2020-2021/FAQUANKYC.pdf",
-        "official_label": "EPFO official UAN and KYC FAQ",
+        "official_url": "https://www.epfindia.gov.in/site_en/FAQ.php",
+        "official_label": "EPFO official frequently asked questions",
         "source_id": "SRC-EPFO-001",
         "caveat_key": "handoff.processes_change"
       },
@@ -2835,11 +2835,11 @@
       "fixture_version": "1.0",
       "goal": "EPFO_KYC_PREFLIGHT",
       "profile": {
-        "profile_id": "DEMO-ARVIND-01",
-        "display_name": "Arvind N. Iyer",
+        "profile_id": "DEMO-RAVI-01",
+        "display_name": "Ravi Kumar",
         "fictional": true,
         "preferred_locale": "en-IN",
-        "scenario_note": "profile.arvind.note"
+        "scenario_note": "profile.ravi.note"
       },
       "readiness": "READY_SIMULATION",
       "headline_key": "diagnosis.epfo.ready",
@@ -2847,21 +2847,21 @@
       "next_best_action_key": "diagnosis.next.official",
       "records": [
         {
-          "record_id": "REC-AADHAAR-ARVIND",
+          "record_id": "REC-AADHAAR-RAVI",
           "authority": "AADHAAR_DEMO",
           "label": "Aadhaar demo record",
           "fixture_version": "1.0",
           "fields": {
             "name": {
-              "original": "ARVIND N IYER",
-              "normalized": "arvind n iyer",
+              "original": "RAVI KUMAR",
+              "normalized": "ravi kumar",
               "script": "Latn",
               "locale": "en-IN",
               "derived_label": "Comparison form"
             },
             "dob": {
-              "original": "1989-07-11",
-              "normalized": "1989 07 11",
+              "original": "1998-04-18",
+              "normalized": "1998 04 18",
               "script": null,
               "locale": null,
               "derived_label": "Comparison form"
@@ -2869,21 +2869,21 @@
           }
         },
         {
-          "record_id": "REC-PAN-ARVIND",
+          "record_id": "REC-PAN-RAVI",
           "authority": "PAN_DEMO",
           "label": "PAN demo record",
           "fixture_version": "1.0",
           "fields": {
             "name": {
-              "original": "ARVIND N IYER",
-              "normalized": "arvind n iyer",
+              "original": "RAVI KUMAR",
+              "normalized": "ravi kumar",
               "script": "Latn",
               "locale": "en-IN",
               "derived_label": "Comparison form"
             },
             "dob": {
-              "original": "1989-07-11",
-              "normalized": "1989 07 11",
+              "original": "1998-04-18",
+              "normalized": "1998 04 18",
               "script": null,
               "locale": null,
               "derived_label": "Comparison form"
@@ -2891,21 +2891,21 @@
           }
         },
         {
-          "record_id": "REC-EPFO-ARVIND",
+          "record_id": "REC-EPFO-RAVI",
           "authority": "EPFO_DEMO",
           "label": "EPFO member demo record",
           "fixture_version": "1.0",
           "fields": {
             "name": {
-              "original": "ARVIND N IYER",
-              "normalized": "arvind n iyer",
+              "original": "RAVI K",
+              "normalized": "ravi k",
               "script": "Latn",
               "locale": "en-IN",
               "derived_label": "Comparison form"
             },
             "dob": {
-              "original": "1989-07-11",
-              "normalized": "1989 07 11",
+              "original": "1998-04-18",
+              "normalized": "1998 04 18",
               "script": null,
               "locale": null,
               "derived_label": "Comparison form"
@@ -2960,25 +2960,25 @@
           "evidence_status": "OFFICIAL_SOURCE_INTERPRETED",
           "inputs": [
             {
-              "record_id": "REC-AADHAAR-ARVIND",
+              "record_id": "REC-AADHAAR-RAVI",
               "authority": "AADHAAR_DEMO",
               "field": "name",
               "label": "Aadhaar demo name",
-              "original_value": "ARVIND N IYER"
+              "original_value": "RAVI KUMAR"
             },
             {
-              "record_id": "REC-PAN-ARVIND",
+              "record_id": "REC-PAN-RAVI",
               "authority": "PAN_DEMO",
               "field": "name",
               "label": "PAN demo name",
-              "original_value": "ARVIND N IYER"
+              "original_value": "RAVI KUMAR"
             },
             {
-              "record_id": "REC-EPFO-ARVIND",
+              "record_id": "REC-EPFO-RAVI",
               "authority": "EPFO_DEMO",
               "field": "name",
               "label": "EPFO demo name",
-              "original_value": "ARVIND N IYER"
+              "original_value": "RAVI K"
             }
           ],
           "source_ids": [
@@ -2997,21 +2997,21 @@
           "evidence_status": "PROTOTYPE_SIMULATION",
           "inputs": [
             {
-              "record_id": "REC-EPFO-ARVIND",
+              "record_id": "REC-EPFO-RAVI",
               "authority": "EPFO_DEMO",
               "field": "date_of_exit",
               "label": "Fictional date of exit",
               "original_value": "2026-07-31"
             },
             {
-              "record_id": "REC-EPFO-ARVIND",
+              "record_id": "REC-EPFO-RAVI",
               "authority": "EPFO_DEMO",
               "field": "last_contribution_month",
               "label": "Fictional last contribution month",
               "original_value": "2026-07"
             },
             {
-              "record_id": "REC-EPFO-ARVIND",
+              "record_id": "REC-EPFO-RAVI",
               "authority": "EPFO_DEMO",
               "field": "claim_attempt_date",
               "label": "Fictional claim attempt date",
@@ -3034,25 +3034,25 @@
           "evidence_status": "OFFICIAL_SOURCE_INTERPRETED",
           "inputs": [
             {
-              "record_id": "REC-AADHAAR-ARVIND",
+              "record_id": "REC-AADHAAR-RAVI",
               "authority": "AADHAAR_DEMO",
               "field": "dob",
               "label": "Aadhaar demo record date of birth",
-              "original_value": "1989-07-11"
+              "original_value": "1998-04-18"
             },
             {
-              "record_id": "REC-PAN-ARVIND",
+              "record_id": "REC-PAN-RAVI",
               "authority": "PAN_DEMO",
               "field": "dob",
               "label": "PAN demo record date of birth",
-              "original_value": "1989-07-11"
+              "original_value": "1998-04-18"
             },
             {
-              "record_id": "REC-EPFO-ARVIND",
+              "record_id": "REC-EPFO-RAVI",
               "authority": "EPFO_DEMO",
               "field": "dob",
               "label": "EPFO member demo record date of birth",
-              "original_value": "1989-07-11"
+              "original_value": "1998-04-18"
             }
           ],
           "source_ids": [
@@ -3071,10 +3071,10 @@
         {
           "action_id": "ACT-B-NAME",
           "title_key": "action.b_name.title",
-          "target_record_id": "REC-PAN-ARVIND",
+          "target_record_id": "REC-PAN-RAVI",
           "target_field": "name",
-          "from_value": "ARVIND NARAYAN IYER",
-          "to_value": "ARVIND N IYER",
+          "from_value": "RAVI K",
+          "to_value": "RAVI KUMAR",
           "effort_key": "effort.review",
           "effect_key": "action.b_name.effect",
           "impact_key": "action.b_name.impact",
@@ -3083,8 +3083,8 @@
             "EPFO_KYC_PREFLIGHT"
           ],
           "affected_record_ids": [
-            "REC-PAN-ARVIND",
-            "REC-EPFO-ARVIND"
+            "REC-PAN-RAVI",
+            "REC-EPFO-RAVI"
           ],
           "risk_key": "action.b_name.impact",
           "uncertainty_key": "finding.epfo.name.uncertainty",
@@ -3098,9 +3098,9 @@
         {
           "action_id": "ACT-B1",
           "title_key": "action.b1.title",
-          "target_record_id": "REC-EPFO-ARVIND",
+          "target_record_id": "REC-EPFO-RAVI",
           "target_field": "date_of_exit",
-          "from_value": "2026-08-31",
+          "from_value": "NOT_RECORDED",
           "to_value": "2026-07-31",
           "effort_key": "effort.employer",
           "effect_key": "action.b1.effect",
@@ -3110,7 +3110,7 @@
             "EPFO_KYC_PREFLIGHT"
           ],
           "affected_record_ids": [
-            "REC-EPFO-ARVIND"
+            "REC-EPFO-RAVI"
           ],
           "risk_key": "action.b1.impact",
           "uncertainty_key": "finding.epfo.history.uncertainty",
@@ -3132,15 +3132,15 @@
           "action_id": "ACT-B1",
           "record_label": "EPFO member demo record",
           "field_label": "date_of_exit",
-          "before": "2026-08-31",
+          "before": "NOT_RECORDED",
           "after": "2026-07-31"
         },
         {
           "action_id": "ACT-B-NAME",
           "record_label": "PAN demo record",
           "field_label": "name",
-          "before": "ARVIND NARAYAN IYER",
-          "after": "ARVIND N IYER"
+          "before": "RAVI K",
+          "after": "RAVI KUMAR"
         }
       ],
       "simulation_events": [
@@ -3170,8 +3170,8 @@
           "handoff.epfo.step2",
           "handoff.epfo.step3"
         ],
-        "official_url": "https://www.epfindia.gov.in/site_docs/PDFs/Circulars/Y2020-2021/FAQUANKYC.pdf",
-        "official_label": "EPFO official UAN and KYC FAQ",
+        "official_url": "https://www.epfindia.gov.in/site_en/FAQ.php",
+        "official_label": "EPFO official frequently asked questions",
         "source_id": "SRC-EPFO-001",
         "caveat_key": "handoff.processes_change"
       },
