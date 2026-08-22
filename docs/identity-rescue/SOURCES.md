@@ -88,19 +88,17 @@
 
 # C. Aadhaar / UIDAI — identity representation
 
-## SRC-UIDAI-001 — Enrolment & Update FAQ
+## SRC-UIDAI-001 — Aadhaar Handbook 2026
 
 **Publisher:** UIDAI  
-**URL:** https://uidai.gov.in/en/295-faqs/enrolment-update.html  
+**URL:** https://uidai.gov.in/images/LR_Aadhaar_Handbook_2026.pdf
 **Relevant propositions:**
 
-- names should be entered carefully and fully;
-- UIDAI explicitly gives examples such as `V. Vijayan` → `Venkatraman Vijayan` and `R. K. Srivastava` → `Ramesh Kumar Srivastava`;
-- where documentary proofs vary between initials and full name, full name should be recorded in the described enrolment context;
-- Aadhaar supports multiple regional languages;
-- transliteration can require user/operator correction and can produce errors.
+- demographic name updates are supported through documented, proof-dependent processes;
+- Aadhaar supports regional-language demographic representations;
+- the handbook distinguishes update channels and supporting-document requirements.
 
-**Used by:** Indian name semantics, controlled initial-expansion test fixtures, transliteration uncertainty.
+**Used by:** demographic-update context and regional-language uncertainty. The exact initial relation in the golden fixture is explicitly synthetic and never inferred from this source.
 
 ## SRC-UIDAI-002 — Updating Data on Aadhaar
 

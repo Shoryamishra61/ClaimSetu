@@ -20,5 +20,5 @@ The interface is mobile-first, keyboard accessible, English/Hindi, and designed 
 
 - Live app: <https://shoryamishra61.github.io/handover29c/>
 - Source: <https://github.com/Shoryamishra61/handover29c/tree/identity-rescue-pivot>
-- Working walkthrough: <https://github.com/Shoryamishra61/handover29c/raw/refs/heads/identity-rescue-pivot/output/video/identity-rescue-demo.webm>
-- Narrated final video: pending final recording
+- Narrated final video (118 seconds): <https://github.com/Shoryamishra61/handover29c/raw/refs/heads/identity-rescue-pivot/output/video/identity-rescue-final-submission.mp4>
+- Supplemental silent walkthrough: <https://github.com/Shoryamishra61/handover29c/raw/refs/heads/identity-rescue-pivot/output/video/identity-rescue-demo.webm>

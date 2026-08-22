@@ -16,7 +16,11 @@
     "e2e": "playwright test",
     "e2e:pages": "node scripts/smoke-static-pages.mjs",
     "e2e:install": "playwright install --with-deps chromium",
-    "record:demo": "node scripts/record-demo.mjs"
+    "record:demo": "node scripts/record-demo.mjs",
+    "record:final": "node scripts/record-final-demo.mjs",
+    "mux:final": "node scripts/mux-final-demo.mjs",
+    "inspect:final": "node scripts/inspect-final-demo.mjs",
+    "encode:final": "powershell -ExecutionPolicy Bypass -File ../../scripts/encode_final_demo.ps1"
   },
   "dependencies": {
     "react": "18.3.1",

@@ -1,6 +1,6 @@
 # Identity Rescue
 
-[Live public demo](https://shoryamishra61.github.io/handover29c/) · [Public source snapshot](https://github.com/Shoryamishra61/handover29c/tree/identity-rescue-pivot) · [23.88-second working walkthrough](https://github.com/Shoryamishra61/handover29c/raw/refs/heads/identity-rescue-pivot/output/video/identity-rescue-demo.webm)
+[Live public demo](https://shoryamishra61.github.io/handover29c/) · [Public source snapshot](https://github.com/Shoryamishra61/handover29c/tree/identity-rescue-pivot) · [118-second narrated submission video](https://github.com/Shoryamishra61/handover29c/raw/refs/heads/identity-rescue-pivot/output/video/identity-rescue-final-submission.mp4)
 
 Identity Rescue is an independent, browser-based hackathon prototype that helps a citizen understand which cross-service record inconsistency actually blocks a selected public-service task—and which visible differences should **not** be changed.
 
@@ -71,6 +71,8 @@ powershell -ExecutionPolicy Bypass -File scripts\verify.ps1
 ```
 
 The focused gate covers deterministic rules/planning, mutation rejection, source allowlisting, security headers, English/Hindi completeness, axe, keyboard/dialog focus, deep-link refresh, all three browser journeys, the generated static deployment, 320 CSS px, and 200% zoom.
+
+Generate and inspect the final narrated video with `npm run record:final`, `npm run mux:final`, `npm run encode:final`, and `npm run inspect:final` from `apps/web`. The published MP4 is 118 seconds, 1280×720, and contains one audio and one video track.
 
 ## API
 

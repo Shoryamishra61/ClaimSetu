@@ -2,7 +2,8 @@ from __future__ import annotations
 
 from itertools import combinations
 
-from .fixtures import SCENARIOS, SOURCES, ScenarioFixture, scenario_copy
+from .adapters import load_fixture_records
+from .fixtures import RULES, SCENARIOS, SOURCES, ScenarioFixture, scenario_copy
 from .models import (
     BeforeAfter,
     CorrectionAction,
@@ -12,12 +13,19 @@ from .models import (
     FindingState,
     PlanResult,
     ReadinessState,
+    RuleDefinition,
     ScenarioAnalysis,
     ScenarioSummary,
+    SimulationEvent,
     SourceReference,
     SyntheticRecord,
 )
-from .normalization import expand_controlled_tokens, name_tokens, normalize_text
+from .normalization import (
+    ComparisonResult,
+    compare_iso_dates,
+    compare_names,
+    normalize_text,
+)
 
 
 class ScenarioNotFound(KeyError):
@@ -56,6 +64,9 @@ class IdentityRescueEngine:
     def list_sources(self) -> list[SourceReference]:
         return list(SOURCES.values())
 
+    def list_rules(self) -> list[RuleDefinition]:
+        return list(RULES.values())
+
     def analyze(
         self, scenario_id: str, applied_action_ids: list[str] | None = None
     ) -> ScenarioAnalysis:
@@ -66,7 +77,9 @@ class IdentityRescueEngine:
         action_ids = applied_action_ids or []
         records, before_after = self._apply_actions(fixture, action_ids)
         findings = self._evaluate(fixture, records)
+        self._validate_rule_traces(fixture, findings)
         readiness = self._readiness(findings)
+        simulation_events = self._simulation_events(fixture, action_ids)
         plan = None if readiness is ReadinessState.READY_SIMULATION else self._plan(fixture, action_ids)
         ready = readiness is ReadinessState.READY_SIMULATION
         prefix = {
@@ -96,9 +109,26 @@ class IdentityRescueEngine:
             recommended_plan=plan,
             applied_action_ids=action_ids,
             before_after=before_after,
+            simulation_events=simulation_events,
             official_handoff=fixture.official_handoff,
             source_ids=sorted({source for finding in findings for source in finding.source_ids}),
         )
+
+    @staticmethod
+    def _validate_rule_traces(
+        fixture: ScenarioFixture, findings: list[Finding]
+    ) -> None:
+        for finding in findings:
+            rule = RULES.get(finding.rule_id)
+            if rule is None:
+                raise LookupError(f"Rule not found: {finding.rule_id}")
+            if (
+                rule.goal is not fixture.summary.goal
+                or finding.rule_version != rule.version
+                or finding.evidence_status is not rule.evidence_status
+                or finding.source_ids != rule.source_ids
+            ):
+                raise ValueError(f"Rule trace drift: {finding.rule_id}")
 
     def simulate(
         self, scenario_id: str, action_id: str, applied_action_ids: list[str] | None = None
@@ -127,7 +157,7 @@ class IdentityRescueEngine:
         unknown = set(action_ids) - action_map.keys()
         if unknown:
             raise InvalidSimulationAction(sorted(unknown)[0])
-        records = [record.model_copy(deep=True) for record in fixture.records]
+        records = load_fixture_records(fixture)
         changes: list[BeforeAfter] = []
         for action_id in action_ids:
             action = action_map[action_id]
@@ -152,6 +182,30 @@ class IdentityRescueEngine:
                     value.normalized = normalize_text(value.original)
                     value.derived_label = "Comparison form"
         return records, changes
+
+    def _simulation_events(
+        self, fixture: ScenarioFixture, action_ids: list[str]
+    ) -> list[SimulationEvent]:
+        events: list[SimulationEvent] = []
+        for index, action_id in enumerate(action_ids, start=1):
+            before_records, _ = self._apply_actions(fixture, action_ids[: index - 1])
+            after_records, _ = self._apply_actions(fixture, action_ids[:index])
+            events.append(
+                SimulationEvent(
+                    event_id=f"SIM-{fixture.summary.scenario_id}-{index}-{action_id}",
+                    sequence=index,
+                    scenario_id=fixture.summary.scenario_id,
+                    fixture_version=fixture.fixture_version,
+                    action_id=action_id,
+                    readiness_before=self._readiness(
+                        self._evaluate(fixture, before_records)
+                    ),
+                    readiness_after=self._readiness(
+                        self._evaluate(fixture, after_records)
+                    ),
+                )
+            )
+        return events
 
     def _evaluate(
         self, fixture: ScenarioFixture, records: list[SyntheticRecord]
@@ -187,11 +241,15 @@ class IdentityRescueEngine:
 
         aadhaar_name = str(_field(aadhaar, "name") or "")
         dl_name = str(_field(dl, "name") or "")
-        expanded_aadhaar = expand_controlled_tokens(
-            name_tokens(aadhaar_name), fixture.known_name_relations
+        name_result = compare_names(
+            aadhaar_name,
+            dl_name,
+            controlled_relations=fixture.known_name_relations,
         )
-        expanded_dl = expand_controlled_tokens(name_tokens(dl_name), fixture.known_name_relations)
-        name_passes = bool(expanded_aadhaar) and expanded_aadhaar == expanded_dl
+        name_passes = name_result in {
+            ComparisonResult.EXACT,
+            ComparisonResult.RULE_COMPATIBLE,
+        }
         name = Finding(
             finding_id="FIND-DL-002",
             rule_id="DL-002",
@@ -219,12 +277,22 @@ class IdentityRescueEngine:
             uncertainty_key="finding.dl.name.uncertainty",
         )
 
-        dob_passes = _field(aadhaar, "dob") == _field(dl, "dob")
+        dob_result = compare_iso_dates(
+            str(_field(aadhaar, "dob") or ""), str(_field(dl, "dob") or "")
+        )
+        dob_passes = dob_result is ComparisonResult.EXACT
+        dob_state = {
+            ComparisonResult.EXACT: FindingState.MATCH_EXACT,
+            ComparisonResult.MISSING: FindingState.MISSING_REQUIRED,
+            ComparisonResult.REVIEW: FindingState.MISMATCH_REVIEW,
+            ComparisonResult.MISMATCH: FindingState.MISMATCH_BLOCKING,
+            ComparisonResult.RULE_COMPATIBLE: FindingState.MATCH_RULE_COMPATIBLE,
+        }[dob_result]
         dob = Finding(
             finding_id="FIND-DL-003",
             rule_id="DL-003",
             rule_version="1.0",
-            state=FindingState.MATCH_EXACT if dob_passes else FindingState.MISMATCH_BLOCKING,
+            state=dob_state,
             title_key="finding.dl.dob.title",
             explanation_key=("finding.dl.dob.pass" if dob_passes else "finding.dl.dob.block"),
             causal=not dob_passes,
@@ -244,16 +312,16 @@ class IdentityRescueEngine:
         aadhaar = _record(records, "REC-AADHAAR-ARVIND")
         pan = _record(records, "REC-PAN-ARVIND")
         epfo = _record(records, "REC-EPFO-ARVIND")
-        aadhaar_tokens = expand_controlled_tokens(
-            name_tokens(str(_field(aadhaar, "name") or "")), fixture.known_name_relations
+        aadhaar_name = str(_field(aadhaar, "name") or "")
+        names_compatible = all(
+            compare_names(
+                aadhaar_name,
+                str(_field(record, "name") or ""),
+                controlled_relations=fixture.known_name_relations,
+            )
+            in {ComparisonResult.EXACT, ComparisonResult.RULE_COMPATIBLE}
+            for record in (pan, epfo)
         )
-        pan_tokens = expand_controlled_tokens(
-            name_tokens(str(_field(pan, "name") or "")), fixture.known_name_relations
-        )
-        epfo_tokens = expand_controlled_tokens(
-            name_tokens(str(_field(epfo, "name") or "")), fixture.known_name_relations
-        )
-        names_compatible = bool(aadhaar_tokens) and aadhaar_tokens == pan_tokens == epfo_tokens
         name = Finding(
             finding_id="FIND-EPFO-001",
             rule_id="EPFO-001",
@@ -279,15 +347,30 @@ class IdentityRescueEngine:
             source_ids=["SRC-EPFO-001"],
             uncertainty_key="finding.epfo.name.uncertainty",
         )
-        dob_values = {_field(record, "dob") for record in (aadhaar, pan, epfo)}
+        dob_results = [
+            compare_iso_dates(
+                str(_field(aadhaar, "dob") or ""), str(_field(record, "dob") or "")
+            )
+            for record in (pan, epfo)
+        ]
+        dob_passes = all(result is ComparisonResult.EXACT for result in dob_results)
+        dob_state = (
+            FindingState.MATCH_EXACT
+            if dob_passes
+            else (
+                FindingState.MISSING_REQUIRED
+                if ComparisonResult.MISSING in dob_results
+                else FindingState.MISMATCH_REVIEW
+            )
+        )
         dob = Finding(
             finding_id="FIND-EPFO-002",
             rule_id="EPFO-002",
             rule_version="1.0",
-            state=FindingState.MATCH_EXACT if len(dob_values) == 1 else FindingState.MISMATCH_REVIEW,
+            state=dob_state,
             title_key="finding.epfo.dob.title",
             explanation_key="finding.epfo.dob.pass",
-            causal=False,
+            causal=not dob_passes,
             evidence_status=EvidenceStatus.OFFICIAL_SOURCE_INTERPRETED,
             inputs=[_input(record, "dob", f"{record.label} date of birth") for record in (aadhaar, pan, epfo)],
             source_ids=["SRC-EPFO-001"],
@@ -332,7 +415,9 @@ class IdentityRescueEngine:
         dl = _record(records, "REC-DL-MEERA")
         chosen_name = str(_field(aadhaar, "name") or "")
         dl_name = str(_field(dl, "name") or "")
-        target_passes = normalize_text(chosen_name) == normalize_text(dl_name)
+        target_passes = (
+            compare_names(chosen_name, dl_name) is ComparisonResult.EXACT
+        )
         target = Finding(
             finding_id="FIND-LIFE-002",
             rule_id="LIFE-002",

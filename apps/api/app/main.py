@@ -63,20 +63,20 @@ class SPAStaticFiles(StaticFiles):
             return await super().get_response("index.html", scope)
         return response
 
-#: No inline script, no external origin, nothing embeddable. ``style-src`` allows
-#: inline styles because the Vite build inlines critical CSS; scripts do not get the
-#: same latitude.
+#: The production bundle uses external same-origin assets only. Keep the Docker
+#: response policy aligned with the static-hosting meta policy.
 CONTENT_SECURITY_POLICY = (
     "default-src 'self'; "
     "script-src 'self'; "
-    "style-src 'self' 'unsafe-inline'; "
+    "style-src 'self'; "
     "img-src 'self' data:; "
     "font-src 'self' data:; "
-    "connect-src 'self' ws: wss:; "
+    "connect-src 'self'; "
     "frame-ancestors 'none'; "
-    "base-uri 'self'; "
+    "base-uri 'none'; "
     "form-action 'none'; "
-    "object-src 'none'"
+    "object-src 'none'; "
+    "upgrade-insecure-requests"
 )
 
 SECURITY_HEADERS = {

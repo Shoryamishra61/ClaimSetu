@@ -10,18 +10,18 @@ The frozen package under `docs/identity-rescue/` has precedence. This ledger dis
 | Scenario A | DL name reconciliation, two routes, ACT-A1 minimum plan | unit + desktop/mobile E2E | PASS |
 | Scenario B | compatible name variant plus causal service-history finding | anti-error unit + E2E | PASS |
 | Scenario C | ACT-C1 only; PAN/address retained as non-blocking | planner unit + E2E | PASS |
-| Deterministic rules | conservative normalization; explicit relation expansion only | backend tests | PASS |
+| Deterministic rules | conservative normalization; explicit relation expansion only; versioned rule registry | 40 backend tests including name/date edge matrix | PASS |
 | Evidence/provenance | original facts, rule/version, source/evidence status, uncertainty | API tests + evidence drawer E2E | PASS |
 | Simulation | allowlisted mutation, before/after, recomputation, undo | backend + E2E | PASS |
 | Official handoff | registry-backed HTTPS URL and process-change caveat | allowlist test + UI | PASS |
 | Privacy/trust | synthetic-only controls, no real-data field, no government call | source inspection + health/API assertions | PASS |
 | English/Hindi | every registered key has both locales; one Hindi flow | component + E2E | PASS automated; human review pending |
-| Accessibility/reflow | semantic landmarks, dialog, focus return, live status, reduced motion CSS | axe/keyboard/320px/200% E2E | PASS automated; NVDA pending |
+| Accessibility/reflow | semantic landmarks, dialog, focus return, route/live announcements, reduced motion CSS | axe every route/keyboard/320px/200% E2E | PASS automated; NVDA pending |
 | AI fallback | complete static-template path; health declares `ai_required=false` | all golden E2E | PASS |
 | Optional AI generation | credential-gated, schema-grounded endpoint | not implemented without credential authorization | PENDING OPTIONAL |
 | Container | non-root, same-origin SPA/API, deep-link fallback | Docker smoke | PASS |
 | Public deployment | permanent HTTPS, logged-out/incognito | GitHub Pages 200 + live Chromium completion of all three journeys; zero external requests | PASS |
-| Submission assets | 235-word summary, <=2-minute script, 23.88-second working capture | word/duration/frame checks | PASS local; narrated/public upload pending |
+| Submission assets | 235-word summary and tracked 118-second narrated H.264/AAC video | duration, dimensions, audio/video tracks, ten extracted frames | PASS |
 
 ## Key invariants proved
 

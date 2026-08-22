@@ -83,7 +83,7 @@ h1, h2, h3, p { overflow-wrap: anywhere; }
 .profile-chip strong { margin: 3px 0; }
 .case-progress { margin: 34px 0 20px; }
 .case-progress ol { display: grid; margin: 0; padding: 0; grid-template-columns: repeat(4, 1fr); list-style: none; }
-.case-progress li { display: flex; min-width: 0; align-items: center; gap: 8px; color: #78827d; font-size: 13px; font-weight: 700; }
+.case-progress li { display: flex; min-width: 0; align-items: center; gap: 8px; color: var(--muted); font-size: 13px; font-weight: 700; }
 .case-progress li::after { height: 1px; flex: 1; background: #c7cfca; content: ""; }
 .case-progress li:last-child::after { display: none; }
 .case-progress li span { display: grid; width: 28px; height: 28px; flex: 0 0 28px; place-items: center; border: 1px solid #aeb9b3; border-radius: 50%; }

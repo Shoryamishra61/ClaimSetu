@@ -146,6 +146,11 @@ function analysis(ready = false): ScenarioAnalysis {
         effort_key: "effort.issuer",
         effect_key: "action.a1.effect",
         impact_key: "action.a1.impact",
+        prerequisite_keys: [],
+        affected_goals: ["DIGILOCKER_FETCH_DL"],
+        affected_record_ids: ["REC-DL-ANANYA", "REC-AADHAAR-ANANYA"],
+        risk_key: "action.a1.impact",
+        uncertainty_key: "finding.dl.name.uncertainty",
         reversible: true,
         evidence_status: "PROTOTYPE_SIMULATION",
         source_ids: ["SRC-DIGI-001"],
@@ -161,6 +166,11 @@ function analysis(ready = false): ScenarioAnalysis {
         effort_key: "effort.review",
         effect_key: "action.a2.effect",
         impact_key: "action.a2.impact",
+        prerequisite_keys: [],
+        affected_goals: ["DIGILOCKER_FETCH_DL"],
+        affected_record_ids: ["REC-AADHAAR-ANANYA", "REC-DL-ANANYA"],
+        risk_key: "action.a2.impact",
+        uncertainty_key: "finding.dl.name.uncertainty",
         reversible: true,
         evidence_status: "NEEDS_AUTHORITY_VALIDATION",
         source_ids: ["SRC-DIGI-001"],
@@ -184,6 +194,19 @@ function analysis(ready = false): ScenarioAnalysis {
             field_label: "name",
             before: "KRISHNAN ANANYA RAMESH",
             after: "ANANYA RAMESH KRISHNAN",
+          },
+        ]
+      : [],
+    simulation_events: ready
+      ? [
+          {
+            event_id: "SIM-digilocker-dl-1-ACT-A1",
+            sequence: 1,
+            scenario_id: "digilocker-dl",
+            fixture_version: "1.0",
+            action_id: "ACT-A1",
+            readiness_before: "BLOCKED",
+            readiness_after: "READY_SIMULATION",
           },
         ]
       : [],

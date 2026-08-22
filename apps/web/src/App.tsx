@@ -881,6 +881,7 @@ function PrivacyPage() {
 }
 
 export default function App() {
+  const { t } = useLang();
   const [route, setRoute] = useState<Route>(() =>
     routeFromPath(location.pathname),
   );
@@ -894,17 +895,28 @@ export default function App() {
     navigate("/");
   };
   const title = useMemo(
-    () =>
-      route.kind === "home"
-        ? "Identity Rescue"
-        : `${route.kind === "case" ? "Demo case" : route.kind} · Identity Rescue`,
-    [route],
+    () => {
+      if (route.kind === "home") return t("home.title");
+      if (route.kind === "sources") return t("sources.title");
+      if (route.kind === "privacy") return t("privacy.title");
+      const card = scenarioCards.find((item) => item.id === route.scenarioId);
+      return card ? t(card.title) : t("error.load");
+    },
+    [route, t],
   );
   useEffect(() => {
-    document.title = title;
+    document.title = `${title} · Identity Rescue`;
   }, [title]);
   return (
     <Shell onHome={reset}>
+      <p
+        className="sr-only route-announcement"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        {title}
+      </p>
       {route.kind === "home" && (
         <Home onStart={(id) => navigate(`/case/${id}`)} />
       )}

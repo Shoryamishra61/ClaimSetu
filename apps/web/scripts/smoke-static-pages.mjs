@@ -95,6 +95,30 @@ try {
   await simulate(page, /use the chosen current name in the fictional dl source/i);
   await page.getByRole("heading", { name: /still different, but not blocking/i }).waitFor();
 
+  await page.getByRole("button", { name: /identity rescue: all demo cases/i }).click();
+  await page.getByRole("button", { name: /sources & limits/i }).first().click();
+  const officialLinks = await page.locator('main a[target="_blank"]').evaluateAll((links) =>
+    links.map((link) => ({
+      href: link.getAttribute("href"),
+      rel: link.getAttribute("rel"),
+    })),
+  );
+  const expectedSources = new Set([
+    "https://www.digilocker.gov.in/web/about/faq",
+    "https://uidai.gov.in/images/LR_Aadhaar_Handbook_2026.pdf",
+    "https://www.epfindia.gov.in/site_docs/PDFs/Circulars/Y2020-2021/FAQUANKYC.pdf",
+  ]);
+  if (
+    officialLinks.length !== expectedSources.size ||
+    officialLinks.some(
+      (link) =>
+        !expectedSources.has(link.href) ||
+        link.rel !== "noopener noreferrer",
+    )
+  ) {
+    throw new Error(`Static source allowlist drift: ${JSON.stringify(officialLinks)}`);
+  }
+
   if (externalRequests.length) {
     throw new Error(`Static demo made unexpected external requests: ${externalRequests.join(", ")}`);
   }

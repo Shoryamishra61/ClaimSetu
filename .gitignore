@@ -13,6 +13,11 @@ dist-pages/
 playwright-report/
 test-results/
 output/video/frame-*.png
+output/video/identity-rescue-final-visual.webm
+output/video/identity-rescue-final-narration.wav
+output/video/identity-rescue-narration-*.wav
+output/video/identity-rescue-final-submission.webm
+output/video/final-frame-*.png
 
 # Runtime and intermediate evidence
 var/*.sqlite3

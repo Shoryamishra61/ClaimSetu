@@ -9,6 +9,8 @@ from .models import (
     FieldValue,
     Goal,
     OfficialHandoff,
+    ReadinessState,
+    RuleDefinition,
     ScenarioSummary,
     SourceReference,
     SyntheticProfile,
@@ -29,11 +31,12 @@ SOURCES: dict[str, SourceReference] = {
     ),
     "SRC-UIDAI-001": SourceReference(
         source_id="SRC-UIDAI-001",
-        title="Enrolment and Update FAQ",
+        title="Aadhaar Handbook 2026",
         publisher="UIDAI",
-        url="https://uidai.gov.in/en/295-faqs/enrolment-update.html",
+        url="https://uidai.gov.in/images/LR_Aadhaar_Handbook_2026.pdf",
         proposition=(
-            "UIDAI guidance discusses full names, initials and variation across documentary proofs."
+            "UIDAI documents demographic name updates and regional-language handling. "
+            "The initial expansion used here is an explicit fictional profile relation, not a UIDAI match decision."
         ),
         last_checked_at="2026-08-22",
     ),
@@ -51,6 +54,115 @@ SOURCES: dict[str, SourceReference] = {
 }
 
 
+RULES: dict[str, RuleDefinition] = {
+    rule.rule_id: rule
+    for rule in (
+        RuleDefinition(
+            rule_id="DL-001",
+            version="1.0",
+            goal=Goal.DIGILOCKER_FETCH_DL,
+            input_fields=["DL_SOURCE_DEMO.record_present"],
+            predicate_code="RECORD_PRESENT",
+            evidence_status=EvidenceStatus.OFFICIAL_SOURCE_DERIVED,
+            source_ids=["SRC-DIGI-001"],
+            last_checked_at="2026-08-22",
+        ),
+        RuleDefinition(
+            rule_id="DL-002",
+            version="1.0",
+            goal=Goal.DIGILOCKER_FETCH_DL,
+            input_fields=["AADHAAR_DEMO.name", "DL_SOURCE_DEMO.name"],
+            predicate_code="CONTROLLED_FULL_NAME_EQUAL",
+            evidence_status=EvidenceStatus.OFFICIAL_SOURCE_INTERPRETED,
+            source_ids=["SRC-DIGI-001", "SRC-UIDAI-001"],
+            last_checked_at="2026-08-22",
+        ),
+        RuleDefinition(
+            rule_id="DL-003",
+            version="1.0",
+            goal=Goal.DIGILOCKER_FETCH_DL,
+            input_fields=["AADHAAR_DEMO.dob", "DL_SOURCE_DEMO.dob"],
+            predicate_code="ISO_DATE_EQUAL",
+            evidence_status=EvidenceStatus.PROTOTYPE_SIMULATION,
+            source_ids=[],
+            last_checked_at="2026-08-22",
+        ),
+        RuleDefinition(
+            rule_id="EPFO-001",
+            version="1.0",
+            goal=Goal.EPFO_KYC_PREFLIGHT,
+            input_fields=[
+                "AADHAAR_DEMO.name",
+                "PAN_DEMO.name",
+                "EPFO_DEMO.name",
+            ],
+            predicate_code="CONTROLLED_FULL_NAME_COMPATIBILITY",
+            evidence_status=EvidenceStatus.OFFICIAL_SOURCE_INTERPRETED,
+            source_ids=["SRC-EPFO-001"],
+            last_checked_at="2026-08-22",
+        ),
+        RuleDefinition(
+            rule_id="EPFO-002",
+            version="1.0",
+            goal=Goal.EPFO_KYC_PREFLIGHT,
+            input_fields=[
+                "AADHAAR_DEMO.dob",
+                "PAN_DEMO.dob",
+                "EPFO_DEMO.dob",
+            ],
+            predicate_code="ISO_DATE_EQUAL",
+            evidence_status=EvidenceStatus.OFFICIAL_SOURCE_INTERPRETED,
+            source_ids=["SRC-EPFO-001"],
+            last_checked_at="2026-08-22",
+        ),
+        RuleDefinition(
+            rule_id="EPFO-003",
+            version="1.0",
+            goal=Goal.EPFO_KYC_PREFLIGHT,
+            input_fields=[
+                "EPFO_DEMO.date_of_exit",
+                "EPFO_DEMO.last_contribution_month",
+                "EPFO_DEMO.claim_attempt_date",
+            ],
+            predicate_code="SIMULATED_SERVICE_HISTORY_READY",
+            evidence_status=EvidenceStatus.PROTOTYPE_SIMULATION,
+            source_ids=["SRC-EPFO-001"],
+            last_checked_at="2026-08-22",
+        ),
+        RuleDefinition(
+            rule_id="LIFE-001",
+            version="1.0",
+            goal=Goal.LIFE_EVENT_RECONCILIATION,
+            input_fields=["PAN_DEMO.name", "AADHAAR_DEMO.name"],
+            predicate_code="NON_BLOCKING_REMAINING_NAME_VARIANT",
+            evidence_status=EvidenceStatus.PROTOTYPE_SIMULATION,
+            source_ids=[],
+            last_checked_at="2026-08-22",
+        ),
+        RuleDefinition(
+            rule_id="LIFE-002",
+            version="1.0",
+            goal=Goal.LIFE_EVENT_RECONCILIATION,
+            input_fields=["AADHAAR_DEMO.name", "DL_SOURCE_DEMO.name"],
+            predicate_code="CHOSEN_NAME_TARGET_EQUAL",
+            evidence_status=EvidenceStatus.OFFICIAL_SOURCE_INTERPRETED,
+            source_ids=["SRC-DIGI-001"],
+            last_checked_at="2026-08-22",
+        ),
+        RuleDefinition(
+            rule_id="LIFE-003",
+            version="1.0",
+            goal=Goal.LIFE_EVENT_RECONCILIATION,
+            input_fields=["AADHAAR_DEMO.address", "DL_SOURCE_DEMO.address"],
+            predicate_code="UNRELATED_ADDRESS_NON_BLOCKING",
+            evidence_status=EvidenceStatus.PROTOTYPE_SIMULATION,
+            source_ids=[],
+            last_checked_at="2026-08-22",
+        ),
+    )
+}
+
+
 @dataclass(frozen=True, slots=True)
 class ScenarioFixture:
     summary: ScenarioSummary
@@ -61,6 +173,7 @@ class ScenarioFixture:
     actions: tuple[CorrectionAction, ...]
     dependency_trail_keys: tuple[str, ...]
     official_handoff: OfficialHandoff
+    golden_expectations: dict[str, object]
 
 
 ANANYA = ScenarioFixture(
@@ -129,6 +242,11 @@ ANANYA = ScenarioFixture(
             effort_key="effort.issuer",
             effect_key="action.a1.effect",
             impact_key="action.a1.impact",
+            prerequisite_keys=[],
+            affected_goals=[Goal.DIGILOCKER_FETCH_DL],
+            affected_record_ids=["REC-DL-ANANYA", "REC-AADHAAR-ANANYA"],
+            risk_key="action.a1.impact",
+            uncertainty_key="finding.dl.name.uncertainty",
             reversible=True,
             evidence_status=EvidenceStatus.PROTOTYPE_SIMULATION,
             source_ids=["SRC-DIGI-001"],
@@ -144,6 +262,11 @@ ANANYA = ScenarioFixture(
             effort_key="effort.review",
             effect_key="action.a2.effect",
             impact_key="action.a2.impact",
+            prerequisite_keys=[],
+            affected_goals=[Goal.DIGILOCKER_FETCH_DL],
+            affected_record_ids=["REC-AADHAAR-ANANYA", "REC-DL-ANANYA"],
+            risk_key="action.a2.impact",
+            uncertainty_key="finding.dl.name.uncertainty",
             reversible=True,
             evidence_status=EvidenceStatus.NEEDS_AUTHORITY_VALIDATION,
             source_ids=["SRC-UIDAI-001", "SRC-DIGI-001"],
@@ -164,6 +287,11 @@ ANANYA = ScenarioFixture(
         official_label="DigiLocker official FAQ",
         source_id="SRC-DIGI-001",
     ),
+    golden_expectations={
+        "initial_readiness": ReadinessState.BLOCKED.value,
+        "recommended_actions": ["ACT-A1"],
+        "after_actions": {"ACT-A1": ReadinessState.READY_SIMULATION.value},
+    },
 )
 
 
@@ -232,6 +360,11 @@ ARVIND = ScenarioFixture(
             effort_key="effort.review",
             effect_key="action.b_name.effect",
             impact_key="action.b_name.impact",
+            prerequisite_keys=[],
+            affected_goals=[Goal.EPFO_KYC_PREFLIGHT],
+            affected_record_ids=["REC-PAN-ARVIND", "REC-EPFO-ARVIND"],
+            risk_key="action.b_name.impact",
+            uncertainty_key="finding.epfo.name.uncertainty",
             reversible=True,
             evidence_status=EvidenceStatus.PROTOTYPE_SIMULATION,
             source_ids=["SRC-EPFO-001"],
@@ -247,6 +380,11 @@ ARVIND = ScenarioFixture(
             effort_key="effort.employer",
             effect_key="action.b1.effect",
             impact_key="action.b1.impact",
+            prerequisite_keys=[],
+            affected_goals=[Goal.EPFO_KYC_PREFLIGHT],
+            affected_record_ids=["REC-EPFO-ARVIND"],
+            risk_key="action.b1.impact",
+            uncertainty_key="finding.epfo.history.uncertainty",
             reversible=True,
             evidence_status=EvidenceStatus.PROTOTYPE_SIMULATION,
             source_ids=["SRC-EPFO-001"],
@@ -266,6 +404,14 @@ ARVIND = ScenarioFixture(
         official_label="EPFO official UAN and KYC FAQ",
         source_id="SRC-EPFO-001",
     ),
+    golden_expectations={
+        "initial_readiness": ReadinessState.NOT_IDENTITY_ISSUE.value,
+        "recommended_actions": ["ACT-B1"],
+        "after_actions": {
+            "ACT-B-NAME": ReadinessState.NOT_IDENTITY_ISSUE.value,
+            "ACT-B1": ReadinessState.READY_SIMULATION.value,
+        },
+    },
 )
 
 
@@ -334,6 +480,11 @@ MEERA = ScenarioFixture(
             effort_key="effort.issuer",
             effect_key="action.c1.effect",
             impact_key="action.c1.impact",
+            prerequisite_keys=[],
+            affected_goals=[Goal.LIFE_EVENT_RECONCILIATION],
+            affected_record_ids=["REC-DL-MEERA", "REC-AADHAAR-MEERA"],
+            risk_key="action.c1.impact",
+            uncertainty_key="finding.life.target.uncertainty",
             reversible=True,
             evidence_status=EvidenceStatus.PROTOTYPE_SIMULATION,
             source_ids=["SRC-DIGI-001"],
@@ -349,6 +500,11 @@ MEERA = ScenarioFixture(
             effort_key="effort.review",
             effect_key="action.c2.effect",
             impact_key="action.c2.impact",
+            prerequisite_keys=[],
+            affected_goals=[Goal.LIFE_EVENT_RECONCILIATION],
+            affected_record_ids=["REC-PAN-MEERA", "REC-AADHAAR-MEERA"],
+            risk_key="action.c2.impact",
+            uncertainty_key="finding.life.target.uncertainty",
             reversible=True,
             evidence_status=EvidenceStatus.NEEDS_AUTHORITY_VALIDATION,
             source_ids=[],
@@ -364,6 +520,11 @@ MEERA = ScenarioFixture(
             effort_key="effort.issuer",
             effect_key="action.c3.effect",
             impact_key="action.c3.impact",
+            prerequisite_keys=[],
+            affected_goals=[Goal.LIFE_EVENT_RECONCILIATION],
+            affected_record_ids=["REC-DL-MEERA", "REC-AADHAAR-MEERA"],
+            risk_key="action.c3.impact",
+            uncertainty_key="finding.life.target.uncertainty",
             reversible=True,
             evidence_status=EvidenceStatus.PROTOTYPE_SIMULATION,
             source_ids=[],
@@ -383,6 +544,12 @@ MEERA = ScenarioFixture(
         official_label="DigiLocker official FAQ",
         source_id="SRC-DIGI-001",
     ),
+    golden_expectations={
+        "initial_readiness": ReadinessState.BLOCKED.value,
+        "recommended_actions": ["ACT-C1"],
+        "after_actions": {"ACT-C1": ReadinessState.READY_SIMULATION.value},
+        "minimum_plan_excludes": ["ACT-C2", "ACT-C3"],
+    },
 )
 
 

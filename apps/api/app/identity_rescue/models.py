@@ -73,6 +73,17 @@ class SourceReference(StrictModel):
     last_checked_at: str
 
 
+class RuleDefinition(StrictModel):
+    rule_id: str
+    version: str
+    goal: Goal
+    input_fields: list[str]
+    predicate_code: str
+    evidence_status: EvidenceStatus
+    source_ids: list[str]
+    last_checked_at: str
+
+
 class EvidenceInput(StrictModel):
     record_id: str
     authority: str
@@ -105,6 +116,11 @@ class CorrectionAction(StrictModel):
     effort_key: str
     effect_key: str
     impact_key: str
+    prerequisite_keys: list[str]
+    affected_goals: list[Goal]
+    affected_record_ids: list[str]
+    risk_key: str
+    uncertainty_key: str
     reversible: bool
     evidence_status: EvidenceStatus
     source_ids: list[str]
@@ -135,6 +151,16 @@ class BeforeAfter(StrictModel):
     after: str | bool | None
 
 
+class SimulationEvent(StrictModel):
+    event_id: str
+    sequence: int = Field(ge=1)
+    scenario_id: str
+    fixture_version: str
+    action_id: str
+    readiness_before: ReadinessState
+    readiness_after: ReadinessState
+
+
 class ScenarioSummary(StrictModel):
     scenario_id: str
     goal: Goal
@@ -159,6 +185,7 @@ class ScenarioAnalysis(StrictModel):
     recommended_plan: PlanResult | None
     applied_action_ids: list[str]
     before_after: list[BeforeAfter]
+    simulation_events: list[SimulationEvent]
     official_handoff: OfficialHandoff
     source_ids: list[str]
     deterministic: bool = True

@@ -72,6 +72,11 @@ export interface CorrectionAction {
   effort_key: string;
   effect_key: string;
   impact_key: string;
+  prerequisite_keys: string[];
+  affected_goals: string[];
+  affected_record_ids: string[];
+  risk_key: string;
+  uncertainty_key: string;
   reversible: boolean;
   evidence_status: string;
   source_ids: string[];
@@ -98,6 +103,15 @@ export interface BeforeAfter {
   before: string | boolean | null;
   after: string | boolean | null;
 }
+export interface SimulationEvent {
+  event_id: string;
+  sequence: number;
+  scenario_id: string;
+  fixture_version: string;
+  action_id: string;
+  readiness_before: ReadinessState;
+  readiness_after: ReadinessState;
+}
 export interface ScenarioSummary {
   scenario_id: string;
   goal: string;
@@ -121,6 +135,7 @@ export interface ScenarioAnalysis {
   recommended_plan: PlanResult | null;
   applied_action_ids: string[];
   before_after: BeforeAfter[];
+  simulation_events: SimulationEvent[];
   official_handoff: OfficialHandoff;
   source_ids: string[];
   deterministic: boolean;
