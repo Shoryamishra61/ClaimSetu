@@ -1,228 +1,19 @@
-import { render, screen, within } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
+import staticBundleJson from "../public/identity-rescue-static.json";
 import App from "../src/App";
 import type { ScenarioAnalysis, SourceReference } from "../src/identityApi";
 import { LangProvider } from "../src/i18n/LangProvider";
 import { UI, phrase } from "../src/i18n/strings";
 
-const source: SourceReference = {
-  source_id: "SRC-DIGI-001",
-  title: "DigiLocker FAQs",
-  publisher: "DigiLocker / NeGD",
-  url: "https://www.digilocker.gov.in/web/about/faq",
-  proposition:
-    "DigiLocker says the Aadhaar name should match the DL source name.",
-  last_checked_at: "2026-08-22",
+const bundle = staticBundleJson as unknown as {
+  sources: SourceReference[];
+  analyses: Record<string, ScenarioAnalysis>;
 };
-
-function analysis(ready = false): ScenarioAnalysis {
-  return {
-    scenario_id: "digilocker-dl",
-    fixture_version: "1.0",
-    goal: "DIGILOCKER_FETCH_DL",
-    profile: {
-      profile_id: "DEMO-ANANYA-01",
-      display_name: "Ananya R. Krishnan",
-      fictional: true,
-      preferred_locale: "en-IN",
-      scenario_note: "profile.ananya.note",
-    },
-    readiness: ready ? "READY_SIMULATION" : "BLOCKED",
-    headline_key: ready ? "diagnosis.dl.ready" : "diagnosis.dl.blocked",
-    explanation_key: ready
-      ? "diagnosis.dl.ready_explanation"
-      : "diagnosis.dl.blocked_explanation",
-    next_best_action_key: ready
-      ? "diagnosis.next.official"
-      : "diagnosis.next.compare",
-    records: [
-      {
-        record_id: "REC-AADHAAR-ANANYA",
-        authority: "AADHAAR_DEMO",
-        label: "Aadhaar demo record",
-        fixture_version: "1.0",
-        fields: {
-          name: {
-            original: "ANANYA R KRISHNAN",
-            normalized: "ananya r krishnan",
-            script: "Latn",
-            locale: "en-IN",
-            derived_label: "Comparison form",
-          },
-          dob: {
-            original: "1998-02-14",
-            normalized: "1998 02 14",
-            script: null,
-            locale: null,
-            derived_label: null,
-          },
-        },
-      },
-      {
-        record_id: "REC-DL-ANANYA",
-        authority: "DL_SOURCE_DEMO",
-        label: "Driving Licence source demo record",
-        fixture_version: "1.0",
-        fields: {
-          name: {
-            original: ready
-              ? "ANANYA RAMESH KRISHNAN"
-              : "KRISHNAN ANANYA RAMESH",
-            normalized: null,
-            script: "Latn",
-            locale: "en-IN",
-            derived_label: null,
-          },
-          dob: {
-            original: "1998-02-14",
-            normalized: null,
-            script: null,
-            locale: null,
-            derived_label: null,
-          },
-          record_present: {
-            original: true,
-            normalized: null,
-            script: null,
-            locale: null,
-            derived_label: null,
-          },
-        },
-      },
-    ],
-    findings: [
-      {
-        finding_id: "FIND-DL-002",
-        rule_id: "DL-002",
-        rule_version: "1.0",
-        state: ready ? "MATCH_RULE_COMPATIBLE" : "MISMATCH_BLOCKING",
-        title_key: ready
-          ? "finding.dl.name.pass_title"
-          : "finding.dl.name.block_title",
-        explanation_key: ready
-          ? "finding.dl.name.pass"
-          : "finding.dl.name.block",
-        causal: !ready,
-        evidence_status: "OFFICIAL_SOURCE_INTERPRETED",
-        inputs: [
-          {
-            record_id: "REC-AADHAAR-ANANYA",
-            authority: "AADHAAR_DEMO",
-            field: "name",
-            label: "Aadhaar demo name",
-            original_value: "ANANYA R KRISHNAN",
-          },
-          {
-            record_id: "REC-DL-ANANYA",
-            authority: "DL_SOURCE_DEMO",
-            field: "name",
-            label: "Driving Licence source demo name",
-            original_value: ready
-              ? "ANANYA RAMESH KRISHNAN"
-              : "KRISHNAN ANANYA RAMESH",
-          },
-        ],
-        source_ids: ["SRC-DIGI-001"],
-        uncertainty_key: "finding.dl.name.uncertainty",
-      },
-    ],
-    dependency_trail_keys: [
-      "trail.dl.1",
-      "trail.dl.2",
-      "trail.dl.3",
-      "trail.dl.4",
-      "trail.dl.5",
-    ],
-    actions: [
-      {
-        action_id: "ACT-A1",
-        title_key: "action.a1.title",
-        target_record_id: "REC-DL-ANANYA",
-        target_field: "name",
-        from_value: "KRISHNAN ANANYA RAMESH",
-        to_value: "ANANYA RAMESH KRISHNAN",
-        effort_key: "effort.issuer",
-        effect_key: "action.a1.effect",
-        impact_key: "action.a1.impact",
-        prerequisite_keys: [],
-        affected_goals: ["DIGILOCKER_FETCH_DL"],
-        affected_record_ids: ["REC-DL-ANANYA", "REC-AADHAAR-ANANYA"],
-        risk_key: "action.a1.impact",
-        uncertainty_key: "finding.dl.name.uncertainty",
-        reversible: true,
-        evidence_status: "PROTOTYPE_SIMULATION",
-        source_ids: ["SRC-DIGI-001"],
-        cost: 45,
-      },
-      {
-        action_id: "ACT-A2",
-        title_key: "action.a2.title",
-        target_record_id: "REC-AADHAAR-ANANYA",
-        target_field: "name",
-        from_value: "ANANYA R KRISHNAN",
-        to_value: "ANANYA RAMESH KRISHNAN",
-        effort_key: "effort.review",
-        effect_key: "action.a2.effect",
-        impact_key: "action.a2.impact",
-        prerequisite_keys: [],
-        affected_goals: ["DIGILOCKER_FETCH_DL"],
-        affected_record_ids: ["REC-AADHAAR-ANANYA", "REC-DL-ANANYA"],
-        risk_key: "action.a2.impact",
-        uncertainty_key: "finding.dl.name.uncertainty",
-        reversible: true,
-        evidence_status: "NEEDS_AUTHORITY_VALIDATION",
-        source_ids: ["SRC-DIGI-001"],
-        cost: 100,
-      },
-    ],
-    recommended_plan: ready
-      ? null
-      : {
-          action_ids: ["ACT-A1"],
-          total_cost: 45,
-          reason_codes: ["RESOLVES_TARGET", "ONE_STEP"],
-          equivalent_plan_count: 1,
-        },
-    applied_action_ids: ready ? ["ACT-A1"] : [],
-    before_after: ready
-      ? [
-          {
-            action_id: "ACT-A1",
-            record_label: "Driving Licence source demo record",
-            field_label: "name",
-            before: "KRISHNAN ANANYA RAMESH",
-            after: "ANANYA RAMESH KRISHNAN",
-          },
-        ]
-      : [],
-    simulation_events: ready
-      ? [
-          {
-            event_id: "SIM-digilocker-dl-1-ACT-A1",
-            sequence: 1,
-            scenario_id: "digilocker-dl",
-            fixture_version: "1.0",
-            action_id: "ACT-A1",
-            readiness_before: "BLOCKED",
-            readiness_after: "READY_SIMULATION",
-          },
-        ]
-      : [],
-    official_handoff: {
-      title_key: "handoff.dl.title",
-      step_keys: ["handoff.dl.step1", "handoff.dl.step2", "handoff.dl.step3"],
-      official_url: source.url,
-      official_label: "DigiLocker official FAQ",
-      source_id: source.source_id,
-      caveat_key: "handoff.processes_change",
-    },
-    source_ids: ["SRC-DIGI-001"],
-    deterministic: true,
-    government_systems_contacted: 0,
-  };
-}
+const initial = bundle.analyses["epfo-preflight|"]!;
+const resolved = bundle.analyses["epfo-preflight|ACT-B1"]!;
 
 function json(payload: unknown): Response {
   return new Response(JSON.stringify(payload), {
@@ -230,6 +21,20 @@ function json(payload: unknown): Response {
     headers: { "Content-Type": "application/json" },
   });
 }
+
+function mockLiveApi(): void {
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(async (input: RequestInfo | URL) => {
+      const url = String(input);
+      if (url.endsWith("/sources")) return json(bundle.sources);
+      if (url.endsWith("/simulate")) return json(resolved);
+      if (url.endsWith("/analyze")) return json(initial);
+      throw new Error(`unexpected ${url}`);
+    }),
+  );
+}
+
 function renderApp() {
   return render(
     <LangProvider>
@@ -246,7 +51,7 @@ afterEach(() => {
   localStorage.clear();
 });
 
-describe("Identity Rescue Scenario A", () => {
+describe("ClaimPath EPFO pre-flight", () => {
   it("has non-empty English and Hindi text for every registered UI key", () => {
     for (const [key, value] of Object.entries(UI)) {
       expect(value.en.trim(), `${key} English`).not.toBe("");
@@ -256,158 +61,100 @@ describe("Identity Rescue Scenario A", () => {
     }
   });
 
-  it("opens with a clear, editable goal-first intake", () => {
+  it("opens as a focused, four-step EPFO journey with safe citizen input", () => {
     renderApp();
     expect(
-      screen.getByRole("heading", { level: 1, name: /find what is blocking/i }),
+      screen.getByRole("heading", {
+        level: 1,
+        name: /ravi’s ₹45,000 pf withdrawal is at risk/i,
+      }),
     ).toBeTruthy();
-    expect(screen.getByRole("combobox", { name: /service goal/i })).toBeTruthy();
-    expect(screen.getByRole("combobox", { name: /failure message/i })).toBeTruthy();
-    expect(screen.getByRole("textbox", { name: /describe what happened/i })).toBeTruthy();
-    expect(screen.getByRole("button", { name: /run pre-flight diagnosis/i })).toBeTruthy();
-    expect(screen.getByRole("heading", { name: /your service route/i })).toBeTruthy();
-    expect(screen.queryByText(/vehicle handover/i)).toBeNull();
+    expect(screen.getByRole("textbox", { name: /what did epfo show you/i })).toBeTruthy();
+    expect(screen.getByRole("button", { name: /load ravi’s fictional case/i })).toBeTruthy();
+    expect(screen.getByText("RAVI KUMAR")).toBeTruthy();
+    expect(screen.getByText("RAVI K")).toBeTruthy();
+    expect(screen.getAllByText(/date of exit missing/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/no official record is read or changed/i).length).toBeGreaterThan(0);
+    expect(screen.queryByRole("combobox")).toBeNull();
   });
 
-  it("rejects ID-like numbers and preserves safe browser-only problem context", async () => {
-    vi.stubGlobal(
-      "fetch",
-      vi.fn(async (input: RequestInfo | URL) => {
-        const url = String(input);
-        if (url.endsWith("/sources")) return json([source]);
-        if (url.endsWith("/analyze")) return json(analysis(false));
-        throw new Error(`unexpected ${url}`);
-      }),
-    );
+  it("rejects identifier-like numbers before any diagnostic request", async () => {
+    const fetchMock = vi.fn();
+    vi.stubGlobal("fetch", fetchMock);
     const user = userEvent.setup();
     renderApp();
-    const description = screen.getByRole("textbox", { name: /describe what happened/i });
-    await user.clear(description);
-    await user.type(description, "My identifier is 123456789012 and the task failed");
-    await user.click(screen.getByRole("button", { name: /run pre-flight diagnosis/i }));
-    expect(screen.getByRole("alert").textContent).toMatch(/remove id/i);
-    await user.clear(description);
-    await user.type(description, "The fictional retrieval stopped after the details check.");
-    await user.click(screen.getByRole("button", { name: /run pre-flight diagnosis/i }));
-    expect(await screen.findByText(/fictional retrieval stopped/i)).toBeTruthy();
-    expect(screen.getByText(/cannot change the deterministic diagnosis/i)).toBeTruthy();
+    const note = screen.getByRole("textbox", { name: /what did epfo show you/i });
+    await user.clear(note);
+    await user.type(note, "My UAN is 123456789012 and the claim failed.");
+    await user.click(screen.getByRole("button", { name: /load ravi’s fictional case/i }));
+    expect(screen.getByRole("alert").textContent).toMatch(/remove uan/i);
+    expect(fetchMock).not.toHaveBeenCalled();
   });
 
-  it("switches the full shell and safety copy to Hindi", async () => {
+  it("completes load, diagnose, simulate and official handoff without a modal", async () => {
+    mockLiveApi();
+    const user = userEvent.setup();
+    renderApp();
+
+    await user.click(screen.getByRole("button", { name: /load ravi’s fictional case/i }));
+    expect(await screen.findByRole("heading", { name: /three record sources are ready/i })).toBeTruthy();
+
+    await user.click(screen.getByRole("button", { name: /run claim pre-flight/i }));
+    expect(screen.getByRole("heading", { name: /name is not the blocker/i })).toBeTruthy();
+    expect(screen.getByText(/date of exit is missing/i)).toBeTruthy();
+    expect(screen.queryByRole("dialog")).toBeNull();
+
+    await user.click(screen.getByText(/view technical evidence/i));
+    expect(screen.getByText(/EPFO-003 v1.0/)).toBeTruthy();
+
+    await user.click(screen.getByRole("button", { name: /simulate minimum fix/i }));
+    expect(await screen.findByRole("heading", { name: /modeled blocker is cleared/i })).toBeTruthy();
+    expect(screen.getByText("2026-07-31")).toBeTruthy();
+    expect(screen.getByText(/not a guarantee of claim approval/i)).toBeTruthy();
+    expect(screen.getByText(/no official record was changed/i)).toBeTruthy();
+    expect(
+      screen.getByRole("link", { name: /open official epfo guidance/i }).getAttribute("href"),
+    ).toBe(initial.official_handoff.official_url);
+  });
+
+  it("keeps the editable note browser-only and out of API payloads", async () => {
+    mockLiveApi();
+    const user = userEvent.setup();
+    renderApp();
+    const note = screen.getByRole("textbox", { name: /what did epfo show you/i });
+    await user.clear(note);
+    await user.type(note, "The portal did not explain which record stopped the claim.");
+    await user.click(screen.getByRole("button", { name: /load ravi’s fictional case/i }));
+    expect(sessionStorage.getItem("claimpath.intake.v1")).toContain("did not explain");
+    const fetchMock = vi.mocked(fetch);
+    const bodies = fetchMock.mock.calls.map((call) => (call[1] as RequestInit | undefined)?.body ?? "");
+    expect(bodies.join(" ")).not.toContain("did not explain");
+  });
+
+  it("switches the complete core journey and safety copy to Hindi", async () => {
     const user = userEvent.setup();
     renderApp();
     await user.click(screen.getByRole("button", { name: "हिन्दी" }));
     expect(document.documentElement.lang).toBe("hi-IN");
-    expect(
-      screen.getByRole("heading", { level: 1, name: /जानें कि आपकी सरकारी सेवा/i }),
-    ).toBeTruthy();
-    expect(screen.getByText(/Aadhaar, PAN, UAN, OTP, भुगतान/i)).toBeTruthy();
+    expect(screen.getByRole("heading", { name: /रवि की ₹45,000 PF निकासी/i })).toBeTruthy();
+    expect(screen.getAllByText(/कोई आधिकारिक रिकॉर्ड पढ़ा या बदला नहीं जाता/i).length).toBeGreaterThan(0);
   });
 
-  it("shows causal evidence, simulates the recommended route, and reaches official handoff", async () => {
+  it("completes from the generated static fallback when the API is unavailable", async () => {
     vi.stubGlobal(
       "fetch",
       vi.fn(async (input: RequestInfo | URL) => {
         const url = String(input);
-        if (url.endsWith("/sources")) return json([source]);
-        if (url.endsWith("/simulate")) return json(analysis(true));
-        if (url.endsWith("/analyze")) return json(analysis(false));
+        if (url.includes("/api/v1/identity/")) return new Response("", { status: 404 });
+        if (url.endsWith("/identity-rescue-static.json")) return json(staticBundleJson);
         throw new Error(`unexpected ${url}`);
       }),
     );
     const user = userEvent.setup();
     renderApp();
-    await user.click(screen.getByRole("button", { name: /run pre-flight diagnosis/i }));
-    expect(
-      await screen.findByRole("heading", {
-        name: /blocked by one record mismatch/i,
-      }),
-    ).toBeTruthy();
-    expect(screen.getAllByText("ANANYA R KRISHNAN").length).toBeGreaterThan(0);
-    expect(
-      screen.getAllByText("KRISHNAN ANANYA RAMESH").length,
-    ).toBeGreaterThan(0);
-    await user.click(screen.getByText("Show the evidence"));
-    expect(screen.getByText(/DL-002 v1.0/)).toBeTruthy();
-    expect(
-      screen
-        .getByRole("link", { name: /DigiLocker FAQs/i })
-        .getAttribute("href"),
-    ).toBe(source.url);
-
-    await user.click(screen.getByRole("button", { name: /compare ways/i }));
-    const recommended = screen
-      .getByText("Recommended in this simulation")
-      .closest("article")!;
-    await user.click(
-      within(recommended).getByRole("button", { name: /simulate this route/i }),
-    );
-    const dialog = screen.getByRole("dialog", {
-      name: /simulate this correction/i,
-    });
-    expect(
-      within(dialog).getByText(/No government record will be contacted/i),
-    ).toBeTruthy();
-    await user.click(
-      within(dialog).getByRole("button", { name: /simulate correction/i }),
-    );
-
-    expect(
-      (await screen.findAllByText("Ready in this simulation")).length,
-    ).toBeGreaterThan(0);
-    expect(screen.getByText("No official record was changed")).toBeTruthy();
-    expect(screen.getByText("KRISHNAN ANANYA RAMESH")).toBeTruthy();
-    expect(screen.getByText("ANANYA RAMESH KRISHNAN")).toBeTruthy();
-    expect(
-      screen
-        .getByRole("link", { name: /open official source/i })
-        .getAttribute("href"),
-    ).toBe(source.url);
-  });
-
-  it("completes the same deterministic journey from the generated static fallback", async () => {
-    const bundle = {
-      fixture_version: "1.0",
-      generated_from: "IdentityRescueEngine",
-      deterministic: true,
-      government_systems_contacted: 0,
-      sources: [source],
-      analyses: {
-        "digilocker-dl|": analysis(false),
-        "digilocker-dl|ACT-A1": analysis(true),
-      },
-    };
-    vi.stubGlobal(
-      "fetch",
-      vi.fn(async (input: RequestInfo | URL) => {
-        const url = String(input);
-        if (url.includes("/api/v1/identity/")) {
-          return new Response("", { status: 404 });
-        }
-        if (url.endsWith("/identity-rescue-static.json")) return json(bundle);
-        throw new Error(`unexpected ${url}`);
-      }),
-    );
-    const user = userEvent.setup();
-    renderApp();
-    await user.click(screen.getByRole("button", { name: /run pre-flight diagnosis/i }));
-    expect(
-      await screen.findByRole("heading", {
-        name: /blocked by one record mismatch/i,
-      }),
-    ).toBeTruthy();
-    await user.click(screen.getByRole("button", { name: /compare ways/i }));
-    const recommended = screen
-      .getByText("Recommended in this simulation")
-      .closest("article")!;
-    await user.click(
-      within(recommended).getByRole("button", { name: /simulate this route/i }),
-    );
-    await user.click(
-      screen.getByRole("button", { name: /simulate correction/i }),
-    );
-    expect(
-      (await screen.findAllByText("Ready in this simulation")).length,
-    ).toBeGreaterThan(0);
+    await user.click(screen.getByRole("button", { name: /load ravi’s fictional case/i }));
+    await user.click(await screen.findByRole("button", { name: /run claim pre-flight/i }));
+    await user.click(screen.getByRole("button", { name: /simulate minimum fix/i }));
+    expect(await screen.findByRole("heading", { name: /modeled blocker is cleared/i })).toBeTruthy();
   });
 });

@@ -213,7 +213,7 @@ class IdentityRescueEngine:
         if fixture.summary.goal.value == "DIGILOCKER_FETCH_DL":
             return self._evaluate_ananya(fixture, records)
         if fixture.summary.goal.value == "EPFO_KYC_PREFLIGHT":
-            return self._evaluate_arvind(fixture, records)
+            return self._evaluate_ravi(fixture, records)
         if fixture.summary.goal.value == "LIFE_EVENT_RECONCILIATION":
             return self._evaluate_meera(records)
         return []
@@ -306,12 +306,12 @@ class IdentityRescueEngine:
         )
         return [existence, name, dob]
 
-    def _evaluate_arvind(
+    def _evaluate_ravi(
         self, fixture: ScenarioFixture, records: list[SyntheticRecord]
     ) -> list[Finding]:
-        aadhaar = _record(records, "REC-AADHAAR-ARVIND")
-        pan = _record(records, "REC-PAN-ARVIND")
-        epfo = _record(records, "REC-EPFO-ARVIND")
+        aadhaar = _record(records, "REC-AADHAAR-RAVI")
+        pan = _record(records, "REC-PAN-RAVI")
+        epfo = _record(records, "REC-EPFO-RAVI")
         aadhaar_name = str(_field(aadhaar, "name") or "")
         names_compatible = all(
             compare_names(

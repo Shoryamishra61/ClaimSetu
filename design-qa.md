@@ -1,37 +1,7 @@
-# Identity Rescue design QA
+# ClaimPath design QA
 
-- Source visual truth: `output/design/identity-rescue-selected-direction.png`
-- Source pixels: 1536 × 1024
-- Intended implementation viewport: 1440 × 1024 CSS px, device scale factor 1
-- State: English intake, DigiLocker / Driving Licence selected, safe fictional description populated
-- Implementation screenshot: unavailable
-
-## Full-view comparison evidence
-
-Blocked. The selected reference is available and inspected, but the in-app browser reported no available browser backends. The Product Design browser policy requires explicit user permission before substituting the repository Playwright runner, and that permission is still pending.
-
-## Focused-region comparison evidence
-
-Blocked for the same reason. The form controls, progress navigation, service-route panel, result-preview rows, and safety notice cannot be compared from code or HTTP output alone.
-
-## Functional evidence completed
-
-- TypeScript and Vite production build pass.
-- Six component tests pass, including editable input, ID-like number rejection, browser-only context persistence, Hindi completeness, deterministic diagnosis, simulation, and official handoff.
-- Forty backend tests and Ruff pass.
-- Docker is healthy, serves root and deep routes with HTTP 200, contains the new intake copy, and runs as UID 100.
-- npm audit reports zero known vulnerabilities.
-
-## Findings
-
-- [P0] Browser-rendered comparison is unavailable.
-  - Impact: visual fidelity, responsive layout, focus appearance, browser console errors, and end-to-end interaction cannot be honestly accepted.
-  - Fix: after explicit permission, capture the 1440 × 1024 intake and key flow states with the repository Playwright runner, compare them with the selected source in one combined visual, fix P0/P1/P2 differences, and repeat.
-
-## Comparison history
-
-- No visual iteration has been claimed because implementation capture is unavailable.
-
-## Final result
-
-final result: blocked
+- Selected visual source: `output/design/claimpath-selected-direction.png` (1536 x 1024).
+- Implemented direction: forest-green institutional header, four-step progress navigation, cobalt primary actions, mint evidence panels, amber safety disclosure, and a responsive two-column citizen/evidence layout.
+- Core interactive elements implemented: language switch, restart/home, problem note, load case, diagnose, evidence disclosure, simulate, undo, official EPFO link, sources, and privacy.
+- Component-level states and copy are verified by 7 tests; TypeScript and production builds pass.
+- Pixel-level comparison and browser interaction QA are **not complete**: the in-app browser runtime reported no available browser in this session. No screenshot-only or unapproved standalone-browser result is substituted for that missing check.

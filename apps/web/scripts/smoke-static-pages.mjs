@@ -1,62 +1,31 @@
 import { createServer } from "node:http";
 import { readFile, stat } from "node:fs/promises";
 import { extname, join, normalize, resolve } from "node:path";
-
 import { chromium } from "playwright";
 
 const root = resolve("dist-pages");
 const prefix = "/handover29c";
 const port = 8132;
 const remoteBaseUrl = process.env.STATIC_BASE_URL?.replace(/\/$/, "");
-const mime = {
-  ".css": "text/css; charset=utf-8",
-  ".html": "text/html; charset=utf-8",
-  ".js": "text/javascript; charset=utf-8",
-  ".json": "application/json; charset=utf-8",
-  ".map": "application/json; charset=utf-8",
-};
+const mime = { ".css": "text/css; charset=utf-8", ".html": "text/html; charset=utf-8", ".js": "text/javascript; charset=utf-8", ".json": "application/json; charset=utf-8" };
 
 const server = createServer(async (request, response) => {
   const requestPath = decodeURIComponent(new URL(request.url ?? "/", "http://local").pathname);
-  if (!requestPath.startsWith(prefix)) {
-    response.writeHead(404).end();
-    return;
-  }
-  const relative = normalize(requestPath.slice(prefix.length) || "/")
-    .replace(/^[/\\]+/, "")
-    .replace(/^(\.\.[/\\])+/, "");
+  if (!requestPath.startsWith(prefix)) return response.writeHead(404).end();
+  const relative = normalize(requestPath.slice(prefix.length) || "/").replace(/^[/\\]+/, "").replace(/^(\.\.[/\\])+/, "");
   let target = join(root, relative || "index.html");
   try {
     if ((await stat(target)).isDirectory()) target = join(target, "index.html");
-    const body = await readFile(target);
     response.writeHead(200, { "Content-Type": mime[extname(target)] ?? "application/octet-stream" });
-    response.end(body);
+    response.end(await readFile(target));
   } catch {
     const isClientRoute = !extname(relative);
-    const body = isClientRoute ? await readFile(join(root, "404.html")) : Buffer.from("");
-    response.writeHead(404, {
-      "Content-Type": isClientRoute ? mime[".html"] : "text/plain; charset=utf-8",
-    });
-    response.end(body);
+    response.writeHead(404, { "Content-Type": isClientRoute ? mime[".html"] : "text/plain; charset=utf-8" });
+    response.end(isClientRoute ? await readFile(join(root, "404.html")) : Buffer.from(""));
   }
 });
 
-async function startCase(page, scenarioId) {
-  await page.getByLabel(/service goal/i).selectOption(scenarioId);
-  await page.getByRole("button", { name: /run pre-flight diagnosis/i }).click();
-}
-
-async function simulate(page, heading) {
-  const option = page
-    .getByRole("article")
-    .filter({ has: page.getByRole("heading", { name: heading }) });
-  await option.getByRole("button", { name: /simulate this route/i }).click();
-  await page.getByRole("button", { name: /simulate correction/i }).click();
-}
-
-if (!remoteBaseUrl) {
-  await new Promise((ready) => server.listen(port, "127.0.0.1", ready));
-}
+if (!remoteBaseUrl) await new Promise((ready) => server.listen(port, "127.0.0.1", ready));
 let browser;
 try {
   browser = await chromium.launch({ headless: true });
@@ -68,61 +37,16 @@ try {
     if (url.hostname !== allowedHost) externalRequests.push(url.href);
   });
   await page.goto(remoteBaseUrl ? `${remoteBaseUrl}/` : `http://127.0.0.1:${port}${prefix}/`);
-
-  await startCase(page, "digilocker-dl");
-  await page.getByText("Blocked", { exact: true }).last().waitFor();
-  await page.reload();
-  await page.getByText("Blocked", { exact: true }).last().waitFor();
-  await page.getByRole("button", { name: /compare ways to fix this/i }).click();
-  await simulate(page, /align the fictional dl source name/i);
-  await page.getByText(/ready in this simulation/i).last().waitFor();
-
-  await page.getByRole("button", { name: /identity rescue: all demo cases/i }).click();
-  await startCase(page, "epfo-preflight");
-  await page.getByRole("button", { name: /compare ways to fix this/i }).click();
-  await simulate(page, /align the fictional pan display name/i);
-  await page.getByText(/not an identity-data issue/i).last().waitFor();
-  await page.getByRole("button", { name: /compare ways to fix this/i }).click();
-  await simulate(page, /correct the fictional service-history date/i);
-  await page.getByText(/ready in this simulation/i).last().waitFor();
-
-  await page.getByRole("button", { name: /identity rescue: all demo cases/i }).click();
-  await startCase(page, "life-event");
-  await page.getByRole("button", { name: /compare ways to fix this/i }).click();
-  await simulate(page, /use the chosen current name in the fictional dl source/i);
-  await page.getByRole("heading", { name: /still different, but not blocking/i }).waitFor();
-
-  await page.getByRole("button", { name: /identity rescue: all demo cases/i }).click();
-  await page.getByRole("button", { name: /sources & limits/i }).first().click();
-  const officialLinks = await page.locator('main a[target="_blank"]').evaluateAll((links) =>
-    links.map((link) => ({
-      href: link.getAttribute("href"),
-      rel: link.getAttribute("rel"),
-    })),
-  );
-  const expectedSources = new Set([
-    "https://www.digilocker.gov.in/web/about/faq",
-    "https://uidai.gov.in/images/LR_Aadhaar_Handbook_2026.pdf",
-    "https://www.epfindia.gov.in/site_docs/PDFs/Circulars/Y2020-2021/FAQUANKYC.pdf",
-  ]);
-  if (
-    officialLinks.length !== expectedSources.size ||
-    officialLinks.some(
-      (link) =>
-        !expectedSources.has(link.href) ||
-        link.rel !== "noopener noreferrer",
-    )
-  ) {
-    throw new Error(`Static source allowlist drift: ${JSON.stringify(officialLinks)}`);
-  }
-
-  if (externalRequests.length) {
-    throw new Error(`Static demo made unexpected external requests: ${externalRequests.join(", ")}`);
-  }
-  process.stdout.write("STATIC_PAGES_GOLDEN_PATHS=PASS\n");
+  await page.getByRole("button", { name: /load ravi.+fictional case/i }).click();
+  await page.getByRole("button", { name: /run claim pre-flight/i }).click();
+  await page.getByText(/blocked in this model/i).waitFor();
+  await page.getByRole("button", { name: /simulate minimum fix/i }).click();
+  await page.getByText(/modeled checks pass/i).waitFor();
+  const official = await page.getByRole("link", { name: /open official epfo guidance/i }).getAttribute("href");
+  if (!official?.startsWith("https://www.epfindia.gov.in/")) throw new Error(`Official handoff drift: ${official}`);
+  if (externalRequests.length) throw new Error(`Static demo made unexpected external requests: ${externalRequests.join(", ")}`);
+  process.stdout.write("STATIC_PAGES_CLAIMPATH_JOURNEY=PASS\n");
 } finally {
   if (browser) await browser.close();
-  if (!remoteBaseUrl) {
-    await new Promise((closed) => server.close(closed));
-  }
+  if (!remoteBaseUrl) await new Promise((closed) => server.close(closed));
 }

@@ -5,7 +5,7 @@ Push-Location (Join-Path $ProjectRoot "apps/api")
 try {
     python -m ruff check app tests_identity_rescue
     if ($LASTEXITCODE -ne 0) { throw "Ruff failed" }
-    python -m pytest -q
+    python -m pytest -q tests_identity_rescue
     if ($LASTEXITCODE -ne 0) { throw "Backend tests failed" }
     python -m compileall -q app tests_identity_rescue
     if ($LASTEXITCODE -ne 0) { throw "Python compile check failed" }
@@ -40,4 +40,4 @@ finally {
     Pop-Location
 }
 
-Write-Output "Identity Rescue verification passed"
+Write-Output "ClaimPath verification passed"

@@ -42,14 +42,14 @@ SOURCES: dict[str, SourceReference] = {
     ),
     "SRC-EPFO-001": SourceReference(
         source_id="SRC-EPFO-001",
-        title="FAQ on UAN and KYC",
+        title="EPFO Frequently Asked Questions",
         publisher="Employees' Provident Fund Organisation",
-        url="https://www.epfindia.gov.in/site_docs/PDFs/Circulars/Y2020-2021/FAQUANKYC.pdf",
+        url="https://www.epfindia.gov.in/site_en/FAQ.php",
         proposition=(
-            "EPFO guidance describes name alignment for KYC and date-of-exit workflows. "
+            "EPFO guidance describes date-of-exit prerequisites and the Member Portal Mark Exit workflow. "
             "The exact service-history predicate in this demo remains a prototype simulation."
         ),
-        last_checked_at="2026-08-22",
+        last_checked_at="2026-08-23",
     ),
 }
 
@@ -295,7 +295,7 @@ ANANYA = ScenarioFixture(
 )
 
 
-ARVIND = ScenarioFixture(
+RAVI = ScenarioFixture(
     summary=ScenarioSummary(
         scenario_id="epfo-preflight",
         goal=Goal.EPFO_KYC_PREFLIGHT,
@@ -304,65 +304,65 @@ ARVIND = ScenarioFixture(
     ),
     fixture_version="1.0",
     profile=SyntheticProfile(
-        profile_id="DEMO-ARVIND-01",
-        display_name="Arvind N. Iyer",
+        profile_id="DEMO-RAVI-01",
+        display_name="Ravi Kumar",
         preferred_locale="en-IN",
-        scenario_note="profile.arvind.note",
+        scenario_note="profile.ravi.note",
     ),
     records=(
         SyntheticRecord(
-            record_id="REC-AADHAAR-ARVIND",
+            record_id="REC-AADHAAR-RAVI",
             authority="AADHAAR_DEMO",
             label="Aadhaar demo record",
             fixture_version="1.0",
             fields={
-                "name": FieldValue(original="ARVIND N IYER", script="Latn", locale="en-IN"),
-                "dob": FieldValue(original="1989-07-11"),
+                "name": FieldValue(original="RAVI KUMAR", script="Latn", locale="en-IN"),
+                "dob": FieldValue(original="1998-04-18"),
             },
         ),
         SyntheticRecord(
-            record_id="REC-PAN-ARVIND",
+            record_id="REC-PAN-RAVI",
             authority="PAN_DEMO",
             label="PAN demo record",
             fixture_version="1.0",
             fields={
                 "name": FieldValue(
-                    original="ARVIND NARAYAN IYER", script="Latn", locale="en-IN"
+                    original="RAVI K", script="Latn", locale="en-IN"
                 ),
-                "dob": FieldValue(original="1989-07-11"),
+                "dob": FieldValue(original="1998-04-18"),
             },
         ),
         SyntheticRecord(
-            record_id="REC-EPFO-ARVIND",
+            record_id="REC-EPFO-RAVI",
             authority="EPFO_DEMO",
             label="EPFO member demo record",
             fixture_version="1.0",
             fields={
-                "name": FieldValue(original="ARVIND N IYER", script="Latn", locale="en-IN"),
-                "dob": FieldValue(original="1989-07-11"),
+                "name": FieldValue(original="RAVI K", script="Latn", locale="en-IN"),
+                "dob": FieldValue(original="1998-04-18"),
                 "aadhaar_linked": FieldValue(original=True),
                 "pan_linked": FieldValue(original=True),
-                "date_of_exit": FieldValue(original="2026-08-31"),
+                "date_of_exit": FieldValue(original="NOT_RECORDED"),
                 "last_contribution_month": FieldValue(original="2026-07"),
                 "claim_attempt_date": FieldValue(original="2026-08-20"),
             },
         ),
     ),
-    known_name_relations={"N": "NARAYAN"},
+    known_name_relations={"K": "KUMAR"},
     actions=(
         CorrectionAction(
             action_id="ACT-B-NAME",
             title_key="action.b_name.title",
-            target_record_id="REC-PAN-ARVIND",
+            target_record_id="REC-PAN-RAVI",
             target_field="name",
-            from_value="ARVIND NARAYAN IYER",
-            to_value="ARVIND N IYER",
+            from_value="RAVI K",
+            to_value="RAVI KUMAR",
             effort_key="effort.review",
             effect_key="action.b_name.effect",
             impact_key="action.b_name.impact",
             prerequisite_keys=[],
             affected_goals=[Goal.EPFO_KYC_PREFLIGHT],
-            affected_record_ids=["REC-PAN-ARVIND", "REC-EPFO-ARVIND"],
+            affected_record_ids=["REC-PAN-RAVI", "REC-EPFO-RAVI"],
             risk_key="action.b_name.impact",
             uncertainty_key="finding.epfo.name.uncertainty",
             reversible=True,
@@ -373,16 +373,16 @@ ARVIND = ScenarioFixture(
         CorrectionAction(
             action_id="ACT-B1",
             title_key="action.b1.title",
-            target_record_id="REC-EPFO-ARVIND",
+            target_record_id="REC-EPFO-RAVI",
             target_field="date_of_exit",
-            from_value="2026-08-31",
+            from_value="NOT_RECORDED",
             to_value="2026-07-31",
             effort_key="effort.employer",
             effect_key="action.b1.effect",
             impact_key="action.b1.impact",
             prerequisite_keys=[],
             affected_goals=[Goal.EPFO_KYC_PREFLIGHT],
-            affected_record_ids=["REC-EPFO-ARVIND"],
+            affected_record_ids=["REC-EPFO-RAVI"],
             risk_key="action.b1.impact",
             uncertainty_key="finding.epfo.history.uncertainty",
             reversible=True,
@@ -400,8 +400,8 @@ ARVIND = ScenarioFixture(
     official_handoff=OfficialHandoff(
         title_key="handoff.epfo.title",
         step_keys=["handoff.epfo.step1", "handoff.epfo.step2", "handoff.epfo.step3"],
-        official_url="https://www.epfindia.gov.in/site_docs/PDFs/Circulars/Y2020-2021/FAQUANKYC.pdf",
-        official_label="EPFO official UAN and KYC FAQ",
+        official_url="https://www.epfindia.gov.in/site_en/FAQ.php",
+        official_label="EPFO official frequently asked questions",
         source_id="SRC-EPFO-001",
     ),
     golden_expectations={
@@ -554,7 +554,7 @@ MEERA = ScenarioFixture(
 
 
 SCENARIOS: dict[str, ScenarioFixture] = {
-    fixture.summary.scenario_id: fixture for fixture in (ANANYA, ARVIND, MEERA)
+    fixture.summary.scenario_id: fixture for fixture in (ANANYA, RAVI, MEERA)
 }
 
 

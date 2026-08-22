@@ -1,18 +1,12 @@
-# Identity Rescue two-minute demo
+# ClaimPath two-minute demo
 
-Target: 108–116 seconds. The entire first minute is citizen-facing.
-
-| Time | Visual | Narration |
+| Time | Screen/action | Narration |
 |---|---|---|
-| 0:00–0:09 | Home H1, disclosure, three cases | “Public-service portals often say details do not match, but not which record actually blocks the task. Identity Rescue uses fictional data to answer that one question.” |
-| 0:09–0:22 | Open Ananya; show blocked status and exact records | “Ananya cannot fetch a Driving Licence. In one click we see the two original name forms and the causal, versioned demo rule—without entering any real ID.” |
-| 0:22–0:35 | Open evidence, source and uncertainty; compare routes | “The evidence drawer separates official source support from the exact prototype predicate. The planner compares only allowed corrections and prefers the lower-impact issuer route over changing a broadly reused upstream record.” |
-| 0:35–0:48 | Confirm simulation; show ready, before/after | “Simulation changes only this fictional case. The engine recomputes readiness, shows before and after, and says clearly that no official record was changed.” |
-| 0:48–0:59 | Show official handoff and caveat | “The journey ends with a linked official source and a warning to verify the current process before acting.” |
-| 0:59–1:13 | Open Arvind | “The key innovation is causal disambiguation. Arvind’s names look different, but changing the name does not fix the case. The service-history condition is the modeled blocker.” |
-| 1:13–1:26 | Open Meera/result | “For a life event, the minimum plan updates only the DL name needed for the selected goal. PAN and address differences remain visible instead of being changed for cosmetic consistency.” |
-| 1:26–1:39 | Hindi/mobile view | “The same focused flow works in simple Hindi, at 320 pixels, with keyboard navigation, visible focus, live status announcements, and no horizontal scroll.” |
-| 1:39–1:52 | Architecture/check output | “Codex helped turn the frozen specs into deterministic rules, planner tests, a React/FastAPI implementation, accessibility gates, and Docker verification. AI is not allowed to decide readiness or the plan.” |
-| 1:52–1:58 | Return to disclosure | “It is an independent prototype: fictional data, no government connection, and no claim beyond the evidence.” |
-
-Do not show internal vehicle-transfer screens, live government data, real identifiers, a PDF climax, or architecture before the first minute ends.
+| 0:00–0:15 | ClaimPath home; point to ₹45,000 and disclosure | “A blocked PF claim can expose several record differences but still not tell Ravi what actually needs attention. ClaimPath diagnoses cause, not visual similarity.” |
+| 0:15–0:30 | Type a short problem note; click **Load Ravi's fictional case** | “The only input is an optional browser-only note. It never reaches the engine, and long identifier-like numbers are rejected.” |
+| 0:30–0:48 | Review three fictional sources; click **Run claim pre-flight** | “The case is fully fictional. Versioned rules inspect only the evidence needed for this modeled transfer-claim goal.” |
+| 0:48–1:08 | Show causal blocker and non-causal name panel | “RAVI K and RAVI KUMAR look different, but an explicit fictional relation makes them compatible here. Changing the name would not fix this case. The missing Date of Exit is causal.” |
+| 1:08–1:23 | Expand **View technical evidence** | “The original value, rule version, evidence status, source and prototype boundary remain inspectable.” |
+| 1:23–1:43 | Click **Simulate minimum fix** | “The planner applies only the allowlisted Date of Exit correction and recomputes every check. The modeled checks now pass; no official record changed and approval is not guaranteed.” |
+| 1:43–1:55 | Point to official handoff, do not leave the demo | “ClaimPath ends at current official EPFO guidance, not at a fake submission or parallel government workflow.” |
+| 1:55–2:00 | Show English/Hindi switch and footer | “One focused journey, deterministic evidence, privacy by not collecting, and a clear boundary between simulation and authority.” |
