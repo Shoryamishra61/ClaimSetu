@@ -9,6 +9,7 @@ __pycache__/
 # Node
 node_modules/
 dist/
+dist-pages/
 playwright-report/
 test-results/
 output/video/frame-*.png

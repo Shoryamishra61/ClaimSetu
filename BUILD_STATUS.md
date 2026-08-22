@@ -22,8 +22,8 @@ Last updated: 2026-08-22
 | Gate | Result |
 |---|---|
 | Backend acceptance | 20 tests pass; Ruff passes |
-| Frontend components/i18n | 4 tests pass |
-| Production build | Vite/TypeScript pass; 195.05 kB JS and 12.64 kB CSS before gzip |
+| Frontend components/i18n | 5 tests pass |
+| Production build | Vite/TypeScript pass; Pages bundle 195.99 kB JS and 12.64 kB CSS before gzip |
 | Browser E2E | 6 Playwright tests pass across all golden journeys |
 | Accessibility | axe serious/critical = 0; skip link and dialog focus-return pass |
 | Reflow | complete Scenario A at 320 px; 200% zoom; <=1 px overflow |
@@ -33,14 +33,16 @@ Last updated: 2026-08-22
 | Docker | root/deep route 200, Identity Rescue-only OpenAPI, non-root UID 100 |
 | Demo capture | 23.88-second automated working-feature walkthrough generated and frame-checked |
 | Public source | Identity Rescue branch and working walkthrough return HTTP 200 without authentication |
+| Public deployment | GitHub Pages HTTPS returns 200; all three journeys pass against the live URL with zero external requests |
 
 ## Remaining P0 / external gates
 
 1. Optional OpenAI explanation is paused at the mandatory credential decision; deterministic fallback is the current complete behavior.
-2. A permanent HTTPS deployment must be published and tested logged out/incognito.
-3. Native NVDA smoke testing and fluent-human Hindi review require external human/environment confirmation.
-4. Public-link smoke and the narrated final recording/submission checks remain.
+2. Native NVDA smoke testing and fluent-human Hindi review require external human/environment confirmation.
+3. The narrated final recording/submission check remains; the 23.88-second silent working capture is public.
 
 No missing external result is represented as completed.
 
 Public source: <https://github.com/Shoryamishra61/handover29c/tree/identity-rescue-pivot>
+
+Live demo: <https://shoryamishra61.github.io/handover29c/>

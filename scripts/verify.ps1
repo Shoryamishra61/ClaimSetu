@@ -14,6 +14,9 @@ finally {
     Pop-Location
 }
 
+python (Join-Path $ProjectRoot "scripts/export_static_identity_rescue.py")
+if ($LASTEXITCODE -ne 0) { throw "Static fixture export failed" }
+
 Push-Location (Join-Path $ProjectRoot "apps/web")
 try {
     npm ci
@@ -26,6 +29,12 @@ try {
     if ($LASTEXITCODE -ne 0) { throw "Frontend build failed" }
     npm run e2e
     if ($LASTEXITCODE -ne 0) { throw "Browser tests failed" }
+    npm run build:pages
+    if ($LASTEXITCODE -ne 0) { throw "Static Pages build failed" }
+    Copy-Item dist-pages/index.html dist-pages/404.html -Force
+    New-Item dist-pages/.nojekyll -ItemType File -Force | Out-Null
+    npm run e2e:pages
+    if ($LASTEXITCODE -ne 0) { throw "Static Pages browser tests failed" }
 }
 finally {
     Pop-Location

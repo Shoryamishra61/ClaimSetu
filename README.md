@@ -1,6 +1,6 @@
 # Identity Rescue
 
-[Public source snapshot](https://github.com/Shoryamishra61/handover29c/tree/identity-rescue-pivot) · [23.88-second working walkthrough](https://github.com/Shoryamishra61/handover29c/raw/refs/heads/identity-rescue-pivot/output/video/identity-rescue-demo.webm)
+[Live public demo](https://shoryamishra61.github.io/handover29c/) · [Public source snapshot](https://github.com/Shoryamishra61/handover29c/tree/identity-rescue-pivot) · [23.88-second working walkthrough](https://github.com/Shoryamishra61/handover29c/raw/refs/heads/identity-rescue-pivot/output/video/identity-rescue-demo.webm)
 
 Identity Rescue is an independent, browser-based hackathon prototype that helps a citizen understand which cross-service record inconsistency actually blocks a selected public-service task—and which visible differences should **not** be changed.
 
@@ -39,6 +39,8 @@ fictional case
 
 The optional OpenAI explanation layer is credential-gated and non-authoritative. The complete P0 flow currently uses static bilingual templates and works with AI disabled.
 
+The public demo is a generated, deterministic static export of the same engine outputs, so it needs no credentials or hosted API. Docker serves the full FastAPI implementation locally. Both modes use fictional fixtures and make zero government-system calls.
+
 ## Run
 
 Docker is the shortest path:
@@ -68,7 +70,7 @@ python scripts\run_local.py --port 8129
 powershell -ExecutionPolicy Bypass -File scripts\verify.ps1
 ```
 
-The focused gate covers deterministic rules/planning, mutation rejection, source allowlisting, security headers, English/Hindi completeness, axe, keyboard/dialog focus, deep-link refresh, all three browser journeys, 320 CSS px, and 200% zoom.
+The focused gate covers deterministic rules/planning, mutation rejection, source allowlisting, security headers, English/Hindi completeness, axe, keyboard/dialog focus, deep-link refresh, all three browser journeys, the generated static deployment, 320 CSS px, and 200% zoom.
 
 ## API
 

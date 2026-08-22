@@ -318,4 +318,52 @@ describe("Identity Rescue Scenario A", () => {
         .getAttribute("href"),
     ).toBe(source.url);
   });
+
+  it("completes the same deterministic journey from the generated static fallback", async () => {
+    const bundle = {
+      fixture_version: "1.0",
+      generated_from: "IdentityRescueEngine",
+      deterministic: true,
+      government_systems_contacted: 0,
+      sources: [source],
+      analyses: {
+        "digilocker-dl|": analysis(false),
+        "digilocker-dl|ACT-A1": analysis(true),
+      },
+    };
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (input: RequestInfo | URL) => {
+        const url = String(input);
+        if (url.includes("/api/v1/identity/")) {
+          return new Response("", { status: 404 });
+        }
+        if (url.endsWith("/identity-rescue-static.json")) return json(bundle);
+        throw new Error(`unexpected ${url}`);
+      }),
+    );
+    const user = userEvent.setup();
+    renderApp();
+    await user.click(
+      screen.getAllByRole("button", { name: /try this case/i })[0]!,
+    );
+    expect(
+      await screen.findByRole("heading", {
+        name: /blocked by one record mismatch/i,
+      }),
+    ).toBeTruthy();
+    await user.click(screen.getByRole("button", { name: /compare ways/i }));
+    const recommended = screen
+      .getByText("Recommended in this simulation")
+      .closest("article")!;
+    await user.click(
+      within(recommended).getByRole("button", { name: /simulate this route/i }),
+    );
+    await user.click(
+      screen.getByRole("button", { name: /simulate correction/i }),
+    );
+    expect(
+      (await screen.findAllByText("Ready in this simulation")).length,
+    ).toBeGreaterThan(0);
+  });
 });

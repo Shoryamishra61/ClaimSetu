@@ -20,6 +20,10 @@ import {
 import { useLang } from "./i18n/LangProvider";
 
 const CASE_KEY = "identity-rescue.case.v1";
+const BASE_PATH =
+  import.meta.env.BASE_URL === "/"
+    ? ""
+    : import.meta.env.BASE_URL.replace(/\/$/, "");
 type Stage = "diagnosis" | "options" | "result";
 type Route =
   | { kind: "home" }
@@ -49,16 +53,20 @@ const scenarioCards = [
 ] as const;
 
 function routeFromPath(pathname: string): Route {
-  if (pathname === "/sources") return { kind: "sources" };
-  if (pathname === "/privacy") return { kind: "privacy" };
-  const match = /^\/case\/([^/]+)$/.exec(pathname);
+  const appPath =
+    BASE_PATH && pathname.startsWith(BASE_PATH)
+      ? pathname.slice(BASE_PATH.length) || "/"
+      : pathname;
+  if (appPath === "/sources") return { kind: "sources" };
+  if (appPath === "/privacy") return { kind: "privacy" };
+  const match = /^\/case\/([^/]+)$/.exec(appPath);
   return match
     ? { kind: "case", scenarioId: decodeURIComponent(match[1]!) }
     : { kind: "home" };
 }
 
 function navigate(path: string): void {
-  history.pushState({}, "", path);
+  history.pushState({}, "", `${BASE_PATH}${path}` || "/");
   globalThis.dispatchEvent(new PopStateEvent("popstate"));
 }
 

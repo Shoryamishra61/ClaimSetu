@@ -14,16 +14,17 @@
 
 - `uv run ruff check app tests_identity_rescue`
 - `uv run pytest` — 20 passed
-- `npm test -- --run` — 4 passed
+- `npm test -- --run` — 5 passed after static-deployment coverage
 - `npm run build`
 - `npm run e2e` — 6 passed
 - `npm audit --audit-level=high` — 0 vulnerabilities
 - Docker build/runtime smoke — five-path OpenAPI, root/deep-route 200, UID 100
 - `uvx pip-audit -r requirements.txt` — no known vulnerabilities
 - automated demo capture — 23.88 seconds, four sampled frames visually checked
+- generated static export — stable SHA-256 across repeated generation; all three live Pages journeys pass with zero external requests
 
 ## Honest boundary
 
-The optional OpenAI explanation layer is paused pending the required credential decision. It is not needed for any deterministic journey. Permanent public deployment, native screen-reader smoke testing, human Hindi review, and final video recording remain unclaimed.
+The optional OpenAI explanation layer is paused pending the required credential decision. It is not needed for any deterministic journey. Native screen-reader smoke testing, human Hindi review, and the final narrated recording remain unclaimed.
 
-The verified source snapshot and 23.88-second working capture were published to the public `identity-rescue-pivot` branch. Corrected workflow files remain local because the GitHub OAuth token lacks the separately required `workflow` scope; hosted CI is therefore not claimed.
+The verified source snapshot and 23.88-second working capture were published to the public `identity-rescue-pivot` branch. The permanent credential-free demo is live at <https://shoryamishra61.github.io/handover29c/> and was exercised from the deployed origin. Corrected workflow files remain local because the GitHub OAuth token lacks the separately required `workflow` scope; hosted CI is therefore not claimed.

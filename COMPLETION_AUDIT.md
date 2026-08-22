@@ -20,7 +20,7 @@ The frozen package under `docs/identity-rescue/` has precedence. This ledger dis
 | AI fallback | complete static-template path; health declares `ai_required=false` | all golden E2E | PASS |
 | Optional AI generation | credential-gated, schema-grounded endpoint | not implemented without credential authorization | PENDING OPTIONAL |
 | Container | non-root, same-origin SPA/API, deep-link fallback | Docker smoke | PASS |
-| Public deployment | permanent HTTPS, logged-out/incognito | no destination currently verified | PENDING EXTERNAL |
+| Public deployment | permanent HTTPS, logged-out/incognito | GitHub Pages 200 + live Chromium completion of all three journeys; zero external requests | PASS |
 | Submission assets | 235-word summary, <=2-minute script, 23.88-second working capture | word/duration/frame checks | PASS local; narrated/public upload pending |
 
 ## Key invariants proved

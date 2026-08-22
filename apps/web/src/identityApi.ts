@@ -127,25 +127,92 @@ export interface ScenarioAnalysis {
   government_systems_contacted: number;
 }
 
+class IdentityApiUnavailable extends Error {}
+
+interface StaticBundle {
+  fixture_version: string;
+  generated_from: string;
+  deterministic: true;
+  government_systems_contacted: 0;
+  sources: SourceReference[];
+  analyses: Record<string, ScenarioAnalysis>;
+}
+
+let staticBundle: Promise<StaticBundle> | null = null;
+
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(path, {
-    ...init,
-    headers: { "Content-Type": "application/json", ...(init?.headers ?? {}) },
-  });
+  let response: Response;
+  try {
+    response = await fetch(path, {
+      ...init,
+      headers: { "Content-Type": "application/json", ...(init?.headers ?? {}) },
+    });
+  } catch {
+    throw new IdentityApiUnavailable("IDENTITY_API_NETWORK");
+  }
+  if (response.status === 404 || response.status === 405) {
+    throw new IdentityApiUnavailable(`IDENTITY_API_${response.status}`);
+  }
   if (!response.ok) throw new Error(`IDENTITY_API_${response.status}`);
   return response.json() as Promise<T>;
+}
+
+function loadStaticBundle(): Promise<StaticBundle> {
+  staticBundle ??= fetch(`${import.meta.env.BASE_URL}identity-rescue-static.json`)
+    .then((response) => {
+      if (!response.ok) throw new Error(`STATIC_FIXTURE_${response.status}`);
+      return response.json() as Promise<StaticBundle>;
+    })
+    .then((bundle) => {
+      if (
+        bundle.generated_from !== "IdentityRescueEngine" ||
+        bundle.deterministic !== true ||
+        bundle.government_systems_contacted !== 0
+      ) {
+        throw new Error("STATIC_FIXTURE_TRUST_BOUNDARY");
+      }
+      return bundle;
+    });
+  return staticBundle;
+}
+
+async function withStaticFallback<T>(
+  live: () => Promise<T>,
+  fallback: (bundle: StaticBundle) => T,
+): Promise<T> {
+  try {
+    return await live();
+  } catch (error) {
+    if (!(error instanceof IdentityApiUnavailable)) throw error;
+    return fallback(await loadStaticBundle());
+  }
+}
+
+function staticAnalysis(
+  bundle: StaticBundle,
+  scenarioId: string,
+  appliedActionIds: string[],
+): ScenarioAnalysis {
+  const key = `${scenarioId}|${appliedActionIds.join(",")}`;
+  const result = bundle.analyses[key];
+  if (!result) throw new Error("STATIC_FIXTURE_ACTION_NOT_ALLOWED");
+  return structuredClone(result);
 }
 
 export function analyzeScenario(
   scenarioId: string,
   appliedActionIds: string[] = [],
 ): Promise<ScenarioAnalysis> {
-  return request(
-    `/api/v1/identity/scenarios/${encodeURIComponent(scenarioId)}/analyze`,
-    {
-      method: "POST",
-      body: JSON.stringify({ applied_action_ids: appliedActionIds }),
-    },
+  return withStaticFallback(
+    () =>
+      request(
+        `/api/v1/identity/scenarios/${encodeURIComponent(scenarioId)}/analyze`,
+        {
+          method: "POST",
+          body: JSON.stringify({ applied_action_ids: appliedActionIds }),
+        },
+      ),
+    (bundle) => staticAnalysis(bundle, scenarioId, appliedActionIds),
   );
 }
 
@@ -154,18 +221,28 @@ export function simulateScenario(
   actionId: string,
   appliedActionIds: string[],
 ): Promise<ScenarioAnalysis> {
-  return request(
-    `/api/v1/identity/scenarios/${encodeURIComponent(scenarioId)}/simulate`,
-    {
-      method: "POST",
-      body: JSON.stringify({
-        action_id: actionId,
-        applied_action_ids: appliedActionIds,
-      }),
-    },
+  const nextActionIds = appliedActionIds.includes(actionId)
+    ? appliedActionIds
+    : [...appliedActionIds, actionId];
+  return withStaticFallback(
+    () =>
+      request(
+        `/api/v1/identity/scenarios/${encodeURIComponent(scenarioId)}/simulate`,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            action_id: actionId,
+            applied_action_ids: appliedActionIds,
+          }),
+        },
+      ),
+    (bundle) => staticAnalysis(bundle, scenarioId, nextActionIds),
   );
 }
 
 export function getSources(): Promise<SourceReference[]> {
-  return request("/api/v1/identity/sources");
+  return withStaticFallback(
+    () => request("/api/v1/identity/sources"),
+    (bundle) => structuredClone(bundle.sources),
+  );
 }
