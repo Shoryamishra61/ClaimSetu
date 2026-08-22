@@ -2,7 +2,7 @@
 
 `DETERMINISTIC_CORE_COMPLETE=true`
 
-`PUBLICATION_PENDING=true`
+`PUBLICATION_VERIFIED=true`
 
 Last updated: 2026-08-23
 
@@ -28,6 +28,7 @@ Last updated: 2026-08-23
 | Docker | rebuilt successfully; root returns ClaimPath; health is `ok`; container user is `identityrescue` |
 | API journey | initial `NOT_IDENTITY_ISSUE`; recommended plan `ACT-B1`; simulation reaches `READY_SIMULATION` |
 | Static fixture | regenerated from the same rule engine with `DEMO-RAVI-01` |
+| Public deployment | GitHub Pages build `40168d9` completed; HTTPS returns 200 with the ClaimPath title, Ravi bundle, `ACT-B1`, and current EPFO handoff |
 
 ## Unclaimed external checks
 
