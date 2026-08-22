@@ -151,3 +151,24 @@ superseded controller from the shipped runtime surface.
 **Result:** The implementation requirements are complete locally and in Docker.
 Durable public hosting, public video upload, and human Hindi review remain external
 submission handoff items and are not represented as completed.
+
+## Entry 2026-08-22 - Durable source and release publication
+
+**Published:**
+
+- Public repository: `https://github.com/Shoryamishra61/handover29c`
+- Release: `https://github.com/Shoryamishra61/handover29c/releases/tag/v1.0.2`
+- Five release assets: verified PDF, demo WebM, two screenshots, and the validated
+  CI/release workflow bundle.
+- Remote PDF digest matched the local stable artifact:
+  `ee7988a945718786284f617d211e395d4d6322c080abc8086234b3598f4e7dff`.
+
+**Account and limitation evidence:** GitHub CLI was authenticated as
+`Shoryamishra61`. GitHub refused workflow-file pushes because the OAuth token lacks
+the separate `workflow` scope, and GHCR refused publication because it lacks
+`write:packages`. The source snapshot excludes only `.github/workflows`; those files
+are retained locally and attached to the release after passing `actionlint`.
+
+**Remaining external state:** The full application is still available through the
+temporary HTTPS review tunnel and healthy local Docker runtime. A permanent live-app
+host and fluent-human Hindi sign-off are not available and are not claimed.

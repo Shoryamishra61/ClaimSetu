@@ -49,6 +49,13 @@ Authoritative format reference:
 
 ## External submission handoff
 
-The verified implementation is complete. Durable third-party hosting, public video
-upload, and fluent-human Hindi review require external destinations or people and
-remain explicitly unclaimed in `BUILD_STATUS.md`.
+The verified implementation is complete. Public source, release, PDF, screenshots,
+and video were published under `Shoryamishra61/handover29c`; the released PDF was
+downloaded again and matched locally by SHA-256. Durable application hosting and
+fluent-human Hindi review still require an authenticated host or person and remain
+explicitly unclaimed in `BUILD_STATUS.md`.
+
+GitHub rejected workflow-file activation because the available OAuth token lacks
+the `workflow` scope and rejected GHCR publication without `write:packages`. The
+locally actionlint-validated workflow bundle is attached to release `v1.0.2` so the
+missing hosted state remains auditable rather than hidden.

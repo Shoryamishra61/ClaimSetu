@@ -6,9 +6,10 @@
 
 Last updated: 2026-08-22 (session 4 - definitive-scope completion audit)
 
-`SHIP_READY` remains false only for durable external submission prerequisites: a
-permanent public host, a publicly uploaded video, and human Hindi-copy review. No
-credential, host, or review outcome is fabricated.
+`SHIP_READY` remains false only for two external submission prerequisites: a
+permanent application host and human Hindi-copy review. The source repository,
+release, PDF, screenshots, and video now have durable public GitHub URLs. No host
+or review outcome is fabricated.
 
 ## Verified implementation
 
@@ -42,6 +43,8 @@ credential, host, or review outcome is fabricated.
 | Container | PASS | Healthy UID 100 runtime; exact 8-path OpenAPI, six-table schema, full mutation/PDF smoke passed. |
 | Demo video | PASS (local) | `output/video/handover29c-demo.webm`, 10.00 seconds, frame-checked. |
 | Public smoke | TEMP PASS | HTTPS quick-tunnel UI and `/healthz` returned 200 on 2026-08-22; no uptime guarantee. |
+| Public source/release | PASS | Public repository and `v1.0.2` release; five assets uploaded and PDF SHA-256 re-downloaded/verified. |
+| CI/package publication | BLOCKED EXTERNAL | Workflows pass local `actionlint`, but GitHub rejected activation because OAuth lacks `workflow`; GHCR rejected the token without `write:packages`. |
 
 ## Acceptance gate ledger
 
@@ -57,8 +60,8 @@ credential, host, or review outcome is fabricated.
 | G7 accessibility/localization | PARTIAL | Automated keyboard, focus, zoom, mobile, axe, bilingual-copy gates pass; native human Hindi review remains. |
 | G8 security/dependencies | PASS | Headers, redaction, role/state checks, npm audit, pip-audit, and non-root container. |
 | G9 demo integrity | PASS (local) | 10.00s working-feature recording includes failure and visible disclosure; script is source-aligned. |
-| G10 Codex evidence | PASS | Build log, tests, Superdesign state, artifacts, CI, and local git history/tag. |
-| G11 submission package | PARTIAL | 191-word summary, notices, no credentials needed, and local tag; permanent app/video URLs remain external. |
+| G10 Codex evidence | PASS | Build log, tests, Superdesign state, artifacts, local history, public source, and public release. |
+| G11 submission package | PARTIAL | 188-word summary, notices, public source/release/video/PDF URLs; only a permanent live-app URL remains external. |
 
 ## Artifact index
 
@@ -73,6 +76,14 @@ credential, host, or review outcome is fabricated.
 ## External handoff only
 
 1. Deploy the already-verified container to a host with a persistent volume and HTTPS.
-2. Upload the local demo video to the chosen public video provider.
-3. Have a fluent Hindi reviewer sign off critical copy.
-4. Replace temporary review evidence with durable URLs and rerun public smoke tests.
+2. Have a fluent Hindi reviewer sign off critical copy.
+3. Grant GitHub OAuth `workflow` and `write:packages` scopes if hosted Actions/GHCR
+   publication is desired; the validated workflow bundle is attached to the release.
+4. Replace the temporary app-review URL and rerun public smoke tests.
+
+## Durable public links
+
+- Repository: <https://github.com/Shoryamishra61/handover29c>
+- Release: <https://github.com/Shoryamishra61/handover29c/releases/tag/v1.0.2>
+- Demo video: <https://github.com/Shoryamishra61/handover29c/releases/download/v1.0.2/handover29c-demo.webm>
+- PDF: <https://github.com/Shoryamishra61/handover29c/releases/download/v1.0.2/handover29c-demo-form29c.pdf>

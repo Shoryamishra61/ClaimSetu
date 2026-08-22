@@ -1,5 +1,9 @@
 # Handover29C
 
+[Public release v1.0.2](https://github.com/Shoryamishra61/handover29c/releases/tag/v1.0.2)
+| [Demo video](https://github.com/Shoryamishra61/handover29c/releases/download/v1.0.2/handover29c-demo.webm)
+| [Verified PDF](https://github.com/Shoryamishra61/handover29c/releases/download/v1.0.2/handover29c-demo-form29c.pdf)
+
 Handover29C is an independent hackathon prototype for preparing a fictional
 vehicle-custody record for transfer to an authorised dealer. It implements the
 four-state workflow `DRAFT -> INITIATED -> DEALER_SELECTED ->
@@ -102,3 +106,11 @@ does none of those things; its output is only a preparation aid. See the
 
 The source/evidence precedence in the final specification package remains the
 authority for legal and product claims.
+
+## Publication status
+
+The public `v1.0.2` release contains the PDF, video, responsive screenshots, and
+locally validated CI/release workflow bundle. GitHub would not activate the
+workflow files or accept GHCR publication because the available OAuth token lacks
+the separately required `workflow` and `write:packages` scopes. This limitation is
+reported rather than presenting local verification as hosted CI.
