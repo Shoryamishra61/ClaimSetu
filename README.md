@@ -1,5 +1,7 @@
 # Identity Rescue
 
+[Public source snapshot](https://github.com/Shoryamishra61/handover29c/tree/identity-rescue-pivot) · [23.88-second working walkthrough](https://github.com/Shoryamishra61/handover29c/raw/refs/heads/identity-rescue-pivot/output/video/identity-rescue-demo.webm)
+
 Identity Rescue is an independent, browser-based hackathon prototype that helps a citizen understand which cross-service record inconsistency actually blocks a selected public-service task—and which visible differences should **not** be changed.
 
 Start with the fictional Driving Licence case. Within one click, the app shows the exact records, causal rule, provenance, correction alternatives, deterministic minimum-impact plan, reversible simulation, and official next action.

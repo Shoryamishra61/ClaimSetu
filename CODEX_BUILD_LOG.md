@@ -25,3 +25,5 @@
 ## Honest boundary
 
 The optional OpenAI explanation layer is paused pending the required credential decision. It is not needed for any deterministic journey. Permanent public deployment, native screen-reader smoke testing, human Hindi review, and final video recording remain unclaimed.
+
+The verified source snapshot and 23.88-second working capture were published to the public `identity-rescue-pivot` branch. Corrected workflow files remain local because the GitHub OAuth token lacks the separately required `workflow` scope; hosted CI is therefore not claimed.

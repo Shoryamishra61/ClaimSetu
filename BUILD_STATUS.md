@@ -32,6 +32,7 @@ Last updated: 2026-08-22
 | Official sources | DigiLocker, UIDAI, and EPFO official sources rechecked 2026-08-22 |
 | Docker | root/deep route 200, Identity Rescue-only OpenAPI, non-root UID 100 |
 | Demo capture | 23.88-second automated working-feature walkthrough generated and frame-checked |
+| Public source | Identity Rescue branch and working walkthrough return HTTP 200 without authentication |
 
 ## Remaining P0 / external gates
 
@@ -41,3 +42,5 @@ Last updated: 2026-08-22
 4. Public-link smoke and the narrated final recording/submission checks remain.
 
 No missing external result is represented as completed.
+
+Public source: <https://github.com/Shoryamishra61/handover29c/tree/identity-rescue-pivot>
