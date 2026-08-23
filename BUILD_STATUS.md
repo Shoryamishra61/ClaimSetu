@@ -28,7 +28,7 @@ Last updated: 2026-08-23
 | Docker | rebuilt successfully; root returns ClaimPath; health is `ok`; container user is `identityrescue` |
 | API journey | initial `NOT_IDENTITY_ISSUE`; recommended plan `ACT-B1`; simulation reaches `READY_SIMULATION` |
 | Static fixture | regenerated from the same rule engine with `DEMO-RAVI-01` |
-| Public deployment | previous ClaimPath build verified; resilient official handoff update pending publication |
+| Public deployment | GitHub Pages build `4388d06` completed; live bundle and static data contain the EPFO Member Portal and UMANG fallback |
 
 ## Unclaimed external checks
 

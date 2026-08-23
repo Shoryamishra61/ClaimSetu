@@ -13,7 +13,7 @@ The current public-product decision is [docs/claimpath/00_PRODUCT_DECISION.md](d
 | Minimum fix | planner selects only `ACT-B1` | PASS |
 | Counterfactual proof | name-only action remains non-ready; Date of Exit action reaches modeled-ready | PASS |
 | Evidence/provenance | original value, rule/version, evidence status, sources, uncertainty | PASS |
-| Official handoff | primary EPFO Member Portal plus official UMANG fallback; process-change caveat shown | PASS locally; publication pending |
+| Official handoff | primary EPFO Member Portal plus official UMANG fallback; process-change caveat shown | PASS locally and live |
 | Honest result | UI says modeled checks pass and does not guarantee approval | PASS |
 | English/Hindi | every registered key has both locales | PASS automated; human review pending |
 | Container | same-origin SPA/API, health endpoint, non-root user | PASS |
