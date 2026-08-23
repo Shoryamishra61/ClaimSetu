@@ -42,8 +42,10 @@ try {
   await page.getByText(/blocked in this model/i).waitFor();
   await page.getByRole("button", { name: /simulate minimum fix/i }).click();
   await page.getByText(/modeled checks pass/i).waitFor();
-  const official = await page.getByRole("link", { name: /open official epfo guidance/i }).getAttribute("href");
-  if (!official?.startsWith("https://www.epfindia.gov.in/")) throw new Error(`Official handoff drift: ${official}`);
+  const official = await page.getByRole("link", { name: /open epfo member portal/i }).getAttribute("href");
+  if (!official?.startsWith("https://unifiedportal-mem.epfindia.gov.in/")) throw new Error(`Official handoff drift: ${official}`);
+  const fallback = await page.getByRole("link", { name: /use official umang epfo services/i }).getAttribute("href");
+  if (!fallback?.startsWith("https://web.umang.gov.in/")) throw new Error(`UMANG fallback drift: ${fallback}`);
   if (externalRequests.length) throw new Error(`Static demo made unexpected external requests: ${externalRequests.join(", ")}`);
   process.stdout.write("STATIC_PAGES_CLAIMPATH_JOURNEY=PASS\n");
 } finally {

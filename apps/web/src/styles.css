@@ -445,6 +445,11 @@ a { color: var(--blue-700); }
 .handoff-panel ol { margin: 20px 0; padding-left: 22px; }
 .handoff-panel li { margin-bottom: 14px; padding-left: 5px; color: #344054; line-height: 1.45; }
 .button-link { width: 100%; }
+.portal-fallback { margin-top: 12px; padding: 14px 16px; border: 1px solid #d9b45b; border-radius: 12px; background: #fff8df; color: #47380d; }
+.portal-fallback strong { display: block; margin-bottom: 5px; }
+.portal-fallback p { margin: 0 0 9px; font-size: 13px; line-height: 1.45; }
+.portal-fallback a { display: inline-flex; align-items: center; gap: 6px; color: #174ea6; font-weight: 750; }
+.portal-fallback svg { width: 16px; height: 16px; }
 .secondary-action { width: 100%; margin-top: 12px; border: 1px solid #aeb8c7; background: #fff; color: #263247; }
 
 .safety-strip {

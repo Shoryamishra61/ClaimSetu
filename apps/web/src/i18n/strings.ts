@@ -773,7 +773,10 @@ export const UI = {
   "claimpath.nameLeftAloneBody": { en: " It was visible, but it was not causal for this modeled task.", hi: " वह दिख रहा था, लेकिन इस डेमो काम का कारण नहीं था।" },
   "claimpath.officialNext": { en: "Official next step", hi: "आधिकारिक अगला कदम" },
   "claimpath.handoffTitle": { en: "Verify the current EPFO correction route", hi: "वर्तमान EPFO सुधार प्रक्रिया जाँचें" },
-  "claimpath.openEpfo": { en: "Open official EPFO guidance", hi: "आधिकारिक EPFO मार्गदर्शन खोलें" },
+  "claimpath.openEpfo": { en: "Open EPFO Member Portal", hi: "EPFO सदस्य पोर्टल खोलें" },
+  "claimpath.portalSlowTitle": { en: "Portal slow or unavailable?", hi: "पोर्टल धीमा या बंद है?" },
+  "claimpath.portalSlowBody": { en: "Government services can time out. Try again later or use the official UMANG EPFO service instead.", hi: "सरकारी सेवाएँ कभी-कभी समय पर नहीं खुलतीं। बाद में फिर प्रयास करें या आधिकारिक UMANG EPFO सेवा उपयोग करें।" },
+  "claimpath.openUmang": { en: "Use official UMANG EPFO services", hi: "आधिकारिक UMANG EPFO सेवाएँ खोलें" },
   "claimpath.privacyBody": { en: "ClaimPath uses one bundled fictional worker profile. The only editable field is a browser-only problem note that rejects ID- or OTP-like number sequences and is never sent to the diagnostic engine.", hi: "ClaimPath एक पहले से तैयार काल्पनिक कर्मचारी प्रोफ़ाइल उपयोग करता है। केवल ब्राउज़र में रहने वाला समस्या नोट बदला जा सकता है; ID या OTP जैसे लंबे नंबर अस्वीकार होते हैं और यह नोट जाँच इंजन को नहीं भेजा जाता।" },
   "privacy.title": {
     en: "Privacy by not collecting",

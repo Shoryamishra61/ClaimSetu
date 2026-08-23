@@ -20,6 +20,8 @@ EXPECTED_SOURCE_HOSTS = {
     "www.digilocker.gov.in",
     "uidai.gov.in",
     "www.epfindia.gov.in",
+    "unifiedportal-mem.epfindia.gov.in",
+    "web.umang.gov.in",
 }
 
 

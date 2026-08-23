@@ -361,9 +361,10 @@ function Diagnosis({ analysis, sources, busy, onSimulate }: { analysis: Scenario
   );
 }
 
-function Result({ analysis, onUndo }: { analysis: ScenarioAnalysis; onUndo: () => void }) {
+function Result({ analysis, sources, onUndo }: { analysis: ScenarioAnalysis; sources: SourceReference[]; onUndo: () => void }) {
   const { t } = useLang();
   const change = analysis.before_after.find((item) => item.action_id === "ACT-B1");
+  const umang = sources.find((source) => source.source_id === "SRC-UMANG-001");
   return (
     <div className="result-layout">
       <section className="result-hero" aria-labelledby="result-title">
@@ -383,6 +384,11 @@ function Result({ analysis, onUndo }: { analysis: ScenarioAnalysis; onUndo: () =
           <ol>{analysis.official_handoff.step_keys.map((key) => <li key={key}>{t(key)}</li>)}</ol>
           <p className="caveat">{t(analysis.official_handoff.caveat_key)}</p>
           <a className="primary-action button-link" href={analysis.official_handoff.official_url} target="_blank" rel="noopener noreferrer"><BookOpenText aria-hidden="true" weight="bold" />{t("claimpath.openEpfo")}<ArrowRight aria-hidden="true" weight="bold" /></a>
+          <div className="portal-fallback">
+            <strong>{t("claimpath.portalSlowTitle")}</strong>
+            <p>{t("claimpath.portalSlowBody")}</p>
+            {umang && <a href={umang.url} target="_blank" rel="noopener noreferrer">{t("claimpath.openUmang")} <ArrowRight aria-hidden="true" /></a>}
+          </div>
           <button className="secondary-action" type="button" onClick={onUndo}><ArrowLeft aria-hidden="true" />{t("result.undo")}</button>
           <p className="no-real-change"><LockKey aria-hidden="true" />{t("result.noRealChange")}</p>
         </aside>
@@ -435,7 +441,7 @@ function ClaimPathJourney() {
       {stage === "case" && <CaseStart note={note} setNote={(value) => { setNote(value); setNoteError(""); }} error={noteError} busy={busy} onSubmit={(event) => void loadCase(event)} />}
       {stage === "loaded" && analysis && <LoadedCase analysis={analysis} onDiagnose={() => setStage("diagnosed")} />}
       {stage === "diagnosed" && analysis && <Diagnosis analysis={analysis} sources={sources} busy={busy} onSimulate={() => void simulate()} />}
-      {stage === "result" && analysis && <Result analysis={analysis} onUndo={() => void undo()} />}
+      {stage === "result" && analysis && <Result analysis={analysis} sources={sources} onUndo={() => void undo()} />}
       <div className="safety-strip" role="note"><WarningCircle aria-hidden="true" weight="fill" /><span>{t("claimpath.disclosure")}</span></div>
     </main>
   );
@@ -445,7 +451,7 @@ function SourcesPage() {
   const { t } = useLang();
   const [sources, setSources] = useState<SourceReference[]>([]);
   useEffect(() => { void getSources().then(setSources); }, []);
-  const relevant = useMemo(() => sources.filter((source) => source.source_id.startsWith("SRC-EPFO")), [sources]);
+  const relevant = useMemo(() => sources.filter((source) => source.source_id.startsWith("SRC-EPFO") || source.source_id === "SRC-UMANG-001"), [sources]);
   return (
     <main id="main" className="text-page" tabIndex={-1}>
       <p className="eyebrow">{t("claimpath.name")}</p><h1>{t("sources.title")}</h1><p>{t("sources.body")}</p>

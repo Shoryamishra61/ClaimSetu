@@ -42,12 +42,23 @@ SOURCES: dict[str, SourceReference] = {
     ),
     "SRC-EPFO-001": SourceReference(
         source_id="SRC-EPFO-001",
-        title="EPFO Frequently Asked Questions",
+        title="EPFO Unified Member Portal",
         publisher="Employees' Provident Fund Organisation",
-        url="https://www.epfindia.gov.in/site_en/FAQ.php",
+        url="https://unifiedportal-mem.epfindia.gov.in/memberinterface/",
         proposition=(
-            "EPFO guidance describes date-of-exit prerequisites and the Member Portal Mark Exit workflow. "
+            "EPFO directs members to its Unified Member Portal for member services, including the Mark Exit workflow. "
             "The exact service-history predicate in this demo remains a prototype simulation."
+        ),
+        last_checked_at="2026-08-23",
+    ),
+    "SRC-UMANG-001": SourceReference(
+        source_id="SRC-UMANG-001",
+        title="UMANG EPFO services",
+        publisher="UMANG / NeGD",
+        url="https://web.umang.gov.in/landing/department/epfo.html",
+        proposition=(
+            "UMANG provides an alternate official access point for EPFO member services "
+            "when an EPFO web endpoint is slow or unavailable."
         ),
         last_checked_at="2026-08-23",
     ),
@@ -400,8 +411,8 @@ RAVI = ScenarioFixture(
     official_handoff=OfficialHandoff(
         title_key="handoff.epfo.title",
         step_keys=["handoff.epfo.step1", "handoff.epfo.step2", "handoff.epfo.step3"],
-        official_url="https://www.epfindia.gov.in/site_en/FAQ.php",
-        official_label="EPFO official frequently asked questions",
+        official_url="https://unifiedportal-mem.epfindia.gov.in/memberinterface/",
+        official_label="EPFO Unified Member Portal",
         source_id="SRC-EPFO-001",
     ),
     golden_expectations={

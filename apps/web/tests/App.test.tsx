@@ -113,8 +113,11 @@ describe("ClaimPath EPFO pre-flight", () => {
     expect(screen.getByText(/not a guarantee of claim approval/i)).toBeTruthy();
     expect(screen.getByText(/no official record was changed/i)).toBeTruthy();
     expect(
-      screen.getByRole("link", { name: /open official epfo guidance/i }).getAttribute("href"),
+      screen.getByRole("link", { name: /open epfo member portal/i }).getAttribute("href"),
     ).toBe(initial.official_handoff.official_url);
+    expect(
+      screen.getByRole("link", { name: /use official umang epfo services/i }).getAttribute("href"),
+    ).toBe("https://web.umang.gov.in/landing/department/epfo.html");
   });
 
   it("keeps the editable note browser-only and out of API payloads", async () => {

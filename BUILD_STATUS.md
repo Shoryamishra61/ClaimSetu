@@ -13,7 +13,7 @@ Last updated: 2026-08-23
 - Fictional Ravi Kumar profile with Aadhaar-linked, PAN, EPFO, and service-history records.
 - Causal diagnosis: the controlled `K -> KUMAR` name relation is non-blocking; missing Date of Exit is the modeled blocker.
 - Deterministic minimum-action simulation using `ACT-B1`, full recomputation, before/after evidence, and undo.
-- Source-backed official EPFO FAQ handoff checked on 2026-08-23.
+- Source-backed EPFO Member Portal handoff plus official UMANG fallback checked on 2026-08-23.
 - English/Hindi UI, keyboard-first semantics, responsive layouts, disclosure, privacy, and sources routes.
 - Static GitHub Pages export and full same-origin FastAPI/Docker runtime.
 
@@ -28,7 +28,7 @@ Last updated: 2026-08-23
 | Docker | rebuilt successfully; root returns ClaimPath; health is `ok`; container user is `identityrescue` |
 | API journey | initial `NOT_IDENTITY_ISSUE`; recommended plan `ACT-B1`; simulation reaches `READY_SIMULATION` |
 | Static fixture | regenerated from the same rule engine with `DEMO-RAVI-01` |
-| Public deployment | GitHub Pages build `40168d9` completed; HTTPS returns 200 with the ClaimPath title, Ravi bundle, `ACT-B1`, and current EPFO handoff |
+| Public deployment | previous ClaimPath build verified; resilient official handoff update pending publication |
 
 ## Unclaimed external checks
 

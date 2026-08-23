@@ -45,9 +45,10 @@ test("four-click journey finds the causal blocker and proves the minimum fix", a
   await page.getByRole("button", { name: /simulate minimum fix/i }).click();
   await expect(page.getByText(/modeled checks pass/i)).toBeVisible();
   await expect(page.getByText(/not a guarantee of claim approval/i)).toBeVisible();
-  const official = page.getByRole("link", { name: /open official epfo guidance/i });
-  await expect(official).toHaveAttribute("href", /epfindia\.gov\.in/);
+  const official = page.getByRole("link", { name: /open epfo member portal/i });
+  await expect(official).toHaveAttribute("href", /unifiedportal-mem\.epfindia\.gov\.in/);
   await expect(official).toHaveAttribute("rel", "noopener noreferrer");
+  await expect(page.getByRole("link", { name: /use official umang epfo services/i })).toHaveAttribute("href", /web\.umang\.gov\.in/);
 });
 
 test("sensitive identifiers are rejected before any API request", async ({ page }) => {
