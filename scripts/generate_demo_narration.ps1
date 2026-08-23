@@ -5,16 +5,16 @@ $ProjectRoot = Split-Path -Parent $PSScriptRoot
 $OutputDirectory = Join-Path $ProjectRoot "output\video"
 New-Item -ItemType Directory -Path $OutputDirectory -Force | Out-Null
 $Segments = @(
-    "Public service portals often say details do not match, but not which record actually blocks the task. Identity Rescue uses fictional data to answer that one question.",
-    "Ananya cannot fetch a Driving Licence. In one click we see the two original name forms and the causal, versioned demo rule, without entering any real ID.",
-    "The evidence separates official source support from the exact prototype predicate. The planner compares only allowed corrections and prefers the lower impact issuer route over changing a broadly reused upstream record.",
-    "Simulation changes only this fictional case. The engine recomputes readiness, shows before and after, and says clearly that no official record was changed.",
-    "The journey ends with a linked official source and a warning to verify the current process before acting.",
-    "The key innovation is causal disambiguation. Arvind's names look different, but changing the name does not fix the case. The service history condition is the modeled blocker.",
-    "For a life event, the minimum plan updates only the Driving Licence name needed for the selected goal. PAN and address differences remain visible instead of being changed for cosmetic consistency.",
-    "The same focused flow works in simple Hindi, at three hundred and twenty pixels, with keyboard navigation, visible focus, live status announcements, and no horizontal scroll.",
-    "Codex helped turn the frozen specifications into deterministic rules, planner tests, a React and FastAPI implementation, accessibility gates, Docker verification, and public deployment. AI is not allowed to decide readiness or the plan.",
-    "It is an independent prototype: fictional data, no government connection, and no claim beyond the evidence."
+    "A blocked provident fund claim can show several record differences, but never explain which one actually matters. ClaimPath turns that confusion into one focused pre-flight.",
+    "Ravi's fictional withdrawal involves forty five thousand rupees. The citizen can describe what happened, but the note stays only in this browser and cannot change the diagnosis.",
+    "ClaimPath compares the original Aadhaar-linked, PAN, EPFO, and employment-history facts. Versioned rules preserve provenance instead of producing an unexplained identity score.",
+    "The visible Ravi K and Ravi Kumar forms are compatible through an explicit fictional relation. The causal blocker is the missing Date of Exit, not the name.",
+    "The technical drawer exposes the rule version, original value, evidence status, source, uncertainty, and the boundary between official guidance and prototype logic.",
+    "A minimum-cost planner searches only allowlisted actions. It changes the fictional Date of Exit, recomputes every check, and leaves the non-causal name variation untouched.",
+    "The architecture is deliberately deterministic: evidence model, causal rules, planner, counterfactual simulation, then official handoff. AI cannot decide readiness or select a correction.",
+    "Privacy comes from not collecting. There is no real UAN, Aadhaar, PAN, OTP, payment, biometric, upload, government API call, or official write.",
+    "The interface uses one primary action per state, visible progress, strong contrast, responsive evidence panels, keyboard semantics, and a complete English and Hindi journey.",
+    "Modeled checks are not approval. The EPFO Member Portal and UMANG provide two official exits."
 )
 
 for ($Index = 0; $Index -lt $Segments.Count; $Index++) {
