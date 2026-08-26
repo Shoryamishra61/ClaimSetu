@@ -1,0 +1,14 @@
+.git
+.github
+.venv
+**/__pycache__
+**/*.pyc
+**/*.egg-info
+apps/web/node_modules
+apps/web/dist
+apps/web/playwright-report
+apps/web/test-results
+tmp
+var
+output
+.superdesign

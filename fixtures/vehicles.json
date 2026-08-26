@@ -1,0 +1,110 @@
+{
+  "_readme": [
+    "FICTIONAL VEHICLE DATA. Every record here is invented for a hackathon prototype.",
+    "Registration numbers all begin with DEMO so they cannot be mistaken for real plates",
+    "and cannot collide with a real Indian registration format.",
+    "",
+    "submission_scenario binds the MockForm29CAdapter outcome to the chosen vehicle.",
+    "This is how demo determinism is achieved WITHOUT a hidden switch: the scenario is a",
+    "visible property of a visibly fictional record. 09_QA_TEST_DEMO_RELIABILITY.md",
+    "section 6 requires deterministic scenarios and forbids secret bypasses."
+  ],
+  "vehicles": [
+    {
+      "id": "veh-demo-01",
+      "registration_no": "DEMO01AB1234",
+      "chassis_suffix": "12345",
+      "make_model": "Maruti Suzuki WagonR (fictional record)",
+      "registered_owner_name": "Ramesh Kumar (fictional)",
+      "document_flags": {
+        "rc_ready": true,
+        "pucc_ready": true,
+        "insurance_ready": true
+      },
+      "submission_scenario": "ACK",
+      "is_default_demo": true,
+      "demo_label_en": "Happy path — submission is acknowledged",
+      "demo_label_hi": "सामान्य मार्ग — जमा करने पर पावती मिलती है"
+    },
+    {
+      "id": "veh-demo-02",
+      "registration_no": "DEMO02CD5678",
+      "chassis_suffix": "56789",
+      "make_model": "Hyundai i20 (fictional record)",
+      "registered_owner_name": "Sunita Devi (fictional)",
+      "document_flags": {
+        "rc_ready": true,
+        "pucc_ready": true,
+        "insurance_ready": true
+      },
+      "submission_scenario": "REJECTED",
+      "is_default_demo": false,
+      "demo_label_en": "Submission is rejected by the simulated portal",
+      "demo_label_hi": "सिम्युलेटेड पोर्टल जमा करने को अस्वीकार करता है"
+    },
+    {
+      "id": "veh-demo-03",
+      "registration_no": "DEMO03EF9012",
+      "chassis_suffix": "90123",
+      "make_model": "Tata Nexon (fictional record)",
+      "registered_owner_name": "Imran Sheikh (fictional)",
+      "document_flags": {
+        "rc_ready": true,
+        "pucc_ready": true,
+        "insurance_ready": true
+      },
+      "submission_scenario": "UNKNOWN",
+      "is_default_demo": false,
+      "demo_label_en": "Submission outcome is ambiguous — status unknown",
+      "demo_label_hi": "जमा करने का परिणाम अस्पष्ट — स्थिति अज्ञात"
+    },
+    {
+      "id": "veh-demo-04",
+      "registration_no": "DEMO04GH3456",
+      "chassis_suffix": "34567",
+      "make_model": "Honda Activa (fictional record)",
+      "registered_owner_name": "Lakshmi Narayan (fictional)",
+      "document_flags": {
+        "rc_ready": true,
+        "pucc_ready": true,
+        "insurance_ready": true
+      },
+      "submission_scenario": "TEMPORARY_FAILURE",
+      "is_default_demo": false,
+      "demo_label_en": "Simulated portal is temporarily unavailable",
+      "demo_label_hi": "सिम्युलेटेड पोर्टल अस्थायी रूप से अनुपलब्ध है"
+    },
+    {
+      "id": "veh-demo-05",
+      "registration_no": "DEMO05IJ7890",
+      "chassis_suffix": "78901",
+      "make_model": "Mahindra Bolero (fictional record)",
+      "registered_owner_name": "Gurpreet Singh (fictional)",
+      "document_flags": {
+        "rc_ready": true,
+        "pucc_ready": false,
+        "insurance_ready": true
+      },
+      "submission_scenario": "ACK",
+      "is_default_demo": false,
+      "demo_label_en": "Readiness blocker — pollution certificate not ready",
+      "demo_label_hi": "तैयारी में बाधा — प्रदूषण प्रमाणपत्र तैयार नहीं है"
+    },
+    {
+      "id": "veh-demo-06",
+      "registration_no": "DEMO06KL2345",
+      "chassis_suffix": "23456",
+      "make_model": "Maruti Suzuki Eeco (fictional record)",
+      "registered_owner_name": "Fatima Bano (fictional)",
+      "document_flags": {
+        "rc_ready": true,
+        "pucc_ready": true,
+        "insurance_ready": true
+      },
+      "submission_scenario": "UNKNOWN_THEN_ACK",
+      "is_default_demo": false,
+      "demo_label_en": "Unknown at first, then reconciliation finds an acknowledgement",
+      "demo_label_hi": "पहले अज्ञात, फिर पुनर्मिलान में पावती मिलती है"
+    }
+  ]
+}

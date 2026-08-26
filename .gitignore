@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.venv/
+
+# Node
+node_modules/
+dist/
+dist-pages/
+playwright-report/
+test-results/
+output/video/frame-*.png
+output/video/identity-rescue-final-visual.webm
+output/video/identity-rescue-final-narration.wav
+output/video/identity-rescue-narration-*.wav
+output/video/identity-rescue-final-submission.webm
+output/video/final-frame-*.png
+
+# Runtime and intermediate evidence
+var/*.sqlite3
+var/*.sqlite3-*
+tmp/
+.coverage
+
+# Local configuration
+.env
+.env.*
+!.env.example
+
+# Superdesign scratch files only; durable context and resume state are retained.
+.superdesign/tmp/

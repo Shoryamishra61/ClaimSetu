@@ -1,0 +1,18 @@
+# Test-only dependencies. Kept separate from requirements.txt so the deployed image
+# does not carry a test runner, and so a reviewer can see at a glance that the
+# production surface has four direct dependencies.
+
+-r requirements.txt
+
+pytest>=8.0,<9.0
+
+# Audits the deployable dependency set in CI and release verification.
+pip-audit>=2.9,<3.0
+
+# TestClient is httpx-based in modern Starlette. Listed explicitly rather than left
+# to a transitive pull, because the API contract tests are the ones that must not
+# break silently.
+httpx>=0.27,<1.0
+
+# Verifies that every generated PDF exposes the required fields as extractable text.
+pypdf>=5.0,<7.0

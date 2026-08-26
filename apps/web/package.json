@@ -1,0 +1,45 @@
+{
+  "name": "identity-rescue-web",
+  "private": true,
+  "version": "2.0.0",
+  "type": "module",
+  "description": "ClaimPath EPFO old-balance transfer prerequisite prototype.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit -p tsconfig.json && vite build",
+    "build:pages": "tsc --noEmit -p tsconfig.json && vite build --base=/handover29c/ --outDir=dist-pages",
+    "export:fixtures": "python ../../scripts/export_static_identity_rescue.py",
+    "preview": "vite preview --port 4173",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run --pool=forks --maxWorkers=1",
+    "test:watch": "vitest",
+    "e2e": "playwright test",
+    "e2e:pages": "node scripts/smoke-static-pages.mjs",
+    "e2e:install": "playwright install --with-deps chromium",
+    "record:demo": "node scripts/record-demo.mjs",
+    "record:final": "node scripts/record-final-demo.mjs",
+    "mux:final": "node scripts/mux-final-demo.mjs",
+    "inspect:final": "node scripts/inspect-final-demo.mjs",
+    "encode:final": "powershell -ExecutionPolicy Bypass -File ../../scripts/encode_final_demo.ps1"
+  },
+  "dependencies": {
+    "@phosphor-icons/react": "^2.1.10",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.10.1",
+    "@playwright/test": "^1.62.1",
+    "@testing-library/dom": "10.4.0",
+    "@testing-library/react": "16.0.1",
+    "@testing-library/user-event": "14.5.2",
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.3.1",
+    "@vitejs/plugin-react": "6.1.0",
+    "axe-core": "4.10.2",
+    "jsdom": "25.0.1",
+    "typescript": "5.6.3",
+    "vite": "8.2.2",
+    "vitest": "4.1.11"
+  }
+}
