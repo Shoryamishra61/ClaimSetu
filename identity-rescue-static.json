@@ -25,8 +25,16 @@
       "title": "EPFO Unified Member Portal",
       "publisher": "Employees' Provident Fund Organisation",
       "url": "https://unifiedportal-mem.epfindia.gov.in/memberinterface/",
-      "proposition": "EPFO directs members to its Unified Member Portal for member services, including the Mark Exit workflow. The exact service-history predicate in this demo remains a prototype simulation.",
-      "last_checked_at": "2026-08-23"
+      "proposition": "Official destination for EPFO member services, including the Mark Exit workflow.",
+      "last_checked_at": "2026-08-27"
+    },
+    {
+      "source_id": "SRC-EPFO-FAQ-001",
+      "title": "EPFO FAQ — transfer and Date of Exit",
+      "publisher": "Employees' Provident Fund Organisation",
+      "url": "https://www.epfindia.gov.in/site_en/FAQ.php",
+      "proposition": "EPFO states that Date of Exit for the previous employment is mandatory for an online transfer, and documents the member self-service Mark Exit route after two months.",
+      "last_checked_at": "2026-08-27"
     },
     {
       "source_id": "SRC-UMANG-001",
@@ -1583,8 +1591,8 @@
               "derived_label": "Comparison form"
             },
             "last_contribution_month": {
-              "original": "2026-07",
-              "normalized": "2026 07",
+              "original": "2026-05",
+              "normalized": "2026 05",
               "script": null,
               "locale": null,
               "derived_label": "Comparison form"
@@ -1633,7 +1641,7 @@
             }
           ],
           "source_ids": [
-            "SRC-EPFO-001"
+            "SRC-EPFO-FAQ-001"
           ],
           "uncertainty_key": "finding.epfo.name.uncertainty"
         },
@@ -1645,7 +1653,7 @@
           "title_key": "finding.epfo.history.block_title",
           "explanation_key": "finding.epfo.history.block",
           "causal": true,
-          "evidence_status": "PROTOTYPE_SIMULATION",
+          "evidence_status": "OFFICIAL_SOURCE_DERIVED",
           "inputs": [
             {
               "record_id": "REC-EPFO-RAVI",
@@ -1659,18 +1667,18 @@
               "authority": "EPFO_DEMO",
               "field": "last_contribution_month",
               "label": "Fictional last contribution month",
-              "original_value": "2026-07"
+              "original_value": "2026-05"
             },
             {
               "record_id": "REC-EPFO-RAVI",
               "authority": "EPFO_DEMO",
               "field": "claim_attempt_date",
-              "label": "Fictional claim attempt date",
+              "label": "Fictional transfer attempt date",
               "original_value": "2026-08-20"
             }
           ],
           "source_ids": [
-            "SRC-EPFO-001"
+            "SRC-EPFO-FAQ-001"
           ],
           "uncertainty_key": "finding.epfo.history.uncertainty"
         },
@@ -1707,7 +1715,7 @@
             }
           ],
           "source_ids": [
-            "SRC-EPFO-001"
+            "SRC-EPFO-FAQ-001"
           ],
           "uncertainty_key": null
         }
@@ -1752,7 +1760,7 @@
           "target_record_id": "REC-EPFO-RAVI",
           "target_field": "date_of_exit",
           "from_value": "NOT_RECORDED",
-          "to_value": "2026-07-31",
+          "to_value": "2026-05-31",
           "effort_key": "effort.employer",
           "effect_key": "action.b1.effect",
           "impact_key": "action.b1.impact",
@@ -1766,9 +1774,9 @@
           "risk_key": "action.b1.impact",
           "uncertainty_key": "finding.epfo.history.uncertainty",
           "reversible": true,
-          "evidence_status": "PROTOTYPE_SIMULATION",
+          "evidence_status": "OFFICIAL_SOURCE_DERIVED",
           "source_ids": [
-            "SRC-EPFO-001"
+            "SRC-EPFO-FAQ-001"
           ],
           "cost": 45
         }
@@ -1802,7 +1810,7 @@
         "caveat_key": "handoff.processes_change"
       },
       "source_ids": [
-        "SRC-EPFO-001"
+        "SRC-EPFO-FAQ-001"
       ],
       "deterministic": true,
       "government_systems_contacted": 0
@@ -1909,8 +1917,8 @@
               "derived_label": "Comparison form"
             },
             "last_contribution_month": {
-              "original": "2026-07",
-              "normalized": "2026 07",
+              "original": "2026-05",
+              "normalized": "2026 05",
               "script": null,
               "locale": null,
               "derived_label": "Comparison form"
@@ -1959,7 +1967,7 @@
             }
           ],
           "source_ids": [
-            "SRC-EPFO-001"
+            "SRC-EPFO-FAQ-001"
           ],
           "uncertainty_key": "finding.epfo.name.uncertainty"
         },
@@ -1971,7 +1979,7 @@
           "title_key": "finding.epfo.history.block_title",
           "explanation_key": "finding.epfo.history.block",
           "causal": true,
-          "evidence_status": "PROTOTYPE_SIMULATION",
+          "evidence_status": "OFFICIAL_SOURCE_DERIVED",
           "inputs": [
             {
               "record_id": "REC-EPFO-RAVI",
@@ -1985,18 +1993,18 @@
               "authority": "EPFO_DEMO",
               "field": "last_contribution_month",
               "label": "Fictional last contribution month",
-              "original_value": "2026-07"
+              "original_value": "2026-05"
             },
             {
               "record_id": "REC-EPFO-RAVI",
               "authority": "EPFO_DEMO",
               "field": "claim_attempt_date",
-              "label": "Fictional claim attempt date",
+              "label": "Fictional transfer attempt date",
               "original_value": "2026-08-20"
             }
           ],
           "source_ids": [
-            "SRC-EPFO-001"
+            "SRC-EPFO-FAQ-001"
           ],
           "uncertainty_key": "finding.epfo.history.uncertainty"
         },
@@ -2033,7 +2041,7 @@
             }
           ],
           "source_ids": [
-            "SRC-EPFO-001"
+            "SRC-EPFO-FAQ-001"
           ],
           "uncertainty_key": null
         }
@@ -2078,7 +2086,7 @@
           "target_record_id": "REC-EPFO-RAVI",
           "target_field": "date_of_exit",
           "from_value": "NOT_RECORDED",
-          "to_value": "2026-07-31",
+          "to_value": "2026-05-31",
           "effort_key": "effort.employer",
           "effect_key": "action.b1.effect",
           "impact_key": "action.b1.impact",
@@ -2092,9 +2100,9 @@
           "risk_key": "action.b1.impact",
           "uncertainty_key": "finding.epfo.history.uncertainty",
           "reversible": true,
-          "evidence_status": "PROTOTYPE_SIMULATION",
+          "evidence_status": "OFFICIAL_SOURCE_DERIVED",
           "source_ids": [
-            "SRC-EPFO-001"
+            "SRC-EPFO-FAQ-001"
           ],
           "cost": 45
         }
@@ -2148,7 +2156,7 @@
         "caveat_key": "handoff.processes_change"
       },
       "source_ids": [
-        "SRC-EPFO-001"
+        "SRC-EPFO-FAQ-001"
       ],
       "deterministic": true,
       "government_systems_contacted": 0
@@ -2248,15 +2256,15 @@
               "derived_label": null
             },
             "date_of_exit": {
-              "original": "2026-07-31",
-              "normalized": "2026 07 31",
+              "original": "2026-05-31",
+              "normalized": "2026 05 31",
               "script": null,
               "locale": null,
               "derived_label": "Comparison form"
             },
             "last_contribution_month": {
-              "original": "2026-07",
-              "normalized": "2026 07",
+              "original": "2026-05",
+              "normalized": "2026 05",
               "script": null,
               "locale": null,
               "derived_label": "Comparison form"
@@ -2305,7 +2313,7 @@
             }
           ],
           "source_ids": [
-            "SRC-EPFO-001"
+            "SRC-EPFO-FAQ-001"
           ],
           "uncertainty_key": "finding.epfo.name.uncertainty"
         },
@@ -2317,32 +2325,32 @@
           "title_key": "finding.epfo.history.pass_title",
           "explanation_key": "finding.epfo.history.pass",
           "causal": false,
-          "evidence_status": "PROTOTYPE_SIMULATION",
+          "evidence_status": "OFFICIAL_SOURCE_DERIVED",
           "inputs": [
             {
               "record_id": "REC-EPFO-RAVI",
               "authority": "EPFO_DEMO",
               "field": "date_of_exit",
               "label": "Fictional date of exit",
-              "original_value": "2026-07-31"
+              "original_value": "2026-05-31"
             },
             {
               "record_id": "REC-EPFO-RAVI",
               "authority": "EPFO_DEMO",
               "field": "last_contribution_month",
               "label": "Fictional last contribution month",
-              "original_value": "2026-07"
+              "original_value": "2026-05"
             },
             {
               "record_id": "REC-EPFO-RAVI",
               "authority": "EPFO_DEMO",
               "field": "claim_attempt_date",
-              "label": "Fictional claim attempt date",
+              "label": "Fictional transfer attempt date",
               "original_value": "2026-08-20"
             }
           ],
           "source_ids": [
-            "SRC-EPFO-001"
+            "SRC-EPFO-FAQ-001"
           ],
           "uncertainty_key": "finding.epfo.history.uncertainty"
         },
@@ -2379,7 +2387,7 @@
             }
           ],
           "source_ids": [
-            "SRC-EPFO-001"
+            "SRC-EPFO-FAQ-001"
           ],
           "uncertainty_key": null
         }
@@ -2424,7 +2432,7 @@
           "target_record_id": "REC-EPFO-RAVI",
           "target_field": "date_of_exit",
           "from_value": "NOT_RECORDED",
-          "to_value": "2026-07-31",
+          "to_value": "2026-05-31",
           "effort_key": "effort.employer",
           "effect_key": "action.b1.effect",
           "impact_key": "action.b1.impact",
@@ -2438,9 +2446,9 @@
           "risk_key": "action.b1.impact",
           "uncertainty_key": "finding.epfo.history.uncertainty",
           "reversible": true,
-          "evidence_status": "PROTOTYPE_SIMULATION",
+          "evidence_status": "OFFICIAL_SOURCE_DERIVED",
           "source_ids": [
-            "SRC-EPFO-001"
+            "SRC-EPFO-FAQ-001"
           ],
           "cost": 45
         }
@@ -2455,7 +2463,7 @@
           "record_label": "EPFO member demo record",
           "field_label": "date_of_exit",
           "before": "NOT_RECORDED",
-          "after": "2026-07-31"
+          "after": "2026-05-31"
         }
       ],
       "simulation_events": [
@@ -2482,7 +2490,7 @@
         "caveat_key": "handoff.processes_change"
       },
       "source_ids": [
-        "SRC-EPFO-001"
+        "SRC-EPFO-FAQ-001"
       ],
       "deterministic": true,
       "government_systems_contacted": 0
@@ -2582,15 +2590,15 @@
               "derived_label": null
             },
             "date_of_exit": {
-              "original": "2026-07-31",
-              "normalized": "2026 07 31",
+              "original": "2026-05-31",
+              "normalized": "2026 05 31",
               "script": null,
               "locale": null,
               "derived_label": "Comparison form"
             },
             "last_contribution_month": {
-              "original": "2026-07",
-              "normalized": "2026 07",
+              "original": "2026-05",
+              "normalized": "2026 05",
               "script": null,
               "locale": null,
               "derived_label": "Comparison form"
@@ -2639,7 +2647,7 @@
             }
           ],
           "source_ids": [
-            "SRC-EPFO-001"
+            "SRC-EPFO-FAQ-001"
           ],
           "uncertainty_key": "finding.epfo.name.uncertainty"
         },
@@ -2651,32 +2659,32 @@
           "title_key": "finding.epfo.history.pass_title",
           "explanation_key": "finding.epfo.history.pass",
           "causal": false,
-          "evidence_status": "PROTOTYPE_SIMULATION",
+          "evidence_status": "OFFICIAL_SOURCE_DERIVED",
           "inputs": [
             {
               "record_id": "REC-EPFO-RAVI",
               "authority": "EPFO_DEMO",
               "field": "date_of_exit",
               "label": "Fictional date of exit",
-              "original_value": "2026-07-31"
+              "original_value": "2026-05-31"
             },
             {
               "record_id": "REC-EPFO-RAVI",
               "authority": "EPFO_DEMO",
               "field": "last_contribution_month",
               "label": "Fictional last contribution month",
-              "original_value": "2026-07"
+              "original_value": "2026-05"
             },
             {
               "record_id": "REC-EPFO-RAVI",
               "authority": "EPFO_DEMO",
               "field": "claim_attempt_date",
-              "label": "Fictional claim attempt date",
+              "label": "Fictional transfer attempt date",
               "original_value": "2026-08-20"
             }
           ],
           "source_ids": [
-            "SRC-EPFO-001"
+            "SRC-EPFO-FAQ-001"
           ],
           "uncertainty_key": "finding.epfo.history.uncertainty"
         },
@@ -2713,7 +2721,7 @@
             }
           ],
           "source_ids": [
-            "SRC-EPFO-001"
+            "SRC-EPFO-FAQ-001"
           ],
           "uncertainty_key": null
         }
@@ -2758,7 +2766,7 @@
           "target_record_id": "REC-EPFO-RAVI",
           "target_field": "date_of_exit",
           "from_value": "NOT_RECORDED",
-          "to_value": "2026-07-31",
+          "to_value": "2026-05-31",
           "effort_key": "effort.employer",
           "effect_key": "action.b1.effect",
           "impact_key": "action.b1.impact",
@@ -2772,9 +2780,9 @@
           "risk_key": "action.b1.impact",
           "uncertainty_key": "finding.epfo.history.uncertainty",
           "reversible": true,
-          "evidence_status": "PROTOTYPE_SIMULATION",
+          "evidence_status": "OFFICIAL_SOURCE_DERIVED",
           "source_ids": [
-            "SRC-EPFO-001"
+            "SRC-EPFO-FAQ-001"
           ],
           "cost": 45
         }
@@ -2797,7 +2805,7 @@
           "record_label": "EPFO member demo record",
           "field_label": "date_of_exit",
           "before": "NOT_RECORDED",
-          "after": "2026-07-31"
+          "after": "2026-05-31"
         }
       ],
       "simulation_events": [
@@ -2833,7 +2841,7 @@
         "caveat_key": "handoff.processes_change"
       },
       "source_ids": [
-        "SRC-EPFO-001"
+        "SRC-EPFO-FAQ-001"
       ],
       "deterministic": true,
       "government_systems_contacted": 0
@@ -2933,15 +2941,15 @@
               "derived_label": null
             },
             "date_of_exit": {
-              "original": "2026-07-31",
-              "normalized": "2026 07 31",
+              "original": "2026-05-31",
+              "normalized": "2026 05 31",
               "script": null,
               "locale": null,
               "derived_label": "Comparison form"
             },
             "last_contribution_month": {
-              "original": "2026-07",
-              "normalized": "2026 07",
+              "original": "2026-05",
+              "normalized": "2026 05",
               "script": null,
               "locale": null,
               "derived_label": "Comparison form"
@@ -2990,7 +2998,7 @@
             }
           ],
           "source_ids": [
-            "SRC-EPFO-001"
+            "SRC-EPFO-FAQ-001"
           ],
           "uncertainty_key": "finding.epfo.name.uncertainty"
         },
@@ -3002,32 +3010,32 @@
           "title_key": "finding.epfo.history.pass_title",
           "explanation_key": "finding.epfo.history.pass",
           "causal": false,
-          "evidence_status": "PROTOTYPE_SIMULATION",
+          "evidence_status": "OFFICIAL_SOURCE_DERIVED",
           "inputs": [
             {
               "record_id": "REC-EPFO-RAVI",
               "authority": "EPFO_DEMO",
               "field": "date_of_exit",
               "label": "Fictional date of exit",
-              "original_value": "2026-07-31"
+              "original_value": "2026-05-31"
             },
             {
               "record_id": "REC-EPFO-RAVI",
               "authority": "EPFO_DEMO",
               "field": "last_contribution_month",
               "label": "Fictional last contribution month",
-              "original_value": "2026-07"
+              "original_value": "2026-05"
             },
             {
               "record_id": "REC-EPFO-RAVI",
               "authority": "EPFO_DEMO",
               "field": "claim_attempt_date",
-              "label": "Fictional claim attempt date",
+              "label": "Fictional transfer attempt date",
               "original_value": "2026-08-20"
             }
           ],
           "source_ids": [
-            "SRC-EPFO-001"
+            "SRC-EPFO-FAQ-001"
           ],
           "uncertainty_key": "finding.epfo.history.uncertainty"
         },
@@ -3064,7 +3072,7 @@
             }
           ],
           "source_ids": [
-            "SRC-EPFO-001"
+            "SRC-EPFO-FAQ-001"
           ],
           "uncertainty_key": null
         }
@@ -3109,7 +3117,7 @@
           "target_record_id": "REC-EPFO-RAVI",
           "target_field": "date_of_exit",
           "from_value": "NOT_RECORDED",
-          "to_value": "2026-07-31",
+          "to_value": "2026-05-31",
           "effort_key": "effort.employer",
           "effect_key": "action.b1.effect",
           "impact_key": "action.b1.impact",
@@ -3123,9 +3131,9 @@
           "risk_key": "action.b1.impact",
           "uncertainty_key": "finding.epfo.history.uncertainty",
           "reversible": true,
-          "evidence_status": "PROTOTYPE_SIMULATION",
+          "evidence_status": "OFFICIAL_SOURCE_DERIVED",
           "source_ids": [
-            "SRC-EPFO-001"
+            "SRC-EPFO-FAQ-001"
           ],
           "cost": 45
         }
@@ -3141,7 +3149,7 @@
           "record_label": "EPFO member demo record",
           "field_label": "date_of_exit",
           "before": "NOT_RECORDED",
-          "after": "2026-07-31"
+          "after": "2026-05-31"
         },
         {
           "action_id": "ACT-B-NAME",
@@ -3184,7 +3192,7 @@
         "caveat_key": "handoff.processes_change"
       },
       "source_ids": [
-        "SRC-EPFO-001"
+        "SRC-EPFO-FAQ-001"
       ],
       "deterministic": true,
       "government_systems_contacted": 0
