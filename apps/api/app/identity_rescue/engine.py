@@ -9,6 +9,7 @@ from .models import (
     CorrectionAction,
     EvidenceInput,
     EvidenceStatus,
+    FictionalTestCase,
     Finding,
     FindingState,
     PlanResult,
@@ -19,6 +20,9 @@ from .models import (
     SimulationEvent,
     SourceReference,
     SyntheticRecord,
+    TestCaseResult,
+    TestCaseStatus,
+    TestCaseTrace,
 )
 from .normalization import (
     ComparisonResult,
@@ -66,6 +70,77 @@ class IdentityRescueEngine:
 
     def list_rules(self) -> list[RuleDefinition]:
         return list(RULES.values())
+
+    def analyze_test_case(
+        self, case: FictionalTestCase, apply_suggested_fix: bool = False
+    ) -> TestCaseResult:
+        """Evaluate the public fictional-data contract without accepting identifiers."""
+        names_differ = normalize_text(case.aadhaar_linked_name) != normalize_text(
+            case.epfo_name
+        )
+        name_safe = not names_differ or case.name_relation_confirmed
+        date_before = case.date_of_exit
+        date_after = date_before
+
+        if not name_safe:
+            status = TestCaseStatus.NEEDS_REVIEW
+            blocker = "NAME_RELATION_UNCONFIRMED"
+            next_action = (
+                "Do not infer identity equivalence or change a name from this file. "
+                "Review the fictional evidence relation first."
+            )
+        elif date_before is not None:
+            status = TestCaseStatus.PREREQUISITE_MET
+            blocker = None
+            next_action = "The Date of Exit prerequisite is present in this fictional case."
+        elif not case.mark_exit_waiting_period_met:
+            status = TestCaseStatus.WAITING_PERIOD_NOT_MET
+            blocker = "MARK_EXIT_WAITING_PERIOD"
+            next_action = (
+                "The sample says the documented waiting condition is not yet met. "
+                "Do not simulate Mark Exit yet."
+            )
+        elif apply_suggested_fix:
+            date_after = case.proposed_exit_date
+            status = TestCaseStatus.PREREQUISITE_MET
+            blocker = None
+            next_action = (
+                "The fictional Date of Exit was added and the prerequisite was recomputed."
+            )
+        else:
+            status = TestCaseStatus.BLOCKED_DATE_OF_EXIT
+            blocker = "DATE_OF_EXIT_MISSING"
+            next_action = "Test the proposed fictional Date of Exit, then recompute."
+
+        return TestCaseResult(
+            status=status,
+            blocker=blocker,
+            date_of_exit_before=date_before,
+            date_of_exit_after=date_after,
+            next_action=next_action,
+            traces=[
+                TestCaseTrace(
+                    rule_id="EPFO-001",
+                    status="PASS" if name_safe else "REVIEW",
+                    message=(
+                        "Name relation is explicitly confirmed in the fictional file."
+                        if name_safe
+                        else "Different names have no confirmed fictional relation."
+                    ),
+                    source_id="SRC-EPFO-FAQ-001",
+                ),
+                TestCaseTrace(
+                    rule_id="EPFO-003",
+                    status="PASS" if date_after is not None else "BLOCK",
+                    message=(
+                        "Date of Exit is present for the transfer prerequisite."
+                        if date_after is not None
+                        else "Date of Exit is missing for the transfer prerequisite."
+                    ),
+                    source_id="SRC-EPFO-FAQ-001",
+                ),
+            ],
+        )
 
     def analyze(
         self, scenario_id: str, applied_action_ids: list[str] | None = None

@@ -1,0 +1,10 @@
+{
+  "schema_version": "claimpath-test-case.v1",
+  "fictional": true,
+  "aadhaar_linked_name": "RAVI KUMAR",
+  "epfo_name": "RAVI K",
+  "name_relation_confirmed": true,
+  "date_of_exit": null,
+  "proposed_exit_date": "2026-05-31",
+  "mark_exit_waiting_period_met": true
+}

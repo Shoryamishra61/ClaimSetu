@@ -11,22 +11,29 @@ import {
   Briefcase,
   CalendarX,
   CheckCircle,
+  FileArrowDown,
+  FileCode,
   IdentificationCard,
   Info,
   LockKey,
   MagnifyingGlass,
   ShieldCheck,
+  UploadSimple,
   UserCircle,
   WarningCircle,
 } from "@phosphor-icons/react";
 
 import {
   analyzeScenario,
+  analyzeFictionalTestCase,
   getSources,
+  parseFictionalTestCase,
   simulateScenario,
+  type FictionalTestCase,
   type ScenarioAnalysis,
   type SourceReference,
   type SyntheticRecord,
+  type TestCaseResult,
 } from "./identityApi";
 import { useLang } from "./i18n/LangProvider";
 
@@ -38,7 +45,11 @@ const BASE_PATH =
     : import.meta.env.BASE_URL.replace(/\/$/, "");
 
 type JourneyStage = "case" | "diagnosed" | "result";
-type Route = { kind: "journey" } | { kind: "sources" } | { kind: "privacy" };
+type Route =
+  | { kind: "journey" }
+  | { kind: "test-case" }
+  | { kind: "sources" }
+  | { kind: "privacy" };
 
 function routeFromPath(pathname: string): Route {
   const appPath =
@@ -47,6 +58,7 @@ function routeFromPath(pathname: string): Route {
       : pathname;
   if (appPath === "/sources") return { kind: "sources" };
   if (appPath === "/privacy") return { kind: "privacy" };
+  if (appPath === "/test-case") return { kind: "test-case" };
   return { kind: "journey" };
 }
 
@@ -119,6 +131,10 @@ function Shell({ children, onHome }: { children: ReactNode; onHome: () => void }
               <BookOpenText aria-hidden="true" />
               {t("nav.sourcesShort")}
             </a>
+            <a className="header-link" href={`${BASE_PATH}/test-case`}>
+              <FileCode aria-hidden="true" />
+              {t("test.nav")}
+            </a>
             <div className="language-switch" aria-label={t("nav.language")}>
               <button type="button" aria-pressed={lang === "en"} onClick={() => setLang("en")}>English</button>
               <button type="button" aria-pressed={lang === "hi"} onClick={() => setLang("hi")}>हिन्दी</button>
@@ -131,6 +147,7 @@ function Shell({ children, onHome }: { children: ReactNode; onHome: () => void }
         <div className="footer-links">
           <a href={`${BASE_PATH}/sources`}>{t("nav.sources")}</a>
           <a href={`${BASE_PATH}/privacy`}>{t("nav.privacy")}</a>
+          <a href={`${BASE_PATH}/test-case`}>{t("test.nav")}</a>
           <button type="button" onClick={onHome}>{t("claimpath.restart")}</button>
         </div>
         <p>{t("claimpath.disclosure")}</p>
@@ -256,6 +273,9 @@ function CaseStart({
           {!busy && <ArrowRight aria-hidden="true" weight="bold" />}
         </button>
         <p className="browser-note"><LockKey aria-hidden="true" />{t("claimpath.browserNote")}</p>
+        <a className="test-data-link" href={`${BASE_PATH}/test-case`}>
+          <FileCode aria-hidden="true" />{t("test.entryLink")}<ArrowRight aria-hidden="true" />
+        </a>
       </section>
       <aside className="evidence-column">
         <RecordsPreview analysis={null} />
@@ -405,6 +425,165 @@ function PrivacyPage() {
   );
 }
 
+const testStatusKeys: Record<TestCaseResult["status"], string> = {
+  BLOCKED_DATE_OF_EXIT: "test.status.blocked",
+  WAITING_PERIOD_NOT_MET: "test.status.waiting",
+  NEEDS_REVIEW: "test.status.review",
+  PREREQUISITE_MET: "test.status.ready",
+};
+
+function downloadJson(filename: string, value: unknown): void {
+  const blob = new Blob([`${JSON.stringify(value, null, 2)}\n`], {
+    type: "application/json",
+  });
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = filename;
+  anchor.click();
+  URL.revokeObjectURL(url);
+}
+
+function TestCasePage() {
+  const { t } = useLang();
+  const [testCase, setTestCase] = useState<FictionalTestCase | null>(null);
+  const [filename, setFilename] = useState("");
+  const [result, setResult] = useState<TestCaseResult | null>(null);
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
+
+  const acceptValue = (value: unknown, nextFilename: string) => {
+    try {
+      const parsed = parseFictionalTestCase(value);
+      setTestCase(parsed);
+      setFilename(nextFilename);
+      setResult(null);
+      setError("");
+    } catch {
+      setTestCase(null);
+      setResult(null);
+      setError(t("test.invalid"));
+    }
+  };
+
+  const loadBundled = async () => {
+    setBusy(true);
+    try {
+      const response = await fetch(`${import.meta.env.BASE_URL}samples/claimpath-epfo-test-case.json`);
+      if (!response.ok) throw new Error("SAMPLE_UNAVAILABLE");
+      acceptValue(await response.json(), "claimpath-epfo-test-case.json");
+    } catch {
+      setError(t("test.unavailable"));
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const readUpload = async (file: File | undefined) => {
+    if (!file) return;
+    if (file.size > 20_000 || file.type && file.type !== "application/json") {
+      setError(t("test.invalid"));
+      return;
+    }
+    try {
+      acceptValue(JSON.parse(await file.text()), file.name);
+    } catch {
+      setError(t("test.invalid"));
+    }
+  };
+
+  const run = async (applySuggestedFix = false) => {
+    if (!testCase) return;
+    setBusy(true);
+    setError("");
+    try {
+      setResult(await analyzeFictionalTestCase(testCase, applySuggestedFix));
+    } catch {
+      setError(t("common.error"));
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <main id="main" className="test-page" tabIndex={-1}>
+      <section className="test-intro">
+        <p className="eyebrow">{t("test.eyebrow")}</p>
+        <h1>{t("test.title")}</h1>
+        <p>{t("test.body")}</p>
+        <div className="test-boundary" role="note">
+          <LockKey aria-hidden="true" weight="duotone" />
+          <div><strong>{t("test.noRealData")}</strong><p>{t("test.noRealDataBody")}</p></div>
+        </div>
+      </section>
+
+      <section className="test-workbench" aria-labelledby="test-workbench-title">
+        <div className="workbench-heading">
+          <div><p className="panel-kicker">{t("test.stepOne")}</p><h2 id="test-workbench-title">{t("test.getCase")}</h2></div>
+          <span>{t("test.schema")}</span>
+        </div>
+        <div className="test-actions">
+          <a className="download-action" href={`${import.meta.env.BASE_URL}samples/claimpath-epfo-test-case.json`} download>
+            <FileArrowDown aria-hidden="true" />{t("test.download")}
+          </a>
+          <button className="secondary-action compact-action" type="button" onClick={() => void loadBundled()} disabled={busy}>
+            <FileCode aria-hidden="true" />{t("test.loadSample")}
+          </button>
+          <label className="upload-action">
+            <UploadSimple aria-hidden="true" />{t("test.upload")}
+            <input type="file" accept="application/json,.json" onChange={(event) => void readUpload(event.target.files?.[0])} />
+          </label>
+        </div>
+        <p className="test-help">{t("test.editHelp")}</p>
+        {error && <p className="page-error" role="alert">{error}</p>}
+
+        {testCase && (
+          <div className="loaded-test-case">
+            <div className="loaded-file"><CheckCircle aria-hidden="true" weight="fill" /><span><strong>{filename}</strong><small>{t("test.validated")}</small></span></div>
+            <dl>
+              <div><dt>{t("test.aadhaarName")}</dt><dd>{testCase.aadhaar_linked_name}</dd></div>
+              <div><dt>{t("test.epfoName")}</dt><dd>{testCase.epfo_name}</dd></div>
+              <div><dt>{t("test.exitDate")}</dt><dd>{testCase.date_of_exit ?? t("test.notRecorded")}</dd></div>
+              <div><dt>{t("test.waiting")}</dt><dd>{testCase.mark_exit_waiting_period_met ? t("common.yes") : t("common.no")}</dd></div>
+            </dl>
+            <button className="primary-action" type="button" onClick={() => void run()} disabled={busy}>
+              <MagnifyingGlass aria-hidden="true" weight="bold" />{busy ? t("common.loading") : t("test.run")}<ArrowRight aria-hidden="true" />
+            </button>
+          </div>
+        )}
+      </section>
+
+      {result && (
+        <section className={`test-result status-${result.status.toLowerCase()}`} aria-live="polite">
+          <div className="test-result-heading">
+            {result.status === "PREREQUISITE_MET" ? <CheckCircle aria-hidden="true" weight="fill" /> : <WarningCircle aria-hidden="true" weight="fill" />}
+            <div><p className="panel-kicker">{t("test.result")}</p><h2>{t(testStatusKeys[result.status])}</h2></div>
+            <span className="engine-badge">{result.execution_mode === "FASTAPI_DETERMINISTIC_ENGINE" ? t("test.backendEngine") : t("test.browserEngine")}</span>
+          </div>
+          <p className="result-action">{result.next_action}</p>
+          <div className="trace-list">
+            {result.traces.map((trace) => (
+              <article key={trace.rule_id}>
+                <span className={`trace-status ${trace.status.toLowerCase()}`}>{trace.status}</span>
+                <div><strong>{trace.rule_id}</strong><p>{trace.message}</p><small>{trace.source_id}</small></div>
+              </article>
+            ))}
+          </div>
+          {result.status === "BLOCKED_DATE_OF_EXIT" && (
+            <button className="primary-action" type="button" onClick={() => void run(true)} disabled={busy}>
+              <ShieldCheck aria-hidden="true" weight="bold" />{t("test.applyFix")}<ArrowRight aria-hidden="true" />
+            </button>
+          )}
+          <button className="secondary-action compact-action" type="button" onClick={() => downloadJson("claimpath-test-result.json", result)}>
+            <FileArrowDown aria-hidden="true" />{t("test.downloadResult")}
+          </button>
+          <p className="no-real-change"><LockKey aria-hidden="true" />{t("test.resultBoundary")}</p>
+        </section>
+      )}
+    </main>
+  );
+}
+
 export default function App() {
   const [route, setRoute] = useState<Route>(() => routeFromPath(location.pathname));
   const [journeyKey, setJourneyKey] = useState(0);
@@ -418,6 +597,7 @@ export default function App() {
     <Shell onHome={restart}>
       {route.kind === "sources" && <SourcesPage />}
       {route.kind === "privacy" && <PrivacyPage />}
+      {route.kind === "test-case" && <TestCasePage />}
       {route.kind === "journey" && <ClaimPathJourney key={journeyKey} />}
     </Shell>
   );

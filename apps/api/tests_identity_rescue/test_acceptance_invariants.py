@@ -128,3 +128,70 @@ def test_security_headers_and_machine_readable_trust_boundary() -> None:
         assert missing.status_code == 404
         assert missing.json()["error"]["code"] == "ROUTE_NOT_FOUND"
         assert "handover" not in missing.text.casefold()
+
+
+def test_fictional_test_case_contract_runs_and_recomputes_on_the_backend() -> None:
+    sample = {
+        "schema_version": "claimpath-test-case.v1",
+        "fictional": True,
+        "aadhaar_linked_name": "RAVI KUMAR",
+        "epfo_name": "RAVI K",
+        "name_relation_confirmed": True,
+        "date_of_exit": None,
+        "proposed_exit_date": "2026-05-31",
+        "mark_exit_waiting_period_met": True,
+    }
+    with _client() as client:
+        blocked = client.post(
+            "/api/v1/identity/test-case/analyze",
+            json={"case": sample, "apply_suggested_fix": False},
+        )
+        assert blocked.status_code == 200
+        assert blocked.json()["status"] == "BLOCKED_DATE_OF_EXIT"
+        assert blocked.json()["government_systems_contacted"] == 0
+        assert blocked.json()["execution_mode"] == "FASTAPI_DETERMINISTIC_ENGINE"
+
+        resolved = client.post(
+            "/api/v1/identity/test-case/analyze",
+            json={"case": sample, "apply_suggested_fix": True},
+        )
+        assert resolved.status_code == 200
+        assert resolved.json()["status"] == "PREREQUISITE_MET"
+        assert resolved.json()["date_of_exit_after"] == "2026-05-31"
+        assert resolved.json()["name_change_recommended"] is False
+
+
+def test_fictional_test_case_rejects_identifiers_and_unsafe_inference() -> None:
+    sample = {
+        "schema_version": "claimpath-test-case.v1",
+        "fictional": True,
+        "aadhaar_linked_name": "MEERA SHAH",
+        "epfo_name": "MEERA S",
+        "name_relation_confirmed": False,
+        "date_of_exit": None,
+        "proposed_exit_date": "2026-05-31",
+        "mark_exit_waiting_period_met": True,
+    }
+    with _client() as client:
+        review = client.post(
+            "/api/v1/identity/test-case/analyze",
+            json={"case": sample},
+        )
+        assert review.status_code == 200
+        assert review.json()["status"] == "NEEDS_REVIEW"
+        assert review.json()["name_change_recommended"] is False
+
+        sample["uan"] = "100000000000"
+        rejected = client.post(
+            "/api/v1/identity/test-case/analyze",
+            json={"case": sample},
+        )
+        assert rejected.status_code == 422
+
+        del sample["uan"]
+        sample["epfo_name"] = "100000000000"
+        rejected_name = client.post(
+            "/api/v1/identity/test-case/analyze",
+            json={"case": sample},
+        )
+        assert rejected_name.status_code == 422

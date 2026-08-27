@@ -10,6 +10,8 @@ from .models import (
     ScenarioSummary,
     SimulateRequest,
     SourceReference,
+    TestCaseRequest,
+    TestCaseResult,
 )
 
 router = APIRouter(prefix="/identity", tags=["Identity Rescue"])
@@ -44,3 +46,8 @@ def simulate_scenario(scenario_id: str, body: SimulateRequest) -> ScenarioAnalys
 @router.get("/sources", response_model=list[SourceReference])
 def list_sources() -> list[SourceReference]:
     return engine.list_sources()
+
+
+@router.post("/test-case/analyze", response_model=TestCaseResult)
+def analyze_test_case(body: TestCaseRequest) -> TestCaseResult:
+    return engine.analyze_test_case(body.case, body.apply_suggested_fix)

@@ -14,6 +14,7 @@ The current source of truth is `docs/final-night/03_IMPLEMENTATION_AND_TEST_REPO
 - Fictional Ravi Kumar profile with Aadhaar-linked, PAN, EPFO, and service-history records.
 - Causal diagnosis: the controlled `K -> KUMAR` name relation is non-blocking; missing Date of Exit is the modeled blocker.
 - Deterministic minimum-action simulation using `ACT-B1`, full recomputation, before/after evidence, and undo.
+- Downloadable fictional JSON contract, strict upload validation, FastAPI test endpoint, browser fallback and result export.
 - Source-backed EPFO Mark Exit guidance and Member Portal handoff checked on 2026-08-27.
 - English/Hindi UI, keyboard-first semantics, responsive layouts, disclosure, privacy, and sources routes.
 - Static GitHub Pages export and full same-origin FastAPI/Docker runtime.
@@ -22,13 +23,13 @@ The current source of truth is `docs/final-night/03_IMPLEMENTATION_AND_TEST_REPO
 
 | Gate | Result |
 |---|---|
-| Backend | 40 tests pass; Ruff passes |
-| Frontend | 5 component/i18n tests pass |
+| Backend | 42 tests pass; Ruff passes |
+| Frontend | 7 component/i18n/contract tests pass |
 | Build | TypeScript and Vite production/Pages builds pass |
 | Dependencies | npm audit reports 0 vulnerabilities |
 | Docker | rebuilt successfully; root returns ClaimPath; health is `ok`; container user is `identityrescue` |
 | API journey | missing Date of Exit blocks the transfer prerequisite; `ACT-B1` reaches `READY_SIMULATION` |
-| Static fixture | regenerated from the same rule engine with `DEMO-RAVI-01` |
+| Static fixture | regenerated from the same rule engine with `DEMO-RAVI-01`; fictional test harness runs through labelled browser fallback |
 | Public deployment | GitHub Pages build `4388d06` completed; live bundle and static data contain the EPFO Member Portal and UMANG fallback |
 
 ## Unclaimed external checks

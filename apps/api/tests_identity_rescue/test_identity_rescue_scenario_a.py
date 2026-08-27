@@ -85,6 +85,7 @@ def test_default_openapi_is_identity_rescue_only() -> None:
             "/api/v1/identity/scenarios/{scenario_id}/analyze",
             "/api/v1/identity/scenarios/{scenario_id}/simulate",
             "/api/v1/identity/sources",
+            "/api/v1/identity/test-case/analyze",
         }
         result = client.post(
             "/api/v1/identity/scenarios/digilocker-dl/analyze",

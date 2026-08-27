@@ -1,8 +1,10 @@
 from __future__ import annotations
 
+from datetime import date
 from enum import Enum
+from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
 class StrictModel(BaseModel):
@@ -198,3 +200,57 @@ class AnalyzeRequest(StrictModel):
 
 class SimulateRequest(AnalyzeRequest):
     action_id: str = Field(min_length=1, max_length=80)
+
+
+class TestCaseStatus(str, Enum):
+    BLOCKED_DATE_OF_EXIT = "BLOCKED_DATE_OF_EXIT"
+    WAITING_PERIOD_NOT_MET = "WAITING_PERIOD_NOT_MET"
+    NEEDS_REVIEW = "NEEDS_REVIEW"
+    PREREQUISITE_MET = "PREREQUISITE_MET"
+
+
+class FictionalTestCase(StrictModel):
+    schema_version: Literal["claimpath-test-case.v1"]
+    fictional: Literal[True]
+    aadhaar_linked_name: str = Field(min_length=2, max_length=80)
+    epfo_name: str = Field(min_length=2, max_length=80)
+    name_relation_confirmed: bool
+    date_of_exit: date | None
+    proposed_exit_date: date
+    mark_exit_waiting_period_met: bool
+
+    @field_validator("aadhaar_linked_name", "epfo_name")
+    @classmethod
+    def reject_identifier_like_names(cls, value: str) -> str:
+        if any(character.isdigit() for character in value):
+            raise ValueError("fictional names cannot contain digits")
+        return value.strip()
+
+
+class TestCaseRequest(StrictModel):
+    case: FictionalTestCase
+    apply_suggested_fix: bool = False
+
+
+class TestCaseTrace(StrictModel):
+    rule_id: str
+    status: Literal["PASS", "BLOCK", "REVIEW"]
+    message: str
+    source_id: str
+
+
+class TestCaseResult(StrictModel):
+    schema_version: Literal["claimpath-test-result.v1"] = "claimpath-test-result.v1"
+    status: TestCaseStatus
+    blocker: str | None
+    date_of_exit_before: date | None
+    date_of_exit_after: date | None
+    name_change_recommended: bool = False
+    next_action: str
+    traces: list[TestCaseTrace]
+    deterministic: bool = True
+    fictional: bool = True
+    government_systems_contacted: int = 0
+    execution_mode: Literal["FASTAPI_DETERMINISTIC_ENGINE"] = (
+        "FASTAPI_DETERMINISTIC_ENGINE"
+    )

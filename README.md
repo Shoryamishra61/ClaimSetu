@@ -1,6 +1,6 @@
 # ClaimPath
 
-[Live public demo](https://shoryamishra61.github.io/handover29c/) · [Public source](https://github.com/Shoryamishra61/handover29c/tree/final-night-epfo-transfer)
+[Live public demo](https://shoryamishra61.github.io/handover29c/) · [Test with sample JSON](https://shoryamishra61.github.io/handover29c/test-case) · [Public source](https://github.com/Shoryamishra61/handover29c/tree/final-night-epfo-transfer)
 
 ClaimPath redesigns one EPFO dead end: a worker tries to transfer an old PF balance, but the previous account is unavailable because the previous employment has no Date of Exit.
 
@@ -18,8 +18,13 @@ EPFO's current FAQ states that Date of Exit for the previous employment is manda
 - Evidence-preserving fictional records and source-versioned rule trace.
 - Deterministic analysis, allowlisted simulation, full recomputation and undo.
 - Same journey through FastAPI or a generated static Pages fallback.
+- Downloadable `claimpath-test-case.v1` sample, strict JSON upload validation, backend execution, browser fallback and result export.
 - English/Hindi switching, keyboard navigation, 320 px reflow and explicit mock boundaries.
-- No citizen identifiers, document upload, login, live government API or LLM dependency.
+- No citizen identifiers, identity-document upload, login, live government API or LLM dependency. The sandbox rejects unknown fields and names containing digits.
+
+## Test the engine with fictional data
+
+Open `/test-case`, download or load the sample JSON, edit its bounded fictional fields, then run the check. In the container build, the request reaches `POST /api/v1/identity/test-case/analyze`. On static GitHub Pages, the same rules run through an explicitly labelled browser fallback. The file contract contains only fictional names, dates and booleans; real identifiers are neither needed nor accepted.
 
 ## Run and verify
 

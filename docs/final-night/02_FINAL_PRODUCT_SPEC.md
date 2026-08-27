@@ -27,6 +27,7 @@ Recognizable failure → run fictional prerequisite check → see exact causal b
 ## Information architecture
 
 - `/`: complete three-state citizen journey.
+- `/test-case`: optional fictional integration sandbox with sample download, strict upload validation, deterministic analysis and result export.
 - `/sources`: current P0 official sources and propositions.
 - `/privacy`: synthetic-only, no-live-data boundary.
 - No scenario catalogue, admin surface, marketing landing page or chatbot.
@@ -64,7 +65,8 @@ Recognizable failure → run fictional prerequisite check → see exact causal b
 - `result`: reversible simulated record change.
 - `load_error`: plain-language retry state; existing screen remains usable.
 - Static Pages fallback completes the same deterministic journey if the API is absent.
-- Unknown or unsupported situations are not accepted as input; the product never generalizes this fixture to a real account.
+- Test-case results expose whether they ran through the FastAPI engine or browser fallback.
+- Unknown fields, numeric names and unsupported situations are rejected; the product never generalizes a file to a real account.
 
 ## Edge cases
 
@@ -92,7 +94,7 @@ No AI is used in the citizen path. It is unnecessary for a published binary prer
 
 ## Backstage and institutional boundary
 
-Working: versioned rules, source registry, fictional adapters, deterministic analysis, reversible simulation, static fallback, localized frontend and tests.
+Working: versioned rules, source registry, fictional adapters, deterministic analysis, reversible simulation, strict `claimpath-test-case.v1` request contract, FastAPI test endpoint, result export, static fallback, localized frontend and tests.
 
 Simulated: EPFO records, name relation, exit date, readiness recomputation and official handoff result.
 
@@ -102,7 +104,7 @@ Production needs: authority-owned adapter, rule owner and review date, stale-rul
 
 ## Privacy
 
-The public route accepts no Aadhaar, PAN, UAN, OTP, password, bank data or document upload. All displayed records are visibly fictional. No live government integration exists.
+The main route accepts no input. The optional sandbox accepts only a strict fictional JSON object containing names, dates and booleans; extra fields and names containing digits are rejected. It never accepts Aadhaar, PAN, UAN, OTP, password, bank data or identity documents. No live government integration exists.
 
 ## Acceptance tests
 
@@ -115,6 +117,8 @@ The public route accepts no Aadhaar, PAN, UAN, OTP, password, bank data or docum
 7. Official steps include the two-month condition and Manage → Mark Exit.
 8. English/Hindi, keyboard, 320 px, reset, undo, static fallback and error state work.
 9. No real identifiers can be entered.
+10. A reviewer can download the sample JSON, load or upload it, run the backend rule, simulate the proposed correction and download the result.
+11. Static deployment completes the same test through a visibly labelled browser fallback.
 
 ## Demo path
 

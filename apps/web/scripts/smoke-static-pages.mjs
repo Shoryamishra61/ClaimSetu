@@ -45,8 +45,17 @@ try {
   if (!official?.startsWith("https://unifiedportal-mem.epfindia.gov.in/")) throw new Error(`Official handoff drift: ${official}`);
   const fallback = await page.getByRole("link", { name: /use official umang epfo services/i }).getAttribute("href");
   if (!fallback?.startsWith("https://web.umang.gov.in/")) throw new Error(`UMANG fallback drift: ${fallback}`);
+  const rootUrl = remoteBaseUrl ? `${remoteBaseUrl}/test-case` : `http://127.0.0.1:${port}${prefix}/test-case`;
+  await page.goto(rootUrl);
+  await page.getByRole("button", { name: /load sample now/i }).click();
+  await page.getByText("claimpath-epfo-test-case.json").waitFor();
+  await page.getByRole("button", { name: /run deterministic check/i }).click();
+  await page.getByRole("heading", { name: /date of exit blocks this sample/i }).waitFor();
+  await page.getByText(/browser fallback/i).waitFor();
+  await page.getByRole("button", { name: /test proposed date of exit/i }).click();
+  await page.getByRole("heading", { name: /transfer prerequisite is met/i }).waitFor();
   if (externalRequests.length) throw new Error(`Static demo made unexpected external requests: ${externalRequests.join(", ")}`);
-  process.stdout.write("STATIC_PAGES_CLAIMPATH_JOURNEY=PASS\n");
+  process.stdout.write("STATIC_PAGES_CLAIMPATH_JOURNEY_AND_TEST_HARNESS=PASS\n");
 } finally {
   if (browser) await browser.close();
   if (!remoteBaseUrl) await new Promise((closed) => server.close(closed));

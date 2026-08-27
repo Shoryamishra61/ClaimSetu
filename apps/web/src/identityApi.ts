@@ -142,6 +142,45 @@ export interface ScenarioAnalysis {
   government_systems_contacted: number;
 }
 
+export interface FictionalTestCase {
+  schema_version: "claimpath-test-case.v1";
+  fictional: true;
+  aadhaar_linked_name: string;
+  epfo_name: string;
+  name_relation_confirmed: boolean;
+  date_of_exit: string | null;
+  proposed_exit_date: string;
+  mark_exit_waiting_period_met: boolean;
+}
+
+export type TestCaseStatus =
+  | "BLOCKED_DATE_OF_EXIT"
+  | "WAITING_PERIOD_NOT_MET"
+  | "NEEDS_REVIEW"
+  | "PREREQUISITE_MET";
+
+export interface TestCaseResult {
+  schema_version: "claimpath-test-result.v1";
+  status: TestCaseStatus;
+  blocker: string | null;
+  date_of_exit_before: string | null;
+  date_of_exit_after: string | null;
+  name_change_recommended: false;
+  next_action: string;
+  traces: Array<{
+    rule_id: string;
+    status: "PASS" | "BLOCK" | "REVIEW";
+    message: string;
+    source_id: string;
+  }>;
+  deterministic: true;
+  fictional: true;
+  government_systems_contacted: 0;
+  execution_mode:
+    | "FASTAPI_DETERMINISTIC_ENGINE"
+    | "BROWSER_DETERMINISTIC_FALLBACK";
+}
+
 class IdentityApiUnavailable extends Error {}
 
 interface StaticBundle {
@@ -259,5 +298,142 @@ export function getSources(): Promise<SourceReference[]> {
   return withStaticFallback(
     () => request("/api/v1/identity/sources"),
     (bundle) => structuredClone(bundle.sources),
+  );
+}
+
+const TEST_CASE_KEYS = new Set([
+  "schema_version",
+  "fictional",
+  "aadhaar_linked_name",
+  "epfo_name",
+  "name_relation_confirmed",
+  "date_of_exit",
+  "proposed_exit_date",
+  "mark_exit_waiting_period_met",
+]);
+
+const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
+
+export function parseFictionalTestCase(value: unknown): FictionalTestCase {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    throw new Error("TEST_CASE_OBJECT_REQUIRED");
+  }
+  const input = value as Record<string, unknown>;
+  if (Object.keys(input).some((key) => !TEST_CASE_KEYS.has(key))) {
+    throw new Error("TEST_CASE_UNKNOWN_FIELD");
+  }
+  const validName = (name: unknown) =>
+    typeof name === "string" &&
+    name.trim().length >= 2 &&
+    name.trim().length <= 80 &&
+    !/\d/.test(name);
+  if (
+    input.schema_version !== "claimpath-test-case.v1" ||
+    input.fictional !== true ||
+    !validName(input.aadhaar_linked_name) ||
+    !validName(input.epfo_name) ||
+    typeof input.name_relation_confirmed !== "boolean" ||
+    !(
+      input.date_of_exit === null ||
+      (typeof input.date_of_exit === "string" && ISO_DATE.test(input.date_of_exit))
+    ) ||
+    typeof input.proposed_exit_date !== "string" ||
+    !ISO_DATE.test(input.proposed_exit_date) ||
+    typeof input.mark_exit_waiting_period_met !== "boolean"
+  ) {
+    throw new Error("TEST_CASE_SCHEMA_INVALID");
+  }
+  return {
+    schema_version: "claimpath-test-case.v1",
+    fictional: true,
+    aadhaar_linked_name: (input.aadhaar_linked_name as string).trim(),
+    epfo_name: (input.epfo_name as string).trim(),
+    name_relation_confirmed: input.name_relation_confirmed,
+    date_of_exit: input.date_of_exit as string | null,
+    proposed_exit_date: input.proposed_exit_date,
+    mark_exit_waiting_period_met: input.mark_exit_waiting_period_met,
+  };
+}
+
+function browserAnalyzeTestCase(
+  input: FictionalTestCase,
+  applySuggestedFix: boolean,
+): TestCaseResult {
+  const normalize = (name: string) => name.trim().toLocaleUpperCase("en-IN").replace(/\s+/g, " ");
+  const namesDiffer = normalize(input.aadhaar_linked_name) !== normalize(input.epfo_name);
+  const nameSafe = !namesDiffer || input.name_relation_confirmed;
+  let status: TestCaseStatus;
+  let blocker: string | null;
+  let dateAfter = input.date_of_exit;
+  let nextAction: string;
+  if (!nameSafe) {
+    status = "NEEDS_REVIEW";
+    blocker = "NAME_RELATION_UNCONFIRMED";
+    nextAction = "Do not infer identity equivalence or change a name from this file. Review the fictional evidence relation first.";
+  } else if (input.date_of_exit !== null) {
+    status = "PREREQUISITE_MET";
+    blocker = null;
+    nextAction = "The Date of Exit prerequisite is present in this fictional case.";
+  } else if (!input.mark_exit_waiting_period_met) {
+    status = "WAITING_PERIOD_NOT_MET";
+    blocker = "MARK_EXIT_WAITING_PERIOD";
+    nextAction = "The sample says the documented waiting condition is not yet met. Do not simulate Mark Exit yet.";
+  } else if (applySuggestedFix) {
+    dateAfter = input.proposed_exit_date;
+    status = "PREREQUISITE_MET";
+    blocker = null;
+    nextAction = "The fictional Date of Exit was added and the prerequisite was recomputed.";
+  } else {
+    status = "BLOCKED_DATE_OF_EXIT";
+    blocker = "DATE_OF_EXIT_MISSING";
+    nextAction = "Test the proposed fictional Date of Exit, then recompute.";
+  }
+  return {
+    schema_version: "claimpath-test-result.v1",
+    status,
+    blocker,
+    date_of_exit_before: input.date_of_exit,
+    date_of_exit_after: dateAfter,
+    name_change_recommended: false,
+    next_action: nextAction,
+    traces: [
+      {
+        rule_id: "EPFO-001",
+        status: nameSafe ? "PASS" : "REVIEW",
+        message: nameSafe
+          ? "Name relation is explicitly confirmed in the fictional file."
+          : "Different names have no confirmed fictional relation.",
+        source_id: "SRC-EPFO-FAQ-001",
+      },
+      {
+        rule_id: "EPFO-003",
+        status: dateAfter === null ? "BLOCK" : "PASS",
+        message: dateAfter === null
+          ? "Date of Exit is missing for the transfer prerequisite."
+          : "Date of Exit is present for the transfer prerequisite.",
+        source_id: "SRC-EPFO-FAQ-001",
+      },
+    ],
+    deterministic: true,
+    fictional: true,
+    government_systems_contacted: 0,
+    execution_mode: "BROWSER_DETERMINISTIC_FALLBACK",
+  };
+}
+
+export function analyzeFictionalTestCase(
+  input: FictionalTestCase,
+  applySuggestedFix = false,
+): Promise<TestCaseResult> {
+  return withStaticFallback(
+    () =>
+      request("/api/v1/identity/test-case/analyze", {
+        method: "POST",
+        body: JSON.stringify({
+          case: input,
+          apply_suggested_fix: applySuggestedFix,
+        }),
+      }),
+    () => browserAnalyzeTestCase(input, applySuggestedFix),
   );
 }

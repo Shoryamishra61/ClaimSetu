@@ -8,6 +8,7 @@ The current public-product decision is [docs/final-night/01_PROBLEM_VERDICT.md](
 |---|---|---|
 | Focused citizen journey | Three visible states and two primary actions | PASS in component and Playwright tests |
 | Sensitive-data minimization | No free-text or identifier intake | PASS |
+| Fictional integration test | Sample download/upload, strict schema, backend/browser execution, recomputation and result export | PASS |
 | Causal diagnosis | EPFO-001 name condition passes; EPFO-002 Date of Exit condition fails | PASS |
 | Minimum fix | planner selects only `ACT-B1` | PASS |
 | Counterfactual proof | name-only action remains non-ready; Date of Exit action reaches modeled-ready | PASS |
@@ -25,4 +26,5 @@ The current public-product decision is [docs/final-night/01_PROBLEM_VERDICT.md](
 - Only allowlisted actions can be simulated; arbitrary or oversized mutations return 422.
 - Simulation changes bundled fictional state only and recomputes all rules.
 - The judged path collects no citizen-entered identity data.
+- The optional sandbox accepts only bounded fictional names, dates and booleans; unknown fields and digit-bearing names are rejected.
 - No government API, real identifier, OTP, payment, biometric, upload, or official write is used.

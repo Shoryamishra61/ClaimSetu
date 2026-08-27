@@ -10,6 +10,8 @@
 - Updated the fictional last-contribution/exit dates so the demo does not contradict EPFO's two-month self-service condition.
 - Added current EPFO FAQ provenance and made the working/simulated boundary more precise.
 - Forced Vitest to one fork on Windows after the default worker pool stalled during baseline verification.
+- Added a production-shaped fictional-data sandbox: downloadable schema, strict JSON upload, FastAPI analysis endpoint, deterministic Pages fallback, ambiguity/waiting states and result export.
+- Rejects extra fields and digit-bearing names so the sandbox cannot accept UAN/Aadhaar/PAN-shaped payloads.
 
 ## Deliberately retained
 
@@ -30,10 +32,10 @@ npm --prefix apps/web run e2e:pages
 Observed final results:
 
 - Ruff: pass.
-- Pytest: 40 passed; one third-party Starlette deprecation warning.
-- Vitest: 5 passed.
-- TypeScript and both Vite production builds: pass; main JavaScript 72.15 KB gzip.
-- Playwright: 5 passed, including Axe serious/critical scan and 320 px no-overflow journey.
+- Pytest: 42 passed; one third-party Starlette deprecation warning.
+- Vitest: 7 passed.
+- TypeScript and both Vite production builds: pass; main JavaScript 77.35 KB gzip.
+- Playwright: 6 passed, including the complete download/load/analyze/recompute sandbox path, Axe serious/critical scans and 320 px no-overflow journeys.
 - Static GitHub Pages smoke: pass with no unexpected external request.
 
 ## Accessibility and responsive checks
@@ -44,7 +46,7 @@ Observed final results:
 
 ## Mock boundaries
 
-Fictional: Ravi, all records, names, balance, Member IDs, contribution month, exit date and recomputed result. Working: rule evaluation, trace, simulation, undo, static fallback, localization and handoff links. Official: only EPFO can read/update an account or decide a transfer.
+Fictional: Ravi, all records, names, balance, Member IDs, contribution month, exit date, uploaded test cases and recomputed results. Working: strict schema validation, FastAPI test endpoint, rule evaluation, trace, simulation, undo, result download, static fallback, localization and handoff links. Official: only EPFO can read/update an account or decide a transfer.
 
 ## Known limitations and risks
 
@@ -60,6 +62,7 @@ Fictional: Ravi, all records, names, balance, Member IDs, contribution month, ex
 2. **Diagnosis — strong.** The causal blocker and the explicit “do not change” guidance dominate; evidence remains optional. [Screenshot](../../output/audit-final/02-diagnosis.png)
 3. **Result — strong.** Before/after, no-real-change boundary and official Mark Exit handoff form a clear terminal state. [Screenshot](../../output/audit-final/03-result.png)
 4. **320 px result — strong with evidence limit.** All three stages and the full official handoff reflow without horizontal overflow. Native screen-reader and fluent-human Hindi review remain unverified. [Screenshot](../../output/screenshots/claimpath-mobile-320.png)
+5. **Fictional-data sandbox — strong.** The sample contract, execution engine, rule trace, recomputed result and no-government boundary are visible in one reviewable page. [Screenshot](../../output/audit-final/04-test-data.png)
 
 The audit caught and fixed a skip-link rendering leak in full-page captures and a stale four-column progress grid. Web-interface review also replaced action-styled navigation with links, added theme color/touch behavior/text balancing, and removed dead form CSS.
 

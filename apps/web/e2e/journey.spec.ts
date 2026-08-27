@@ -80,3 +80,28 @@ test("sources and privacy remain available as supporting routes", async ({ page 
     expect(accessibility.violations.filter((item) => item.impact === "serious" || item.impact === "critical")).toEqual([]);
   }
 });
+
+test("fictional JSON sandbox downloads, validates, analyzes, and recomputes", async ({ page }) => {
+  await page.goto("/test-case");
+  await expect(page.getByRole("heading", { name: /bring a sample case/i })).toBeVisible();
+
+  const downloadPromise = page.waitForEvent("download");
+  await page.getByRole("link", { name: /download sample json/i }).click();
+  const download = await downloadPromise;
+  expect(download.suggestedFilename()).toBe("claimpath-epfo-test-case.json");
+
+  await page.getByRole("button", { name: /load sample now/i }).click();
+  await expect(page.getByText("claimpath-epfo-test-case.json")).toBeVisible();
+  await page.getByRole("button", { name: /run deterministic check/i }).click();
+  await expect(page.getByRole("heading", { name: /date of exit blocks this sample/i })).toBeVisible();
+  await expect(page.getByText(/fastapi engine/i)).toBeVisible();
+  await page.getByRole("button", { name: /test proposed date of exit/i }).click();
+  await expect(page.getByRole("heading", { name: /transfer prerequisite is met/i })).toBeVisible();
+  await expect(page.getByText(/no government record was read/i)).toBeVisible();
+  await page.screenshot({ path: "../../output/audit-final/04-test-data.png", fullPage: true });
+
+  const accessibility = await new AxeBuilder({ page }).analyze();
+  expect(accessibility.violations.filter((item) => item.impact === "serious" || item.impact === "critical")).toEqual([]);
+  await page.setViewportSize({ width: 320, height: 800 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1);
+});

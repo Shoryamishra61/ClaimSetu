@@ -4,7 +4,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import staticBundleJson from "../public/identity-rescue-static.json";
 import App from "../src/App";
-import type { ScenarioAnalysis, SourceReference } from "../src/identityApi";
+import { parseFictionalTestCase, type ScenarioAnalysis, type SourceReference } from "../src/identityApi";
 import { LangProvider } from "../src/i18n/LangProvider";
 import { UI, phrase } from "../src/i18n/strings";
 
@@ -59,6 +59,20 @@ describe("ClaimPath EPFO pre-flight", () => {
       expect(phrase(key, "en")).not.toBe(key);
       expect(phrase(key, "hi")).not.toBe(key);
     }
+  });
+
+  it("rejects identifiers and unknown fields from the browser test contract", () => {
+    expect(() => parseFictionalTestCase({
+      schema_version: "claimpath-test-case.v1",
+      fictional: true,
+      aadhaar_linked_name: "RAVI KUMAR",
+      epfo_name: "RAVI K",
+      name_relation_confirmed: true,
+      date_of_exit: null,
+      proposed_exit_date: "2026-05-31",
+      mark_exit_waiting_period_met: true,
+      uan: "100000000000",
+    })).toThrow(/UNKNOWN_FIELD/);
   });
 
   it("opens as a focused EPFO transfer journey with no sensitive-data input", () => {
@@ -128,5 +142,46 @@ describe("ClaimPath EPFO pre-flight", () => {
     await user.click(screen.getByRole("button", { name: /find what blocks the transfer/i }));
     await user.click(screen.getByRole("button", { name: /simulate minimum fix/i }));
     expect(await screen.findByRole("heading", { name: /transfer prerequisite is now met/i })).toBeTruthy();
+  });
+
+  it("lets a reviewer load sample JSON and exercise the deterministic fallback", async () => {
+    const sample = {
+      schema_version: "claimpath-test-case.v1",
+      fictional: true,
+      aadhaar_linked_name: "RAVI KUMAR",
+      epfo_name: "RAVI K",
+      name_relation_confirmed: true,
+      date_of_exit: null,
+      proposed_exit_date: "2026-05-31",
+      mark_exit_waiting_period_met: true,
+    };
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (input: RequestInfo | URL) => {
+        const url = String(input);
+        if (url.endsWith("/samples/claimpath-epfo-test-case.json")) return json(sample);
+        if (url.includes("/api/v1/identity/test-case/analyze")) {
+          return new Response("", { status: 404 });
+        }
+        if (url.endsWith("/identity-rescue-static.json")) return json(staticBundleJson);
+        throw new Error(`unexpected ${url}`);
+      }),
+    );
+    history.replaceState({}, "", "/test-case");
+    const user = userEvent.setup();
+    renderApp();
+
+    expect(screen.getByRole("heading", { name: /bring a sample case/i })).toBeTruthy();
+    expect(screen.getByRole("link", { name: /download sample json/i })).toBeTruthy();
+    await user.click(screen.getByRole("button", { name: /load sample now/i }));
+    expect(await screen.findByText("claimpath-epfo-test-case.json")).toBeTruthy();
+
+    await user.click(screen.getByRole("button", { name: /run deterministic check/i }));
+    expect(await screen.findByRole("heading", { name: /date of exit blocks this sample/i })).toBeTruthy();
+    expect(screen.getByText(/browser fallback/i)).toBeTruthy();
+
+    await user.click(screen.getByRole("button", { name: /test proposed date of exit/i }));
+    expect(await screen.findByRole("heading", { name: /transfer prerequisite is met/i })).toBeTruthy();
+    expect(screen.getByText(/no government record was read/i)).toBeTruthy();
   });
 });
