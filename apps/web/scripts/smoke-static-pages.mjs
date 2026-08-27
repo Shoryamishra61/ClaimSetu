@@ -45,7 +45,7 @@ try {
   if (!official?.startsWith("https://unifiedportal-mem.epfindia.gov.in/")) throw new Error(`Official handoff drift: ${official}`);
   const fallback = await page.getByRole("link", { name: /use official umang epfo services/i }).getAttribute("href");
   if (!fallback?.startsWith("https://web.umang.gov.in/")) throw new Error(`UMANG fallback drift: ${fallback}`);
-  const rootUrl = remoteBaseUrl ? `${remoteBaseUrl}/test-case` : `http://127.0.0.1:${port}${prefix}/test-case`;
+  const rootUrl = remoteBaseUrl ? `${remoteBaseUrl}/test-case/` : `http://127.0.0.1:${port}${prefix}/test-case/`;
   await page.goto(rootUrl);
   await page.getByRole("button", { name: /load sample now/i }).click();
   await page.getByText("claimpath-epfo-test-case.json").waitFor();

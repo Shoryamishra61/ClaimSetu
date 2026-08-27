@@ -56,9 +56,10 @@ function routeFromPath(pathname: string): Route {
     BASE_PATH && pathname.startsWith(BASE_PATH)
       ? pathname.slice(BASE_PATH.length) || "/"
       : pathname;
-  if (appPath === "/sources") return { kind: "sources" };
-  if (appPath === "/privacy") return { kind: "privacy" };
-  if (appPath === "/test-case") return { kind: "test-case" };
+  const normalizedPath = appPath.length > 1 ? appPath.replace(/\/+$/, "") : appPath;
+  if (normalizedPath === "/sources") return { kind: "sources" };
+  if (normalizedPath === "/privacy") return { kind: "privacy" };
+  if (normalizedPath === "/test-case") return { kind: "test-case" };
   return { kind: "journey" };
 }
 

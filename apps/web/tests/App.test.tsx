@@ -167,7 +167,7 @@ describe("ClaimPath EPFO pre-flight", () => {
         throw new Error(`unexpected ${url}`);
       }),
     );
-    history.replaceState({}, "", "/test-case");
+    history.replaceState({}, "", "/test-case/");
     const user = userEvent.setup();
     renderApp();
 
