@@ -31,8 +31,6 @@ try {
     if ($LASTEXITCODE -ne 0) { throw "Browser tests failed" }
     npm run build:pages
     if ($LASTEXITCODE -ne 0) { throw "Static Pages build failed" }
-    Copy-Item dist-pages/index.html dist-pages/404.html -Force
-    New-Item dist-pages/.nojekyll -ItemType File -Force | Out-Null
     npm run e2e:pages
     if ($LASTEXITCODE -ne 0) { throw "Static Pages browser tests failed" }
 }
