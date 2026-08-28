@@ -697,6 +697,8 @@ footer p { margin: 12px 0 0; }
   .language-switch button:first-child::after { content: "EN"; position: absolute; inset: 0; display: grid; place-items: center; color: #101828; }
   .story-column h1 { font-size: 34px; }
   .journey-progress small { display: none; }
+  .journey-progress ol { grid-template-columns: 1fr; gap: 12px; }
+  .journey-progress li:not(:last-child)::after { display: none; }
   .profile-row { padding: 14px; }
   .record-row { padding-inline: 2px; }
   .primary-action { font-size: 15px; }
