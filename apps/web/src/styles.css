@@ -625,6 +625,20 @@ h1, h2, h3 { text-wrap: balance; }
 .trace-status.review { background: var(--amber-100); color: var(--amber-700); }
 .test-result > .compact-action { margin-top: 12px; }
 
+.case-form { display: grid; gap: 14px; margin-top: 18px; max-width: 560px; }
+.case-form > label { display: flex; flex-direction: column; gap: 6px; color: #344054; font-size: 14px; font-weight: 650; }
+.case-form input[type="text"], .case-form input[type="date"] {
+  min-height: 44px; padding: 0 12px; border: 1px solid #98a2b3; border-radius: var(--radius-sm);
+  background: #fff; color: var(--ink); font-size: 15px;
+}
+.case-form input[type="text"]:focus-visible, .case-form input[type="date"]:focus-visible {
+  outline: 3px solid var(--blue-700); outline-offset: 1px;
+}
+.case-form .case-check { flex-direction: row; align-items: center; gap: 10px; }
+.case-form .case-check input { flex: 0 0 20px; width: 20px; height: 20px; accent-color: var(--green-800); }
+.case-form .test-help { margin: 0; }
+.case-form > .primary-action { justify-self: start; }
+
 footer {
   margin-top: auto;
   padding: 22px max(20px, calc((100vw - var(--content)) / 2));

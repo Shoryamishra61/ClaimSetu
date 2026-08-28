@@ -452,6 +452,14 @@ function TestCasePage() {
   const [result, setResult] = useState<TestCaseResult | null>(null);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const [answers, setAnswers] = useState({
+    aadhaarName: "",
+    epfoName: "",
+    relationConfirmed: false,
+    exitDate: "",
+    waitingMet: false,
+    proposedDate: new Date().toISOString().slice(0, 10),
+  });
 
   const acceptValue = (value: unknown, nextFilename: string) => {
     try {
@@ -506,6 +514,31 @@ function TestCasePage() {
     }
   };
 
+  const buildFromAnswers = () => {
+    const aadhaarName = answers.aadhaarName.trim();
+    const epfoName = answers.epfoName.trim();
+    const validName = (name: string) =>
+      name.length >= 2 && name.length <= 80 && !/\d/.test(name);
+    if (!validName(aadhaarName) || !validName(epfoName) || !answers.proposedDate) {
+      setError(t("test.formInvalid"));
+      return;
+    }
+    setError("");
+    acceptValue(
+      {
+        schema_version: "claimpath-test-case.v1",
+        fictional: true as const,
+        aadhaar_linked_name: aadhaarName,
+        epfo_name: epfoName,
+        name_relation_confirmed: answers.relationConfirmed,
+        date_of_exit: answers.exitDate === "" ? null : answers.exitDate,
+        proposed_exit_date: answers.proposedDate,
+        mark_exit_waiting_period_met: answers.waitingMet,
+      },
+      t("test.formYourCase"),
+    );
+  };
+
   return (
     <main id="main" className="test-page" tabIndex={-1}>
       <section className="test-intro">
@@ -552,6 +585,75 @@ function TestCasePage() {
             </button>
           </div>
         )}
+      </section>
+
+      <section className="test-workbench" aria-labelledby="case-form-title">
+        <div className="workbench-heading">
+          <div><p className="panel-kicker">{t("test.formStep")}</p><h2 id="case-form-title">{t("test.formTitle")}</h2></div>
+        </div>
+        <p className="test-help">{t("test.formBody")}</p>
+        <form
+          className="case-form"
+          onSubmit={(event) => { event.preventDefault(); buildFromAnswers(); }}
+        >
+          <label>
+            <span>{t("test.formAadhaar")}</span>
+            <input
+              type="text"
+              value={answers.aadhaarName}
+              maxLength={80}
+              autoComplete="off"
+              onChange={(event) => setAnswers({ ...answers, aadhaarName: event.target.value })}
+            />
+          </label>
+          <label>
+            <span>{t("test.formEpfo")}</span>
+            <input
+              type="text"
+              value={answers.epfoName}
+              maxLength={80}
+              autoComplete="off"
+              onChange={(event) => setAnswers({ ...answers, epfoName: event.target.value })}
+            />
+          </label>
+          <label className="case-check">
+            <input
+              type="checkbox"
+              checked={answers.relationConfirmed}
+              onChange={(event) => setAnswers({ ...answers, relationConfirmed: event.target.checked })}
+            />
+            <span>{t("test.formRelation")}</span>
+          </label>
+          <p className="test-help">{t("test.formRelationHelp")}</p>
+          <label>
+            <span>{t("test.formExit")}</span>
+            <input
+              type="date"
+              value={answers.exitDate}
+              onChange={(event) => setAnswers({ ...answers, exitDate: event.target.value })}
+            />
+          </label>
+          <p className="test-help">{t("test.formExitHelp")}</p>
+          <label className="case-check">
+            <input
+              type="checkbox"
+              checked={answers.waitingMet}
+              onChange={(event) => setAnswers({ ...answers, waitingMet: event.target.checked })}
+            />
+            <span>{t("test.formWaiting")}</span>
+          </label>
+          <label>
+            <span>{t("test.formProposed")}</span>
+            <input
+              type="date"
+              value={answers.proposedDate}
+              onChange={(event) => setAnswers({ ...answers, proposedDate: event.target.value })}
+            />
+          </label>
+          <button className="primary-action" type="submit">
+            <MagnifyingGlass aria-hidden="true" weight="bold" />{t("test.formSubmit")}<ArrowRight aria-hidden="true" />
+          </button>
+        </form>
       </section>
 
       {result && (
