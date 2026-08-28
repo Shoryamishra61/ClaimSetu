@@ -17,15 +17,9 @@
 | 1:47–1:56 | 320 px, Hindi, keyboard, no identifiers, no live integration. | Show India-first and safety choices. |
 | 1:56–1:58 | Return to official handoff. | Close on citizen action, under two minutes. |
 
-## Submission summary (194 words)
+## Submission summary
 
-ClaimPath redesigns one EPFO dead end: a worker changes jobs, tries to transfer an old PF balance, and the previous account is unavailable. A visible name variation can send the worker toward the wrong correction, while the actual prerequisite may be hidden in service history.
-
-The working prototype opens a fictional case, evaluates a small versioned rule set, and shows that Ravi's missing Date of Exit—not the visible name difference—blocks this transfer scenario. It traces the finding to current EPFO guidance, tells Ravi what not to change, simulates only the fictional exit-date correction, recomputes the case, and then gives the official Manage → Mark Exit path and retry condition.
-
-The app accepts no Aadhaar, PAN, UAN, OTP, password or identity-document upload. An optional sandbox lets reviewers download, edit and upload a strict fictional JSON sample, run the FastAPI rule endpoint or labelled browser fallback, simulate the proposed correction and export the result. Unknown fields and numeric names are rejected. The core runs deterministically without an LLM.
-
-All citizen records, the name relation, the simulated correction and the “prerequisite met” result are fictional. ClaimPath does not connect to EPFO, update an account or guarantee transfer eligibility. Codex was used to challenge the original cross-service thesis, verify sources, narrow the product, refactor the journey, update rules and tests, and prepare the evidence-linked submission.
+The canonical submission summary (verified at exactly 250 words on 28 August 2026) lives in `submission/02_SUBMISSION_SUMMARY_250_WORDS.md`. The earlier 194-word draft in this file was superseded by the 250-word competition requirement.
 
 ## Reviewer instructions
 

@@ -38,7 +38,7 @@ html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
-  min-width: 320px;
+  min-width: min(320px, 100%);
   min-height: 100vh;
   background: #fff;
   color: var(--ink);

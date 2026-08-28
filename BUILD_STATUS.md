@@ -4,9 +4,9 @@
 
 `PUBLICATION_VERIFIED=true`
 
-Last updated: 2026-08-27
+Last updated: 2026-08-28
 
-The current source of truth is `docs/final-night/03_IMPLEMENTATION_AND_TEST_REPORT.md`.
+The current source of truth is `docs/final-night/03_IMPLEMENTATION_AND_TEST_REPORT.md` and the release pack in `submission/`.
 
 ## Implemented
 
@@ -31,6 +31,16 @@ The current source of truth is `docs/final-night/03_IMPLEMENTATION_AND_TEST_REPO
 | API journey | missing Date of Exit blocks the transfer prerequisite; `ACT-B1` reaches `READY_SIMULATION` |
 | Static fixture | regenerated from the same rule engine with `DEMO-RAVI-01`; fictional test harness runs through labelled browser fallback |
 | Public deployment | GitHub Pages build `4388d06` completed; live bundle and static data contain the EPFO Member Portal and UMANG fallback |
+
+## Verified 2026-08-28 (release day)
+
+| Gate | Result |
+|---|---|
+| Backend | 42 pytest tests pass; ruff clean on CI-scoped paths |
+| Frontend | 7 vitest tests pass; tsc clean; 6 Playwright e2e tests pass |
+| Pages build | rebuilt after 320 px overflow fix (`body` min-width) |
+| Production | fresh-browser walkthrough on the live URL: hero journey, undo, restart, refresh, sandbox, Hindi all verified; zero JS errors; zero failed requests |
+| Submission assets | `SUBMISSION.md` summary corrected to exactly 250 words (programmatically verified); `submission/` pack created |
 
 ## Unclaimed external checks
 

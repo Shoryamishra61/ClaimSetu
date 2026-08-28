@@ -1,10 +1,8 @@
-# Submission copy
+# Submission summary — exactly 250 words
 
-## Title
+Copy everything between the rules below into the submission form as-is.
 
-ClaimPath — Find what blocks an old PF transfer
-
-## Summary
+---
 
 ClaimPath redesigns one EPFO dead end: a worker changes jobs, tries to transfer an old PF balance, and the previous account is unavailable. EPFO's own transfer guidance makes a Date of Exit for the previous employment a prerequisite for the online transfer, yet the portal does not bring prerequisite, symptom and safe next action together. A visible name variation points to the wrong correction.
 
@@ -14,10 +12,10 @@ The app accepts no Aadhaar, PAN, UAN, OTP, password or identity-document upload.
 
 All citizen records, the name relation, the simulated correction and the prerequisite-met result are fictional. ClaimPath does not connect to EPFO, update an account or guarantee transfer eligibility. Codex was used to challenge the original thesis, verify sources, narrow the product, update rules and tests, and prepare the evidence-linked submission.
 
-VERIFIED WORD COUNT: 250
+---
 
-## Links
+Rules for the person pasting:
 
-- Live app: <https://shoryamishra61.github.io/handover29c/>
-- Fictional-data sandbox: <https://shoryamishra61.github.io/handover29c/test-case>
-- Source: <https://github.com/Shoryamishra61/handover29c/tree/final-night-epfo-transfer>
+- The text between the rules is VERIFIED at exactly 250 words (whitespace-split count, checked programmatically on 28 Aug 2026).
+- Paste it without the rules, without a title, and without edits. Adding or removing a single word breaks the 250-word requirement.
+- The count treats "EPFO's", "Ravi's", "prerequisite-met" and "identity-document" as single words, the same way standard form word counters do.
