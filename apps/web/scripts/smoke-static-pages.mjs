@@ -4,7 +4,7 @@ import { extname, join, normalize, resolve } from "node:path";
 import { chromium } from "playwright";
 
 const root = resolve("dist-pages");
-const prefix = "/handover29c";
+const prefix = "/ClaimSetu";
 const port = 8132;
 const remoteBaseUrl = process.env.STATIC_BASE_URL?.replace(/\/$/, "");
 const mime = { ".css": "text/css; charset=utf-8", ".html": "text/html; charset=utf-8", ".js": "text/javascript; charset=utf-8", ".json": "application/json; charset=utf-8" };
