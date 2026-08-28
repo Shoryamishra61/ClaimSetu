@@ -17,7 +17,7 @@ test.beforeEach(async ({ page }) => {
 });
 
 test("focused entry is safe, keyboard reachable, and accessible", async ({ page }) => {
-  await expect(page).toHaveTitle(/ClaimPath/);
+  await expect(page).toHaveTitle(/ClaimSetu/);
   await expect(page.getByRole("heading", { name: /ravi cannot move his old pf balance/i })).toBeVisible();
   await expect(page.getByText(/independent prototype.+fictional data.+no government connection/i).first()).toBeVisible();
   await expect(page.getByText(/no uan, aadhaar, pan, otp/i)).toBeVisible();

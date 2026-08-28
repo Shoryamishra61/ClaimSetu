@@ -1,11 +1,11 @@
-# Problem evidence — ClaimPath
+# Problem evidence — ClaimSetu
 
 Only the strongest sources. Full registry with classifications: `docs/final-night/05_SOURCES.md`. Checked 27 August 2026.
 
 ## Claim 1 — A Date of Exit for the previous employment is a documented prerequisite for the online PF transfer
 
 - **Source (primary, official):** EPFO FAQ — <https://www.epfindia.gov.in/site_en/FAQ.php> (FAQs 185, 186, 230, 250, 253: transfer prerequisite, Mark Exit, two-month condition, unavailable prior Member ID). Corroborated by the EPFO transfer-claim FAQ PDF — <https://www.epfindia.gov.in/site_docs/PDFs/Circulars/Y2020-2021/faq_transfer_claim.pdf>
-- **What it proves:** the blocker ClaimPath surfaces is defined by EPFO's own guidance, not invented by the POC. This source backs product rule `EPFO-003`, which is why every BLOCK/PASS in the app cites `SRC-EPFO-FAQ-001`.
+- **What it proves:** the blocker ClaimSetu surfaces is defined by EPFO's own guidance, not invented by the POC. This source backs product rule `EPFO-003`, which is why every BLOCK/PASS in the app cites `SRC-EPFO-FAQ-001`.
 
 ## Claim 2 — The official remedy is the Member Portal Mark Exit route, with a two-month condition
 

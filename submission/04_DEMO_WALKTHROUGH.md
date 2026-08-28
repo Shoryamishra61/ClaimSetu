@@ -1,4 +1,4 @@
-# Demo walkthrough — ClaimPath golden flow (under 60 seconds)
+# Demo walkthrough — ClaimSetu golden flow (under 60 seconds)
 
 Backup path if the video is unavailable or a judge asks for the fastest route.
 
@@ -11,7 +11,7 @@ Backup path if the video is unavailable or a judge asks for the fastest route.
    → rule EPFO-003 v1.0, fictional values, link to the EPFO FAQ that documents the prerequisite
 4. Click **Simulate minimum fix**
    → Before "—" / After "2026-05-31" · "The transfer prerequisite is now met." · official **Manage → Mark Exit** steps + retry condition + UMANG fallback
-5. Optional: click **Undo last simulation** to show determinism, then **Restart ClaimPath** to reset
+5. Optional: click **Undo last simulation** to show determinism, then **Restart ClaimSetu** to reset
 
 ## Engine sandbox (~25 seconds)
 

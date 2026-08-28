@@ -1,13 +1,13 @@
-# Final release report — ClaimPath
+# Final release report — ClaimSetu
 
 Date of freeze verification: 28 August 2026.
 
 ## Current product
 
-ClaimPath — an EPFO transfer pre-flight. One citizen job: find what actually blocks an old PF balance transfer when the previous account is unavailable, and what the minimum safe correction is.
+ClaimSetu — an EPFO transfer pre-flight. One citizen job: find what actually blocks an old PF balance transfer when the previous account is unavailable, and what the minimum safe correction is.
 
 - **Locked platform:** EPFO (recommended platform list)
-- **Hero thesis:** the portal reports a status ("Previous PF account not available to transfer") but does not bring prerequisite, symptom and next action together; a visible name variation points to the wrong correction while the documented blocker — a missing Date of Exit — hides in service history. ClaimPath makes cause, non-cause, evidence and the official next step one path.
+- **Hero thesis:** the portal reports a status ("Previous PF account not available to transfer") but does not bring prerequisite, symptom and next action together; a visible name variation points to the wrong correction while the documented blocker — a missing Date of Exit — hides in service history. ClaimSetu makes cause, non-cause, evidence and the official next step one path.
 - **Memorable result state:** "The name is not the blocker. The service history is." → simulate → "The transfer prerequisite is now met." → official Manage → Mark Exit handoff.
 
 ## Changes made in this release (28 Aug 2026)

@@ -55,7 +55,7 @@ try {
   await page.getByRole("button", { name: /test proposed date of exit/i }).click();
   await page.getByRole("heading", { name: /transfer prerequisite is met/i }).waitFor();
   if (externalRequests.length) throw new Error(`Static demo made unexpected external requests: ${externalRequests.join(", ")}`);
-  process.stdout.write("STATIC_PAGES_CLAIMPATH_JOURNEY_AND_TEST_HARNESS=PASS\n");
+  process.stdout.write("STATIC_PAGES_CLAIMSETU_JOURNEY_AND_TEST_HARNESS=PASS\n");
 } finally {
   if (browser) await browser.close();
   if (!remoteBaseUrl) await new Promise((closed) => server.close(closed));

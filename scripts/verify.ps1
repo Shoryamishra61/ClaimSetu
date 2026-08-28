@@ -38,4 +38,4 @@ finally {
     Pop-Location
 }
 
-Write-Output "ClaimPath verification passed"
+Write-Output "ClaimSetu verification passed"

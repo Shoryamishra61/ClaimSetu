@@ -1,4 +1,4 @@
-# Judge access — ClaimPath
+# Judge access — ClaimSetu
 
 ## Live URL
 
@@ -18,4 +18,4 @@ See `submission/04_DEMO_WALKTHROUGH.md` — under 60 seconds, two clicks to the 
 
 ## Mock-data disclosure
 
-All citizen records, names, dates, balances, rule outcomes and the "prerequisite met" result are fictional and labelled as such on every screen. The only real elements are the outbound links to official EPFO/UMANG pages and the EPFO FAQ reference that documents the Date of Exit prerequisite. ClaimPath never reads or writes a government record.
+All citizen records, names, dates, balances, rule outcomes and the "prerequisite met" result are fictional and labelled as such on every screen. The only real elements are the outbound links to official EPFO/UMANG pages and the EPFO FAQ reference that documents the Date of Exit prerequisite. ClaimSetu never reads or writes a government record.

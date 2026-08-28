@@ -1,4 +1,4 @@
-# Submission checklist — ClaimPath
+# Submission checklist — ClaimSetu
 
 Deadline: 28 August 2026, 8:00 PM IST. Freeze rule: after final verification, only genuine bugs get fixed.
 

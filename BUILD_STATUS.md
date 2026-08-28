@@ -1,4 +1,4 @@
-# ClaimPath build status
+# ClaimSetu build status
 
 `DETERMINISTIC_CORE_COMPLETE=true`
 
@@ -27,7 +27,7 @@ The current source of truth is `docs/final-night/03_IMPLEMENTATION_AND_TEST_REPO
 | Frontend | 7 component/i18n/contract tests pass |
 | Build | TypeScript and Vite production/Pages builds pass |
 | Dependencies | npm audit reports 0 vulnerabilities |
-| Docker | rebuilt successfully; root returns ClaimPath; health is `ok`; container user is `identityrescue` |
+| Docker | rebuilt successfully; root returns ClaimSetu; health is `ok`; container user is `identityrescue` |
 | API journey | missing Date of Exit blocks the transfer prerequisite; `ACT-B1` reaches `READY_SIMULATION` |
 | Static fixture | regenerated from the same rule engine with `DEMO-RAVI-01`; fictional test harness runs through labelled browser fallback |
 | Public deployment | GitHub Pages build `4388d06` completed; live bundle and static data contain the EPFO Member Portal and UMANG fallback |

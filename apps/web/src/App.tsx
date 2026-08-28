@@ -117,7 +117,7 @@ function Shell({ children, onHome }: { children: ReactNode; onHome: () => void }
             onClick={onHome}
             aria-label={`${t("claimpath.name")}: ${t("claimpath.restart")}`}
           >
-            <span className="brand-mark" aria-hidden="true">CP</span>
+            <span className="brand-mark" aria-hidden="true">CS</span>
             <span className="brand-copy">
               <strong>{t("claimpath.name")}</strong>
               <small>{t("claimpath.tagline")}</small>
