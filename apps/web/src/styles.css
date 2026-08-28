@@ -40,8 +40,10 @@ body {
   margin: 0;
   min-width: min(320px, 100%);
   min-height: 100vh;
+  min-height: 100dvh;
   background: #fff;
   color: var(--ink);
+  -webkit-text-size-adjust: 100%;
 }
 
 button, textarea { font: inherit; }
@@ -629,7 +631,7 @@ h1, h2, h3 { text-wrap: balance; }
 .case-form > label { display: flex; flex-direction: column; gap: 6px; color: #344054; font-size: 14px; font-weight: 650; }
 .case-form input[type="text"], .case-form input[type="date"] {
   min-height: 44px; padding: 0 12px; border: 1px solid #98a2b3; border-radius: var(--radius-sm);
-  background: #fff; color: var(--ink); font-size: 15px;
+  background: #fff; color: var(--ink); font-size: 16px;
 }
 .case-form input[type="text"]:focus-visible, .case-form input[type="date"]:focus-visible {
   outline: 3px solid var(--blue-700); outline-offset: 1px;
@@ -672,6 +674,8 @@ footer p { margin: 12px 0 0; }
   .brand-copy small, .header-link { display: none; }
   .header-actions { gap: 8px; }
   .language-switch button { min-height: 40px; padding: 0 10px; font-size: 13px; }
+  .footer-links { flex-wrap: wrap; gap: 4px 18px; }
+  .footer-links button, .footer-links a { display: inline-block; padding: 8px 0; }
   .journey-progress { padding: 20px 0; }
   .journey-progress ol { width: 100%; gap: 8px; }
   .journey-progress li { min-width: 0; }
