@@ -46,8 +46,8 @@ ClaimSetu — an EPFO transfer pre-flight. One citizen job: find what actually b
 - On the hosted Pages build the sandbox runs through an explicitly labelled browser fallback rather than the FastAPI endpoint; the container build serves the real endpoint.
 - Native screen-reader and fluent-Hindi human review remain unclaimed (automated checks pass).
 - Playwright's headless Chromium uses overlay scrollbars, so the 320 px fix is verified by e2e + code analysis rather than by a classic-scrollbar browser; the change only ever removes a forced minimum width.
-- Devpost/form submission itself is a human step (see `submission/01_SUBMISSION_CHECKLIST.md`).
+- The Google Form submission itself remains a final human confirmation step (see `submission/01_SUBMISSION_CHECKLIST.md`).
 
 ## Verdict
 
-READY, pending the human steps: record the video, paste the summary and URL into the form, submit before 8:00 PM IST.
+READY, pending final form review and confirmation before 10:00 PM IST on 29 August 2026.

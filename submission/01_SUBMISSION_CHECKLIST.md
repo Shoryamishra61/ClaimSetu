@@ -1,12 +1,12 @@
 # Submission checklist — ClaimSetu
 
-Deadline: 28 August 2026, 8:00 PM IST. Freeze rule: after final verification, only genuine bugs get fixed.
+Current submission-form deadline: **29 August 2026, 10:00 PM IST**. The form supersedes the older public brief deadline. Freeze rule: after final verification, only genuine bugs get fixed.
 
 ## Verified before freeze (28 Aug 2026)
 
 - [x] Live URL works: <https://shoryamishra61.github.io/ClaimSetu/> (HTTP 200)
 - [x] HTTPS enabled (GitHub Pages)
-- [x] Fresh browser tested (new in-app browser session, no local state)
+- [x] Fresh automated Chromium journey tested with no local state
 - [x] Login tested — no login exists; nothing blocks judge access
 - [x] Credentials: not applicable (no auth in the product)
 - [x] Golden flow complete end-to-end on production: Diagnose → evidence → Simulate → official handoff → Undo → Restart
@@ -23,10 +23,10 @@ Deadline: 28 August 2026, 8:00 PM IST. Freeze rule: after final verification, on
 - [x] Frontend: 7 vitest tests pass; tsc clean; 6 Playwright e2e tests pass
 - [x] Production build + Pages build pass
 
-## Remaining for the human submitter
+## Final form actions
 
-- [ ] Record the 2-minute video (script: `submission/03_TWO_MINUTE_VIDEO_SCRIPT.md`; keep under 2:00)
+- [ ] Use or replace the generated 1:56 video (script: `submission/03_TWO_MINUTE_VIDEO_SCRIPT.md`; keep under 2:00)
 - [ ] Paste the 250-word summary (`submission/02_SUBMISSION_SUMMARY_250_WORDS.md`) into the form — copy only the summary body, exactly as written
-- [ ] Correct registered email in the form; partner email blank if solo
-- [ ] Paste live URL into the submission form
-- [ ] Submit before 8:00 PM IST
+- [ ] Confirm the registered email is `shoryamishra65@gmail.com`
+- [ ] Paste each reviewed value from `submission/08_FORM_FIELDS.md`
+- [ ] Submit before 10:00 PM IST on 29 August 2026

@@ -8,11 +8,14 @@ __pycache__/
 
 # Node
 node_modules/
+*.tsbuildinfo
 dist/
 dist-pages/
 playwright-report/
 test-results/
 output/video/frame-*.png
+output/video/*.webm
+output/video/*.wav
 output/video/identity-rescue-final-visual.webm
 output/video/identity-rescue-final-narration.wav
 output/video/identity-rescue-narration-*.wav

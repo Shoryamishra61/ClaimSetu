@@ -8,11 +8,11 @@ import { chromium } from "playwright";
 const scriptDir = dirname(fileURLToPath(import.meta.url));
 const projectRoot = resolve(scriptDir, "../../..");
 const outputDir = join(projectRoot, "output", "video");
-const visualPath = join(outputDir, "identity-rescue-final-visual.webm");
+const visualPath = join(outputDir, "claimsetu-final-visual.webm");
 const narrationPaths = Array.from({ length: 10 }, (_, index) =>
-  join(outputDir, `identity-rescue-narration-${String(index + 1).padStart(2, "0")}.wav`),
+  join(outputDir, `claimsetu-narration-${String(index + 1).padStart(2, "0")}.wav`),
 );
-const destination = join(outputDir, "identity-rescue-final-submission.webm");
+const destination = join(outputDir, "claimsetu-final-submission.webm");
 const port = 8135;
 
 const server = createServer(async (request, response) => {
@@ -78,8 +78,8 @@ try {
         return audioContext.decodeAudioData(await response.arrayBuffer());
       }),
     );
-    const starts = [0, 9, 22, 35, 48, 59, 73, 86, 99, 112];
-    const ends = [9, 22, 35, 48, 59, 73, 86, 99, 112, 118];
+    const starts = [0, 8, 23, 35, 48, 60, 72, 85, 98, 108];
+    const ends = [8, 23, 35, 48, 60, 72, 85, 98, 108, 116];
     buffers.forEach((buffer, index) => {
       if (buffer.duration > ends[index] - starts[index]) {
         throw new Error(
@@ -119,7 +119,7 @@ try {
     const blob = new Blob(chunks, { type: "video/webm" });
     const anchor = document.createElement("a");
     anchor.href = URL.createObjectURL(blob);
-    anchor.download = "identity-rescue-final-submission.webm";
+    anchor.download = "claimsetu-final-submission.webm";
     anchor.click();
     return {
       segmentDurations: buffers.map((buffer) => Number(buffer.duration.toFixed(3))),

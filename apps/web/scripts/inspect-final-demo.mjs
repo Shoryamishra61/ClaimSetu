@@ -11,7 +11,7 @@ const videoPath = join(
   projectRoot,
   "output",
   "video",
-  "identity-rescue-final-submission.mp4",
+  "claimsetu-final-submission.mp4",
 );
 const body = await readFile(videoPath);
 const port = 8136;
@@ -67,7 +67,7 @@ try {
     };
   });
   if (
-    metadata.duration < 108 ||
+    metadata.duration < 110 ||
     metadata.duration > 120 ||
     metadata.width !== 1280 ||
     metadata.height !== 720 ||

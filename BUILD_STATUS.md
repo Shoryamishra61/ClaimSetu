@@ -46,7 +46,7 @@ The current source of truth is `docs/final-night/03_IMPLEMENTATION_AND_TEST_REPO
 
 - Automated Playwright replay, screenshots, axe checks and 320 px reflow pass locally. An in-app browser was unavailable, so an independent manual browser and native screen-reader pass remain unclaimed.
 - Native screen-reader and fluent-human Hindi review require human confirmation.
-- Devpost submission has not been performed.
+- The Build What Moves India Google Form has not been submitted; final confirmation remains a human step.
 
 Live demo target: <https://shoryamishra61.github.io/ClaimSetu/>
 

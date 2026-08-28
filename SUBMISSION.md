@@ -1,23 +1,25 @@
 # Submission copy
 
-## Title
+## Project name
 
-ClaimSetu — Find what blocks an old PF transfer
+ClaimSetu — Find what actually blocks an old PF transfer
 
-## Summary
+## Project summary — 250 words
 
-ClaimSetu redesigns one EPFO dead end: a worker changes jobs, tries to transfer an old PF balance, and the previous account is unavailable. EPFO's own transfer guidance makes a Date of Exit for the previous employment a prerequisite for the online transfer, yet the portal does not bring prerequisite, symptom and safe next action together. A visible name variation points to the wrong correction.
+Public systems fail citizens twice: once when a record is incomplete, and again when the interface cannot explain what that incompleteness means. ClaimSetu redesigns one EPFO dead end: a worker changes jobs, tries to transfer an old PF balance, and finds the previous account unavailable.
 
-The working prototype opens a fictional case, evaluates a small versioned rule set, and shows that Ravi's missing Date of Exit, not the visible name difference, blocks this transfer scenario. It traces the finding to current EPFO guidance, tells Ravi what not to change, simulates only the fictional exit-date correction, recomputes the case, then gives the official Member Portal Mark Exit route and retry condition. No login is needed; the journey also runs in Hindi at 320 pixel width.
+Instead of making Ravi guess, ClaimSetu opens a clearly fictional case and asks one practical question: what actually blocks this task? A small, versioned rule set shows that the missing Date of Exit—not the visible name variation—is the relevant prerequisite in this scenario. The app explains the evidence, says what not to change, simulates only the fictional exit-date correction, recomputes every check, and then hands Ravi to the official Member Portal Mark Exit route and retry condition.
 
-The app accepts no Aadhaar, PAN, UAN, OTP, password or identity-document upload. A separate sandbox lets reviewers download, edit and upload a strict fictional JSON sample, run the FastAPI rule endpoint or labelled browser fallback, simulate the proposed correction and export the result. Unknown fields and identifier-like names are rejected. The core runs deterministically without an LLM.
+This is better than the current search-and-guess journey because it joins symptom, cause, non-cause, evidence, and next action in one understandable path. It respects a citizen’s attention: clarity is not decoration here; it is protection from unnecessary correction cycles.
 
-All citizen records, the name relation, the simulated correction and the prerequisite-met result are fictional. ClaimSetu does not connect to EPFO, update an account or guarantee transfer eligibility. Codex was used to challenge the original thesis, verify sources, narrow the product, update rules and tests, and prepare the evidence-linked submission.
+No login is required. ClaimSetu accepts no Aadhaar, PAN, UAN, OTP, password, or identity-document upload. Reviewers can also run a strict fictional JSON case through the deterministic FastAPI rule endpoint or labelled browser fallback, test the proposed correction, and export the result. The journey works in Hindi and at 320-pixel width.
 
-VERIFIED WORD COUNT: 250
+All records and outcomes are fictional. ClaimSetu does not connect to EPFO, change an official record, or guarantee transfer eligibility. Codex helped challenge the original thesis, verify sources, narrow the scope, and turn claims into tested, evidence-linked behavior.
 
-## Links
+## Form links
 
 - Live app: <https://shoryamishra61.github.io/ClaimSetu/>
 - Fictional-data sandbox: <https://shoryamishra61.github.io/ClaimSetu/test-case>
-- Source: <https://github.com/Shoryamishra61/ClaimSetu/tree/final-night-epfo-transfer>
+- Public source: <https://github.com/Shoryamishra61/ClaimSetu/tree/final-night-epfo-transfer>
+- Two-minute video: <https://github.com/Shoryamishra61/ClaimSetu/blob/final-night-epfo-transfer/output/video/claimsetu-final-submission.mp4>
+- Exact form fields: [submission/08_FORM_FIELDS.md](submission/08_FORM_FIELDS.md)
