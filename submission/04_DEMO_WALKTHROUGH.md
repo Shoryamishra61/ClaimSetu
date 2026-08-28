@@ -4,7 +4,7 @@ Backup path if the video is unavailable or a judge asks for the fastest route.
 
 ## Product journey (~35 seconds)
 
-1. Open <https://shoryamishra61.github.io/handover29c/>
+1. Open <https://shoryamishra61.github.io/ClaimSetu/>
 2. Click **Find what blocks the transfer**
    → "The name is not the blocker. The service history is." / "Date of Exit is missing" / "Do not change the name for this blocker"
 3. Click **View technical evidence**
@@ -15,7 +15,7 @@ Backup path if the video is unavailable or a judge asks for the fastest route.
 
 ## Engine sandbox (~25 seconds)
 
-1. Open <https://shoryamishra61.github.io/handover29c/test-case>
+1. Open <https://shoryamishra61.github.io/ClaimSetu/test-case>
 2. Click **Load sample now** → "Schema validated · fictional boundary confirmed"
 3. Click **Run deterministic check** → PASS EPFO-001 / BLOCK EPFO-003, both citing SRC-EPFO-FAQ-001
 4. Click **Test proposed Date of Exit** → PASS / PASS · **Download result JSON** available

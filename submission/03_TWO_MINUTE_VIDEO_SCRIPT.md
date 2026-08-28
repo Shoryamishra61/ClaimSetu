@@ -4,7 +4,7 @@ Target length: ~1:50. Record at desktop width (1280×720 or larger). Every cue b
 
 ## 0:00–0:10 — Problem
 
-Screen: <https://shoryamishra61.github.io/handover29c/> (do not scroll past the first screen).
+Screen: <https://shoryamishra61.github.io/ClaimSetu/> (do not scroll past the first screen).
 
 > "A worker changes jobs and tries to move his old PF balance. The portal says: previous PF account not available to transfer. The only visible clue is a name variation — and it points to the wrong fix. This is ClaimSetu, a pre-flight check for one EPFO transfer dead end."
 
@@ -36,7 +36,7 @@ Return to the diagnosis screen (click **Undo last simulation**, then narrate ove
 
 ## 1:05–1:35 — Technical decisions
 
-Open in the same tab: <https://shoryamishra61.github.io/handover29c/test-case>
+Open in the same tab: <https://shoryamishra61.github.io/ClaimSetu/test-case>
 
 Click: **Load sample now**, then **Run deterministic check**, then **Test proposed Date of Exit**.
 
@@ -44,7 +44,7 @@ Click: **Load sample now**, then **Run deterministic check**, then **Test propos
 
 ## 1:35–1:50 — Closing
 
-Return to <https://shoryamishra61.github.io/handover29c/>.
+Return to <https://shoryamishra61.github.io/ClaimSetu/>.
 
 > "We took one documented EPFO transfer failure — a missing Date of Exit hiding behind a misleading name difference — and made the cause, the non-cause, the evidence and the official next step one path instead of a search problem. The journey runs in Hindi, works at 320 pixels, and needs no login. ClaimSetu: check what actually blocks the transfer, before you correct the wrong thing."
 

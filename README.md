@@ -1,6 +1,6 @@
 # ClaimSetu
 
-[Live public demo](https://shoryamishra61.github.io/handover29c/) · [Test with sample JSON](https://shoryamishra61.github.io/handover29c/test-case) · [Public source](https://github.com/Shoryamishra61/handover29c/tree/final-night-epfo-transfer)
+[Live public demo](https://shoryamishra61.github.io/ClaimSetu/) · [Test with sample JSON](https://shoryamishra61.github.io/ClaimSetu/test-case) · [Public source](https://github.com/Shoryamishra61/ClaimSetu/tree/final-night-epfo-transfer)
 
 ClaimSetu redesigns one EPFO dead end: a worker tries to transfer an old PF balance, but the previous account is unavailable because the previous employment has no Date of Exit.
 

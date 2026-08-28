@@ -18,6 +18,6 @@ VERIFIED WORD COUNT: 250
 
 ## Links
 
-- Live app: <https://shoryamishra61.github.io/handover29c/>
-- Fictional-data sandbox: <https://shoryamishra61.github.io/handover29c/test-case>
-- Source: <https://github.com/Shoryamishra61/handover29c/tree/final-night-epfo-transfer>
+- Live app: <https://shoryamishra61.github.io/ClaimSetu/>
+- Fictional-data sandbox: <https://shoryamishra61.github.io/ClaimSetu/test-case>
+- Source: <https://github.com/Shoryamishra61/ClaimSetu/tree/final-night-epfo-transfer>

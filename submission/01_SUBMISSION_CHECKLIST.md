@@ -4,7 +4,7 @@ Deadline: 28 August 2026, 8:00 PM IST. Freeze rule: after final verification, on
 
 ## Verified before freeze (28 Aug 2026)
 
-- [x] Live URL works: <https://shoryamishra61.github.io/handover29c/> (HTTP 200)
+- [x] Live URL works: <https://shoryamishra61.github.io/ClaimSetu/> (HTTP 200)
 - [x] HTTPS enabled (GitHub Pages)
 - [x] Fresh browser tested (new in-app browser session, no local state)
 - [x] Login tested — no login exists; nothing blocks judge access

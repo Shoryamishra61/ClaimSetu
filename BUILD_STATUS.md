@@ -48,6 +48,6 @@ The current source of truth is `docs/final-night/03_IMPLEMENTATION_AND_TEST_REPO
 - Native screen-reader and fluent-human Hindi review require human confirmation.
 - Devpost submission has not been performed.
 
-Live demo target: <https://shoryamishra61.github.io/handover29c/>
+Live demo target: <https://shoryamishra61.github.io/ClaimSetu/>
 
-Public source target: <https://github.com/Shoryamishra61/handover29c/tree/final-night-epfo-transfer>
+Public source target: <https://github.com/Shoryamishra61/ClaimSetu/tree/final-night-epfo-transfer>
