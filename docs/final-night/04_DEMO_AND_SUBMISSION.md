@@ -25,7 +25,7 @@ The canonical submission summary (verified at exactly 250 words on 28 August 202
 
 No login. Open the public URL, click **Find what blocks the transfer**, optionally open evidence, then click **Simulate minimum fix**. The complete path takes under one minute.
 
-For the production-shaped test, open `/test-case`, choose **Load sample now**, run the deterministic check, then test the proposed Date of Exit. Download/edit/re-upload the JSON to exercise review and waiting-period states.
+For the production-shaped test, open `/test-case`, choose **Load sample now**, run the deterministic check, then test the proposed Date of Exit. Download/edit/re-upload the JSON to exercise review and waiting-period states. A judge who prefers not to edit JSON can instead type the answers into the built-in form ("Answer a few questions. Get the same check.") — it builds the same validated case and runs the same rules, including the review state for an unconfirmed name relation.
 
 ## Limitations to disclose
 

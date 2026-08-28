@@ -16,7 +16,8 @@ ClaimPath — an EPFO transfer pre-flight. One citizen job: find what actually b
 2. **Fixed 320 px step-label clipping (P2):** the three journey-step labels ("Diagnose", "Simulate", "Official next step") could not wrap in the 3-column grid at very narrow widths. Below 430 px the steps now stack vertically with full labels. Verified live at 320 px and by the full e2e suite.
 3. **Submission summary corrected to exactly 250 words** (was 221 in `SUBMISSION.md`, 194 in the demo doc). Canonical copy: `submission/02_SUBMISSION_SUMMARY_250_WORDS.md`, whitespace-split count verified programmatically = 250.
 4. **Created the `submission/` pack** (checklist, 250-word summary, video script, walkthrough, judge access, problem evidence, this report).
-5. No product, rule, copy, or architecture changes. The working hero journey was not touched.
+5. **Added a typed citizen flow to the sandbox** (after the initial freeze, on request): under "Answer a few questions. Get the same check.", a citizen types the two names, the Date of Exit, the waiting-period answer and the proposed exit date; the form builds the same validated `claimpath-test-case.v1` object and runs the identical deterministic engine, including the REVIEW state when a name relation is unconfirmed and rejection of names containing digits. No identifiers are accepted; answers stay in the browser tab. Verified locally across six states (REVIEW, BLOCK, FIX→met, direct MET, WAITING, invalid input) and on production in a fresh browser; full suites re-run (7 vitest, 6 e2e, static-pages smoke, tsc, build:pages).
+6. No changes to the hero journey, rules, or existing pages' behaviour.
 
 ## Tests run (all pass, 28 Aug 2026)
 

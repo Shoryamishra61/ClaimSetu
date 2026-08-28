@@ -20,6 +20,17 @@ Backup path if the video is unavailable or a judge asks for the fastest route.
 3. Click **Run deterministic check** → PASS EPFO-001 / BLOCK EPFO-003, both citing SRC-EPFO-FAQ-001
 4. Click **Test proposed Date of Exit** → PASS / PASS · **Download result JSON** available
 
+## Typed citizen flow (~30 seconds)
+
+No file needed — type the answers instead:
+
+1. On the same page, under **"Answer a few questions. Get the same check."**, enter two names (e.g., `ANITA DEVI` / `ANITA D`)
+2. Click **Build my case** → the same validated-case summary appears ("your-answers (fictional)")
+3. Click **Run deterministic check** → with the relation unchecked, the engine refuses to guess: REVIEW on EPFO-001
+4. Tick **These name forms are confirmed…** and **At least two months…**, rebuild, re-run → BLOCK on EPFO-003 → **Test proposed Date of Exit** → PASS / PASS
+
+Type `R2AVI` as a name to see identifier-like input rejected. The answers stay in the browser tab; nothing is sent or stored.
+
 ## Edge cases a judge can try safely
 
 - **Refresh** anywhere → returns to the deterministic landing state; nothing breaks

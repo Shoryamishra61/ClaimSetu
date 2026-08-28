@@ -24,7 +24,7 @@ EPFO's current FAQ states that Date of Exit for the previous employment is manda
 
 ## Test the engine with fictional data
 
-Open `/test-case`, download or load the sample JSON, edit its bounded fictional fields, then run the check. In the container build, the request reaches `POST /api/v1/identity/test-case/analyze`. On static GitHub Pages, the same rules run through an explicitly labelled browser fallback. The file contract contains only fictional names, dates and booleans; real identifiers are neither needed nor accepted.
+Open `/test-case`, download or load the sample JSON, edit its bounded fictional fields, then run the check — or skip the file entirely and type the answers into the short built-in form ("Answer a few questions. Get the same check."); it builds the same validated case and runs the identical deterministic rules, including the review state when a name relation is unconfirmed. In the container build, the request reaches `POST /api/v1/identity/test-case/analyze`. On static GitHub Pages, the same rules run through an explicitly labelled browser fallback. The file contract contains only fictional names, dates and booleans; real identifiers are neither needed nor accepted.
 
 ## Run and verify
 

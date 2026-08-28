@@ -16,6 +16,7 @@ Deadline: 28 August 2026, 8:00 PM IST. Freeze rule: after final verification, on
 - [x] Desktop tested (1280×720)
 - [x] Narrow viewport tested (320 px: full journey usable; horizontal overflow fixed in final build)
 - [x] /test-case sandbox verified on production (load sample → schema validated → deterministic check → proposed fix → PASS/PASS → export)
+- [x] Typed citizen flow verified on production (type names/dates → Build my case → same deterministic result; REVIEW, BLOCK→FIX, WAITING and invalid-input states all exercised; zero JS errors)
 - [x] Hindi toggle verified on production (no leaked keys, per e2e + manual)
 - [x] Refresh test verified (returns to deterministic landing state; no stuck state)
 - [x] Backend: 42 pytest tests pass; ruff clean (verified 28 Aug 2026)
