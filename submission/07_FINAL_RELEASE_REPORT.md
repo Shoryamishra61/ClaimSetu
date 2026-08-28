@@ -12,10 +12,11 @@ ClaimPath — an EPFO transfer pre-flight. One citizen job: find what actually b
 
 ## Changes made in this release (28 Aug 2026)
 
-1. **Fixed 320 px horizontal overflow (P1):** `body { min-width: 320px }` forced a 15 px horizontal scroll when a classic desktop scrollbar was present at a 320 px window. Changed to `min-width: min(320px, 100%)`. Verified: production Pages build rebuilt; all 6 Playwright e2e tests pass (including the 320 px reflow test).
-2. **Submission summary corrected to exactly 250 words** (was 221 in `SUBMISSION.md`, 194 in the demo doc). Canonical copy: `submission/02_SUBMISSION_SUMMARY_250_WORDS.md`, whitespace-split count verified programmatically = 250.
-3. **Created the `submission/` pack** (checklist, 250-word summary, video script, walkthrough, judge access, problem evidence, this report).
-4. No product, rule, copy, or architecture changes. The working hero journey was not touched.
+1. **Fixed 320 px horizontal overflow (P1):** `body { min-width: 320px }` forced a 15 px horizontal scroll when a classic desktop scrollbar was present at a 320 px window. Changed to `min-width: min(320px, 100%)`. Verified: production Pages build rebuilt; all 6 Playwright e2e tests pass (including the 320 px reflow test); `scrollWidth == clientWidth` confirmed live at 320 px.
+2. **Fixed 320 px step-label clipping (P2):** the three journey-step labels ("Diagnose", "Simulate", "Official next step") could not wrap in the 3-column grid at very narrow widths. Below 430 px the steps now stack vertically with full labels. Verified live at 320 px and by the full e2e suite.
+3. **Submission summary corrected to exactly 250 words** (was 221 in `SUBMISSION.md`, 194 in the demo doc). Canonical copy: `submission/02_SUBMISSION_SUMMARY_250_WORDS.md`, whitespace-split count verified programmatically = 250.
+4. **Created the `submission/` pack** (checklist, 250-word summary, video script, walkthrough, judge access, problem evidence, this report).
+5. No product, rule, copy, or architecture changes. The working hero journey was not touched.
 
 ## Tests run (all pass, 28 Aug 2026)
 
